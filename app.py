@@ -24,7 +24,7 @@ def serve_static(path):
 @app.route('/api/framework', methods=['GET'])
 def get_framework():
     doc = db.collection('config').document('competency_framework').get()
-    return jsonify(doc.to_dict() if doc.exists else {})
+    return jsonify(doc.to_dict().get('data', {}) if doc.exists else {})
 
 @app.route('/api/learner-profile', methods=['GET'])
 def get_learner_profile():
@@ -101,7 +101,7 @@ def get_recommendations():
       "learning_pathway": {
         "stage_1_urgent_gap_closure": courses[:3],
         "stage_2_applied_modernization": courses[3:6] if len(courses) > 5 else courses[:2],
-        "stage_3_leadership_strategic_vision": courses[6:8] if len(courses) > 7 else courses[:1]
+        "stage_3_leadership_strategic": courses[6:8] if len(courses) > 7 else courses[:1]
       },
       "nssta_executive_programmes": tpac[:2]
     })

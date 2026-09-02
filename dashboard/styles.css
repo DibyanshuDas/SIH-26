@@ -1059,8 +1059,8 @@ h1, h2, h3, h4, h5, h6 {
 /* Toast Notifications */
 .toast-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  bottom: 30px;
+  right: 30px;
   z-index: 9999;
 }
 
