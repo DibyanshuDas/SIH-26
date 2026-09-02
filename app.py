@@ -217,6 +217,53 @@ def get_admin_analytics():
             return jsonify(json.load(f))
     return jsonify({})
 
+@app.route('/api/assistant/query', methods=['POST'])
+def assistant_query():
+    payload = request.json or {}
+    query = payload.get("query", "")
+    officer_id = payload.get("officer_id", "OFF-ISS-2026-HQ")
+    
+    q_lower = query.lower()
+    
+    if "gap" in q_lower or "skill" in q_lower or "deficiencies" in q_lower:
+        response = {
+            "answer": "Based on your competency profile, your top priority skill gap is in **Modern Python for Microdata Processing (TECH-01)** (Gap: -2 Levels) and **AI & Machine Learning for Survey Nowcasting (TECH-07)**. Closing these gaps will elevate your Competency Readiness Index from **78.4% to 86.8%**.",
+            "suggested_actions": ["Enrol in 'Python for Official Statistics (IGOT-TECH-201)'", "Take the Python Microdata Assessment", "Register for NSSTA-TPAC AI Workshop"],
+            "recommended_course_id": "IGOT-TECH-201"
+        }
+    elif "national account" in q_lower or "sna" in q_lower or "gdp" in q_lower:
+        response = {
+            "answer": "Under **SNA 2008** standards, Gross Value Added (GVA) at basic prices is defined as Gross Output minus Intermediate Consumption. GDP at market prices is derived by adding Net Product Taxes (Product Taxes - Product Subsidies). Supply-Use Tables (SUT) serve as the fundamental diagnostic tool for sector balancing.",
+            "suggested_actions": ["Take the National Accounts Assessment", "Enrol in 'System of National Accounts & GDP (IGOT-STAT-102)'", "View SUT Module Syllabus"],
+            "recommended_course_id": "IGOT-STAT-102"
+        }
+    elif "cpi" in q_lower or "price" in q_lower or "inflation" in q_lower:
+        response = {
+            "answer": "The All-India CPI utilizes a **Modified Laspeyres price index** formula with base expenditure weights from the Household Consumption Expenditure Survey (HCES). At elementary aggregate levels, MoSPI mandates the **Jevons Index (geometric mean)** because it avoids the upward bias of Carli and satisfies the axiomatic time-reversal test.",
+            "suggested_actions": ["Take CPI Compilation Quiz", "Explore 'Consumer Price Index & Inflation (IGOT-STAT-103)'"],
+            "recommended_course_id": "IGOT-STAT-103"
+        }
+    elif "plfs" in q_lower or "labour" in q_lower or "employment" in q_lower:
+        response = {
+            "answer": "The **Periodic Labour Force Survey (PLFS)** measures employment under two main criteria: **Usual Status (UPSS)** (major time >= 183 days + subsidiary work >= 30 days) and **Current Weekly Status (CWS)** (at least 1 hour of work on any 1 day during 7-day recall). In urban areas, a 25% rotational panel across 4 consecutive quarters is deployed.",
+            "suggested_actions": ["Take PLFS Standards Quiz", "Enrol in 'PLFS Concepts & Data Analytics (IGOT-STAT-105)'"],
+            "recommended_course_id": "IGOT-STAT-105"
+        }
+    elif "dpdpa" in q_lower or "privacy" in q_lower or "confidentiality" in q_lower:
+        response = {
+            "answer": "Under the **Digital Personal Data Protection Act 2023 (DPDPA)**, MoSPI operates as a Significant Data Fiduciary. Before releasing public microdata, Statistical Disclosure Control (SDC) requires eliminating direct identifiers, enforcing **k-Anonymity (k >= 5)** on quasi-identifiers, and top-coding high-income outliers to prevent re-identification.",
+            "suggested_actions": ["Take DPDPA 2023 Compliance Quiz", "Enrol in 'DPDPA 2023 & Microdata Privacy (IGOT-GOV-302)'"],
+            "recommended_course_id": "IGOT-GOV-302"
+        }
+    else:
+        response = {
+            "answer": f"I am your **KASHYAP AI Karmayogi Statistical Learning Assistant**. I can help you analyze your competency gaps, recommend iGOT Karmayogi micro-courses, navigate NSSTA TPAC in-service workshops, and explain statistical methodologies across SNA 2008, CPI, PLFS, Python for microdata, and DPDPA 2023.",
+            "suggested_actions": ["Analyze my skill gaps", "Recommend iGOT courses for my role", "Generate an AI MCQ Quiz from a circular"],
+            "recommended_course_id": "IGOT-STAT-101"
+        }
+        
+    return jsonify(response)
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8050))
     app.run(host='0.0.0.0', port=port)

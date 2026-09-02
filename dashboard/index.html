@@ -500,42 +500,55 @@
       </div>
     </section>
 
-  </main>
+</main>
 
   <!-- 4. Floating AI Karmayogi Statistical Learning Assistant -->
-  <div class="floating-assistant-btn" onclick="toggleAssistantModal()" title="Ask KASHYAP AI Statistical Assistant">
+  <button class="assistant-fab" onclick="toggleAssistantModal()">
     <i class="fa-solid fa-robot"></i>
-  </div>
+  </button>
 
+  <!-- 5. KASHYAP AI Assistant Chat Widget -->
   <div id="assistantModal" class="assistant-modal" style="display: none;">
     <div class="assistant-header">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <i class="fa-solid fa-microchip-ai" style="color: var(--gov-saffron);"></i>
-        <strong>KASHYAP AI Statistical Assistant</strong>
+      <div class="assistant-title">
+        <i class="fa-solid fa-robot"></i> KASHYAP-STAT AI
       </div>
       <button onclick="toggleAssistantModal()" style="background: none; border: none; color: #fff; cursor: pointer; font-size: 16px;">
-        <i class="fa-solid fa-xmark"></i>
+        <i class="fa-solid fa-times"></i>
       </button>
     </div>
-
-    <div class="assistant-body" id="chatMessages">
-      <div class="chat-msg bot">
-        👋 Namaste! I am your <strong>KASHYAP AI Karmayogi Assistant</strong>. How can I help with your competency gaps, iGOT course recommendations, or official statistical standards (SNA 2008, CPI, PLFS, Python for survey data)?
+    <div id="assistantChatBody" class="assistant-body">
+      <div class="chat-message assistant-message">
+        Hello! I am your AI Statistical Assistant. How can I assist you with your competency journey today?
       </div>
     </div>
-
-    <!-- Suggested Quick Chips -->
-    <div style="padding: 0 12px 6px; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;">
+    <div class="assistant-suggestions" id="assistantSuggestions">
       <button class="tag-pill" style="cursor: pointer; white-space: nowrap;" onclick="sendAssistantPrompt('Analyze my top skill gaps')">🎯 Analyze My Gaps</button>
       <button class="tag-pill" style="cursor: pointer; white-space: nowrap;" onclick="sendAssistantPrompt('Explain SNA 2008 GDP Compilation')">📊 Explain SNA 2008</button>
       <button class="tag-pill" style="cursor: pointer; white-space: nowrap;" onclick="sendAssistantPrompt('How does DPDPA 2023 apply to MoSPI?')">🔒 DPDPA 2023 Rules</button>
     </div>
-
-    <div class="assistant-input-area">
-      <input type="text" id="assistantInput" class="input-field" placeholder="Ask statistical questions or request courses..." onkeydown="if(event.key==='Enter') sendAssistantMessage()">
+    <div class="assistant-footer">
+      <input type="text" id="assistantInput" placeholder="Ask about statistics, courses, gaps..." onkeypress="if(event.key === 'Enter') sendAssistantMessage()">
       <button class="btn-primary" style="padding: 8px 14px;" onclick="sendAssistantMessage()">
         <i class="fa-solid fa-paper-plane"></i>
       </button>
+    </div>
+  </div>
+
+  <!-- New UI Modals (Pathways, Catalog, Nomination) -->
+  <div id="uiOverlay" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div id="genericModal" style="background: var(--bg-card); border: var(--border-soft); border-radius: var(--radius-lg); width: 500px; max-width: 90%; box-shadow: var(--shadow-lg); overflow: hidden; animation: slideUp 0.3s ease;">
+      <div style="background: var(--bg-main); padding: 16px 24px; border-bottom: var(--border-soft); display: flex; justify-content: space-between; align-items: center;">
+        <h3 id="genericModalTitle" style="margin: 0; font-size: 18px; color: var(--text-primary);"><i class="fa-solid fa-info-circle"></i> Info</h3>
+        <button onclick="closeGenericModal()" style="background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="genericModalBody" style="padding: 24px; color: var(--text-secondary); font-size: 14.5px; line-height: 1.6;">
+        Content goes here.
+      </div>
+      <div style="padding: 16px 24px; border-top: var(--border-soft); display: flex; justify-content: flex-end; gap: 12px; background: var(--bg-main);">
+        <button class="btn-secondary" onclick="closeGenericModal()">Cancel</button>
+        <button id="genericModalActionBtn" class="btn-primary">Confirm</button>
+      </div>
     </div>
   </div>
 

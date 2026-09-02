@@ -390,17 +390,57 @@ async function enrolInCourse(courseId, courseTitle) {
 }
 
 function nominateForWorkshop(programId, title) {
-  showToast(`📋 Nomination Submitted for '${title}' to MoSPI Cadre Controlling Authority!`);
+  const modalTitle = document.getElementById("genericModalTitle");
+  const modalBody = document.getElementById("genericModalBody");
+  const actionBtn = document.getElementById("genericModalActionBtn");
+  
+  modalTitle.innerHTML = `<i class="fa-solid fa-clipboard-check"></i> Confirm Nomination`;
+  modalBody.innerHTML = `Are you sure you want to officially nominate <strong>${currentLearner.name}</strong> for the upcoming NSSTA TPAC Workshop: <em>${title}</em>?<br><br>This will send a request to the Cadre Controlling Authority for approval.`;
+  actionBtn.innerText = "Submit Nomination";
+  actionBtn.onclick = () => {
+    closeGenericModal();
+    showToast(`📋 Nomination Submitted for '${title}'!`);
+  };
+  
+  document.getElementById("uiOverlay").style.display = "flex";
 }
 
 function openFastTrackModal(compId, compName) {
-  switchTab("tab-pathways");
-  showToast(`Navigated to personalized recommendations for ${compName}`);
+  const modalTitle = document.getElementById("genericModalTitle");
+  const modalBody = document.getElementById("genericModalBody");
+  const actionBtn = document.getElementById("genericModalActionBtn");
+  
+  modalTitle.innerHTML = `<i class="fa-solid fa-bolt"></i> Fast-Track Pathway`;
+  modalBody.innerHTML = `You are about to launch a customized, accelerated learning pathway specifically designed to bridge the competency gap in <strong>${compName}</strong>.<br><br>This pathway prioritizes critical micro-modules to get you certified faster.`;
+  actionBtn.innerText = "Launch Pathway";
+  actionBtn.onclick = () => {
+    closeGenericModal();
+    switchTab("tab-pathways");
+    showToast(`Navigated to personalized recommendations for ${compName}`);
+  };
+  
+  document.getElementById("uiOverlay").style.display = "flex";
 }
 
 function openIgotCatalogModal() {
-  switchTab("tab-pathways");
-  showToast("Full 60+ iGOT Karmayogi Official Statistics Catalog active.");
+  const modalTitle = document.getElementById("genericModalTitle");
+  const modalBody = document.getElementById("genericModalBody");
+  const actionBtn = document.getElementById("genericModalActionBtn");
+  
+  modalTitle.innerHTML = `<i class="fa-solid fa-book-open"></i> Full iGOT Catalog`;
+  modalBody.innerHTML = `Would you like to browse the complete directory of over 60+ official iGOT Karmayogi statistical training modules?`;
+  actionBtn.innerText = "Browse Catalog";
+  actionBtn.onclick = () => {
+    closeGenericModal();
+    switchTab("tab-pathways");
+    showToast("Full 60+ iGOT Karmayogi Official Statistics Catalog active.");
+  };
+  
+  document.getElementById("uiOverlay").style.display = "flex";
+}
+
+function closeGenericModal() {
+  document.getElementById("uiOverlay").style.display = "none";
 }
 
 // -------------------------------------------------------------------------
