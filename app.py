@@ -199,14 +199,6 @@ def enrol_course():
         "updated_officer": officer
     })
 
-@app.route('/api/assistant/query', methods=['POST'])
-def assistant_query():
-    # Basic mock for the assistant so the UI doesn't crash
-    return jsonify({
-        "answer": "I am your AI Karmayogi Assistant. This is a mock response from the new Firebase backend.",
-        "suggested_actions": ["Analyze my skill gaps", "Recommend iGOT courses"],
-        "recommended_course_id": "IGOT-STAT-101"
-    })
 
 @app.route('/api/admin/analytics', methods=['GET'])
 def get_admin_analytics():
