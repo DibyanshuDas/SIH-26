@@ -4,7 +4,9 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import os
 import json
-import assessment_engine
+from assessment_generator import AssessmentEngine
+
+assessment_engine = AssessmentEngine()
 
 app = Flask(__name__, static_folder='dashboard')
 CORS(app)
@@ -120,15 +122,21 @@ def get_nssta_programmes():
 
 @app.route('/api/materials', methods=['GET'])
 def get_materials():
-    # Because db_init.py uploaded it as a single 'data' document, we fetch the document directly
-    doc = db.collection('learning_materials').document('data').get()
-    return jsonify(doc.to_dict() if doc.exists else {})
+    materials_file = os.path.join(os.path.dirname(__file__), "data", "learning_materials.json")
+    if os.path.exists(materials_file):
+        with open(materials_file, "r") as f:
+            materials = json.load(f)
+            # Re-key them by id for the frontend
+            return jsonify({m.get('id', str(i)): m for i, m in enumerate(materials)})
+    return jsonify({})
 
 @app.route('/api/assessments', methods=['GET'])
 def get_assessments():
-    # Because db_init.py uploaded it as a single 'data' document, we fetch the document directly
-    doc = db.collection('assessments').document('data').get()
-    return jsonify(doc.to_dict() if doc.exists else {})
+    assessments_file = os.path.join(os.path.dirname(__file__), "data", "assessment_bank.json")
+    if os.path.exists(assessments_file):
+        with open(assessments_file, "r") as f:
+            return jsonify(json.load(f))
+    return jsonify([])
 
 @app.route('/api/assessments/generate', methods=['POST'])
 def generate_assessment():

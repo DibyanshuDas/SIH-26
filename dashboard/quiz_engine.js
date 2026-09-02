@@ -47,6 +47,10 @@ async function generateAIQuiz() {
   const numQuestions = parseInt(document.getElementById("questionCountSelect")?.value || "5");
   const docSelect = document.getElementById("preloadedDocSelect");
   const docTitle = docSelect ? docSelect.options[docSelect.selectedIndex].text : "Custom Guideline";
+  
+  // Find the button to add loading state
+  const btn = document.querySelector('button[onclick="generateAIQuiz()"]');
+  const originalBtnHTML = btn ? btn.innerHTML : "AI Generate Assessment";
 
   if (!textContent.trim()) {
     showToast("⚠️ Please select a document or paste text content.");
@@ -54,6 +58,13 @@ async function generateAIQuiz() {
   }
 
   showToast("🧠 AI NLP Engine parsing statistical concepts & generating MCQs...");
+  
+  if (btn) {
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generating...`;
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
+    btn.style.cursor = "not-allowed";
+  }
 
   try {
     const res = await fetch("/api/assessments/generate", {
@@ -71,11 +82,20 @@ async function generateAIQuiz() {
     if (data.success && data.assessment) {
       startQuizArena(data.assessment);
       showToast("✨ AI Assessment synthesized with pedagogical explanations!");
+    } else {
+      throw new Error("Failed to generate assessment payload.");
     }
   } catch (e) {
     console.error(e);
-    showToast("Generated AI Assessment from local knowledge base.");
+    showToast("Server generation failed. Falling back to local knowledge base.");
     loadPresetAssessment();
+  } finally {
+    if (btn) {
+      btn.innerHTML = originalBtnHTML;
+      btn.disabled = false;
+      btn.style.opacity = "1";
+      btn.style.cursor = "pointer";
+    }
   }
 }
 
