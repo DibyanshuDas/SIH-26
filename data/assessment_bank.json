@@ -1,0 +1,452 @@
+[
+  {
+    "assessment_id": "ASM-SNA-2026",
+    "material_id": "MAT-SNA-01",
+    "title": "National Accounts (SNA 2008) & GDP Compilation Mastery Assessment",
+    "target_competency": "STAT-02",
+    "time_limit_minutes": 15,
+    "pass_percentage": 70,
+    "questions": [
+      {
+        "id": "Q-SNA-01",
+        "question_text": "In the System of National Accounts (SNA 2008), how is Gross Domestic Product (GDP) at market prices derived from Gross Value Added (GVA) at basic prices?",
+        "question_type": "Conceptual",
+        "options": [
+          "GDP at market prices = GVA at basic prices - Product Taxes + Product Subsidies",
+          "GDP at market prices = GVA at basic prices + Product Taxes - Product Subsidies",
+          "GDP at market prices = GVA at basic prices + Production Taxes - Production Subsidies",
+          "GDP at market prices = GVA at factor cost + Indirect Taxes"
+        ],
+        "correct_index": 1,
+        "explanation": "According to SNA 2008 and MoSPI's methodology, GDP at market prices is obtained by adding Net Product Taxes (Product Taxes minus Product Subsidies) to GVA at basic prices. Production taxes (like land revenue or professional tax) are already embedded in GVA at basic prices.",
+        "citation": "Section 1: Production Boundary and GVA Concepts",
+        "difficulty": "Intermediate",
+        "karma_reward": 25
+      },
+      {
+        "id": "Q-SNA-02",
+        "question_text": "Which diagnostic framework is centrally utilized by National Accounts compilers to ensure mathematical consistency between production, income, and expenditure approaches of GDP?",
+        "question_type": "Conceptual",
+        "options": [
+          "Annual Survey of Industries (ASI) Frame",
+          "Supply-Use Tables (SUT) Accounting Matrix",
+          "Consumer Price Index Laspeyres Weights",
+          "Perpetual Inventory Method (PIM) Depreciation"
+        ],
+        "correct_index": 1,
+        "explanation": "Supply-Use Tables (SUT) serve as the central diagnostic framework in SNA 2008. They reconcile the supply of goods and services (domestic output + imports) with their total use (intermediate consumption + final demand + exports) at product group levels.",
+        "citation": "Section 2: Supply-Use Tables (SUT) and Sectoral Balancing",
+        "difficulty": "Easy",
+        "karma_reward": 20
+      },
+      {
+        "id": "Q-SNA-03",
+        "question_text": "How is Financial Intermediation Services Indirectly Measured (FISIM) calculated and allocated in national accounts compilation?",
+        "question_type": "Technical",
+        "options": [
+          "As the direct administrative fee charged by banks for opening savings accounts",
+          "As the interest rate spread between loan/deposit rates and a reference risk-free rate, allocated across consuming sectors",
+          "As the total dividend revenue earned by commercial banks invested in government securities",
+          "As the sum of currency in circulation plus demand deposits (M1 monetary aggregate)"
+        ],
+        "correct_index": 1,
+        "explanation": "FISIM represents the implicit service charge earned by financial institutions via the interest rate margin between lending and borrowing rates compared to a pure risk-free reference rate. In India's SNA, FISIM is allocated to households (final consumption) and businesses (intermediate consumption).",
+        "citation": "Section 3: Treatment of FISIM and Capital Stock",
+        "difficulty": "Advanced",
+        "karma_reward": 30
+      },
+      {
+        "id": "Q-SNA-04",
+        "question_text": "A National Accounts Director is reviewing quarterly GVA estimates for the manufacturing sector. Intermediate consumption for steel was reported including GST, but output was reported at basic prices. What is the required accounting adjustment?",
+        "question_type": "Scenario",
+        "options": [
+          "No adjustment is needed because GST is a deductible VAT",
+          "Deduct the input tax credit (invoiced GST) from intermediate consumption to record inputs at purchasers' prices net of deductible taxes",
+          "Multiply total output by the reciprocal of the GST rate",
+          "Classify invoiced GST as Consumption of Fixed Capital"
+        ],
+        "correct_index": 1,
+        "explanation": "In SNA 2008, intermediate consumption must be valued at purchasers' prices excluding deductible VAT/GST (input tax credits). Recording intermediate consumption with invoiced deductible GST falsely deflates GVA.",
+        "citation": "Section 1: Production Boundary and GVA Concepts",
+        "difficulty": "Advanced",
+        "karma_reward": 35
+      },
+      {
+        "id": "Q-SNA-05",
+        "question_text": "What standard statistical method is deployed by MoSPI to estimate Consumption of Fixed Capital (CFC) for government and private enterprise fixed assets?",
+        "question_type": "Conceptual",
+        "options": [
+          "Historical Cash Accounting Book Value Method",
+          "Perpetual Inventory Method (PIM) with geometric asset decay",
+          "Laspeyres Base Year Capital Valuation",
+          "Market Capitalization of Public Sector Undertakings"
+        ],
+        "correct_index": 1,
+        "explanation": "Consumption of Fixed Capital (CFC) is estimated using the Perpetual Inventory Method (PIM), accumulating gross fixed capital formation over the expected asset lifespan and applying geometric or straight-line depreciation profiles.",
+        "citation": "Section 3: Treatment of FISIM and Capital Stock",
+        "difficulty": "Intermediate",
+        "karma_reward": 25
+      }
+    ]
+  },
+  {
+    "assessment_id": "ASM-CPI-2026",
+    "material_id": "MAT-CPI-02",
+    "title": "Consumer Price Index (CPI) Compilation & Elementary Formulae Assessment",
+    "target_competency": "STAT-03",
+    "time_limit_minutes": 15,
+    "pass_percentage": 70,
+    "questions": [
+      {
+        "id": "Q-CPI-01",
+        "question_text": "Why does MoSPI mandate the use of the Jevons Index (geometric mean) over the Carli Index (arithmetic mean) at the elementary aggregate level of CPI compilation?",
+        "question_type": "Technical",
+        "options": [
+          "Because the Carli index is mathematically impossible to compute without weights",
+          "Because the Carli index suffers from an upward bias and fails the axiomatic Time-Reversal Test, whereas Jevons satisfies it",
+          "Because the Jevons index requires only 2 price quotes per state",
+          "Because the Carli index violates the Commodity Reversal Test"
+        ],
+        "correct_index": 1,
+        "explanation": "The Carli index (arithmetic mean of price relatives) exhibits a systematic upward bias and fails the fundamental Time-Reversal Test (I_{t/0} * I_{0/t} != 1). The Jevons index (geometric mean) satisfies both the time-reversal and transitivity tests.",
+        "citation": "Section 2: Elementary Aggregation: Jevons vs Dutot vs Carli",
+        "difficulty": "Intermediate",
+        "karma_reward": 25
+      },
+      {
+        "id": "Q-CPI-02",
+        "question_text": "What is the primary empirical source from which the item weighting diagram for the All-India Consumer Price Index is constructed?",
+        "question_type": "Conceptual",
+        "options": [
+          "Annual Survey of Industries (ASI)",
+          "Household Consumption Expenditure Survey (HCES)",
+          "Reserve Bank of India Monetary Policy Report",
+          "Direct Tax Collections from Central Board of Direct Taxes"
+        ],
+        "correct_index": 1,
+        "explanation": "CPI item weights are derived from the nationwide Household Consumption Expenditure Survey (HCES), which captures the detailed expenditure shares of urban and rural households across goods and services.",
+        "citation": "Section 1: Index Architecture and Weighting Framework",
+        "difficulty": "Easy",
+        "karma_reward": 20
+      },
+      {
+        "id": "Q-CPI-03",
+        "question_text": "During CPI field price collection, an enumerator in Lucknow discovers that a specific brand of mustard oil is permanently discontinued. According to MoSPI guidelines, what is the correct substitution protocol?",
+        "question_type": "Scenario",
+        "options": [
+          "Drop mustard oil from the state index permanently and reallocate weight to petrol",
+          "Select the most comparable variety with high market turnover and apply overlap price splicing to ensure continuity without artificial price jumps",
+          "Carry forward the last price of the discontinued brand indefinitely",
+          "Assign a price quotation of zero for that market"
+        ],
+        "correct_index": 1,
+        "explanation": "When an item variety is permanently discontinued, the standard SDC/CPI protocol requires selecting the closest comparable substitute variety and linking/splicing base prices so that quality differences do not distort the inflation rate.",
+        "citation": "Section 3: Imputation of Missing Quotations & Seasonal Items",
+        "difficulty": "Intermediate",
+        "karma_reward": 30
+      },
+      {
+        "id": "Q-CPI-04",
+        "question_text": "Which index formula is deployed at the upper aggregation levels (item $\to$ subgroup $\to$ group $\to$ general index) of the Indian CPI?",
+        "question_type": "Conceptual",
+        "options": [
+          "Modified Laspeyres price index formula with fixed base period expenditure weights",
+          "Paasche index formula with dynamically updating current period weights",
+          "Fisher Ideal Index formula",
+          "Tornqvist exponential index formula"
+        ],
+        "correct_index": 0,
+        "explanation": "MoSPI uses a Modified Laspeyres price index formula for upper-level aggregation, where item price relatives are weighted by base-period expenditure shares obtained from the HCES.",
+        "citation": "Section 1: Index Architecture and Weighting Framework",
+        "difficulty": "Intermediate",
+        "karma_reward": 25
+      },
+      {
+        "id": "Q-CPI-05",
+        "question_text": "How is the Housing Rent Index calculated for CPI (Urban) across 310 selected towns in India?",
+        "question_type": "Technical",
+        "options": [
+          "By surveying only new government quarters rent revisions",
+          "Using a semi-annual repeat-rent panel of sample rented and owner-occupied dwellings using chain-base relatives",
+          "By calculating the cost of steel and cement in building construction",
+          "By asking municipal corporations for property tax assessments"
+        ],
+        "correct_index": 1,
+        "explanation": "The CPI (Urban) housing index is compiled using a semi-annual repeat-rent panel of sample dwellings visited every 6 months to measure actual rent disbursements and equivalent owner-occupied imputed rents.",
+        "citation": "Section 4: Housing Rent Index (Repeat Rent Method)",
+        "difficulty": "Advanced",
+        "karma_reward": 30
+      }
+    ]
+  },
+  {
+    "assessment_id": "ASM-PLFS-2026",
+    "material_id": "MAT-PLFS-03",
+    "title": "Periodic Labour Force Survey (PLFS) Standards & Estimations Assessment",
+    "target_competency": "STAT-05",
+    "time_limit_minutes": 15,
+    "pass_percentage": 70,
+    "questions": [
+      {
+        "id": "Q-PLFS-01",
+        "question_text": "Under the Periodic Labour Force Survey (PLFS) framework, what is the minimum duration of economic activity required for a person to be classified as 'Employed' under Current Weekly Status (CWS)?",
+        "question_type": "Technical",
+        "options": [
+          "At least 4 hours on each of the 7 days of the reference week",
+          "At least 1 hour on any 1 day during the 7 days preceding the survey date",
+          "At least 30 days during the preceding 365 days",
+          "At least 183 days during the preceding calendar year"
+        ],
+        "correct_index": 1,
+        "explanation": "Under the Current Weekly Status (CWS) approach, a person is considered employed if they performed any economic activity for at least 1 hour on any single day during the 7-day reference week.",
+        "citation": "Section 1: Measurement Framework: Usual Status vs Current Weekly Status",
+        "difficulty": "Intermediate",
+        "karma_reward": 25
+      },
+      {
+        "id": "Q-PLFS-02",
+        "question_text": "What is the mathematical definition of the Unemployment Rate (UR) as per MoSPI PLFS official reporting standards?",
+        "question_type": "Conceptual",
+        "options": [
+          "UR = (Unemployed Persons / Total Population) * 100",
+          "UR = (Unemployed Persons / Labour Force) * 100",
+          "UR = (Unemployed Persons / Employed Persons) * 100",
+          "UR = (Unemployed Youth Aged 15-29 / Total Youth Population) * 100"
+        ],
+        "correct_index": 1,
+        "explanation": "The Unemployment Rate (UR) is defined as the percentage of unemployed persons within the labour force: UR = (Unemployed / (Employed + Unemployed)) * 100. It is not calculated over the total population.",
+        "citation": "Section 2: Core Statistical Indicators",
+        "difficulty": "Easy",
+        "karma_reward": 20
+      },
+      {
+        "id": "Q-PLFS-03",
+        "question_text": "Why does PLFS deploy a 25% Rotational Panel Sampling Design in urban areas across 4 quarters?",
+        "question_type": "Conceptual",
+        "options": [
+          "To completely replace all field investigators every month",
+          "To generate precise short-term quarterly estimates of labour dynamics while reducing respondent fatigue through staggered sample replacement",
+          "To ensure that only government employees are surveyed in alternating quarters",
+          "To reduce data entry memory requirements on CAPI tablets"
+        ],
+        "correct_index": 1,
+        "explanation": "The 25% rotational panel in urban PLFS visits each sample FSU 4 times over consecutive quarters. Rotating 25% of the sample each quarter ensures stability in quarterly change estimates while avoiding respondent fatigue.",
+        "citation": "Section 3: Sampling Design & Rotational Panel in Urban Areas",
+        "difficulty": "Intermediate",
+        "karma_reward": 25
+      },
+      {
+        "id": "Q-PLFS-04",
+        "question_text": "A 24-year-old postgraduate worked as a freelance programmer for 45 days in the preceding year and spent the remaining 320 days preparing for competitive exams. Under Usual Status (ps+ss), how is this individual classified?",
+        "question_type": "Scenario",
+        "options": [
+          "Employed under Principal Status",
+          "Employed under Subsidiary Status (since work was performed for >= 30 days despite principal status being Out of Labour Force / Student)",
+          "Unemployed under Principal Status",
+          "Permanently Out of Labour Force with no subsidiary activity"
+        ],
+        "correct_index": 1,
+        "explanation": "Since the individual spent major time (>= 183 days) studying, their Principal Status is Out of Labour Force (Student). However, since they engaged in economic work for more than 30 days (45 days), they are classified as an Employed worker under Usual Status (Principal + Subsidiary Status - UPSS).",
+        "citation": "Section 1: Measurement Framework: Usual Status vs Current Weekly Status",
+        "difficulty": "Advanced",
+        "karma_reward": 35
+      },
+      {
+        "id": "Q-PLFS-05",
+        "question_text": "How is the Worker Population Ratio (WPR) calculated in the annual PLFS statistical tables?",
+        "question_type": "Conceptual",
+        "options": [
+          "WPR = (Employed Persons / Total Labour Force) * 100",
+          "WPR = (Employed Persons / Total Population) * 100",
+          "WPR = (Employed Persons / Working Age Population 15-59) * 100",
+          "WPR = (Formal Workers / Informal Workers) * 100"
+        ],
+        "correct_index": 1,
+        "explanation": "Worker Population Ratio (WPR) is defined as the percentage of employed persons in the total population: WPR = (Employed / Total Population) * 100.",
+        "citation": "Section 2: Core Statistical Indicators",
+        "difficulty": "Easy",
+        "karma_reward": 20
+      }
+    ]
+  },
+  {
+    "assessment_id": "ASM-TECH-2026",
+    "material_id": "MAT-TECH-04",
+    "title": "Python & Polars Data Processing for Official Microdata Assessment",
+    "target_competency": "TECH-01",
+    "time_limit_minutes": 15,
+    "pass_percentage": 70,
+    "questions": [
+      {
+        "id": "Q-TECH-01",
+        "question_text": "When computing population estimates from NSS survey microdata, how must the sampling weight (multiplier) be applied to sample values $x_i$?",
+        "question_type": "Technical",
+        "options": [
+          "Arithmetic mean of $x_i$ without any weighting",
+          "Estimated Total = sum(x_i * weight_i), where weight_i represents the normalized sampling multiplier",
+          "Estimated Total = sum(x_i) * Total sample size",
+          "Estimated Total = sum(x_i / weight_i)"
+        ],
+        "correct_index": 1,
+        "explanation": "To obtain unbiased population level aggregates in complex multi-stage sampling, each observation $x_i$ must be multiplied by its sampling design weight (multiplier $w_i$), such that Population Total = sum(x_i * w_i).",
+        "citation": "Section 2: Weighted Aggregations & Sub-Sample Multiplier Rules",
+        "difficulty": "Intermediate",
+        "karma_reward": 25
+      },
+      {
+        "id": "Q-TECH-02",
+        "question_text": "Why is `polars` / `pyarrow` preferred over standard Python in-memory lists when processing large-scale census and enterprise registries?",
+        "question_type": "Conceptual",
+        "options": [
+          "Because polars automatically deletes duplicate columns",
+          "Because polars utilizes Rust-based multithreaded SIMD execution and Apache Arrow zero-copy memory layouts",
+          "Because polars does not require an operating system to run",
+          "Because polars only works on government intranet servers"
+        ],
+        "correct_index": 1,
+        "explanation": "Polars provides columnar memory layouts based on Apache Arrow with parallelized multi-core execution in Rust, enabling blazing-fast filtering and grouping of 100M+ row government microdata files.",
+        "citation": "Section 1: High-Performance Microdata Ingestion",
+        "difficulty": "Intermediate",
+        "karma_reward": 25
+      },
+      {
+        "id": "Q-TECH-03",
+        "question_text": "An automated validation rule for CAPI household schedule processing detects that the reported price of rice is \u20b94200 per kg instead of \u20b942 per kg. What algorithmic anomaly filter should catch this in pre-tabulation?",
+        "question_type": "Scenario",
+        "options": [
+          "Fourier Transform Frequency Filter",
+          "Mahalanobis distance or Unit-Value Interquartile Range (IQR) outlier filter with boundary clipping",
+          "Laspeyres Base Weight Adjustment",
+          "Geographic Moran's I spatial lag"
+        ],
+        "correct_index": 1,
+        "explanation": "Unit value outlier detection via Interquartile Range (IQR) or Mahalanobis distance flags extreme price-per-unit entries that typically occur due to enumerators mistyping grams for kilograms or decimal points.",
+        "citation": "Section 3: Automated Anomaly Detection & Consistency Checking",
+        "difficulty": "Intermediate",
+        "karma_reward": 30
+      },
+      {
+        "id": "Q-TECH-04",
+        "question_text": "When combining Central Sample and State Sample microdata for pooled district-level estimation, what must be done to the sub-sample weights?",
+        "question_type": "Technical",
+        "options": [
+          "Double the central sample weights and ignore state sample",
+          "Normalize or halve the sub-sample multipliers according to the inverse variance pooling matrix",
+          "Delete all records with odd FSU numbers",
+          "Replace all multipliers with unity (1.0)"
+        ],
+        "correct_index": 1,
+        "explanation": "In pooled NSS estimation combining equal central and state samples, sub-sample multipliers are halved (or weighted by inverse sampling variances) to avoid doubling the estimated population total.",
+        "citation": "Section 2: Weighted Aggregations & Sub-Sample Multiplier Rules",
+        "difficulty": "Advanced",
+        "karma_reward": 35
+      },
+      {
+        "id": "Q-TECH-05",
+        "question_text": "Which columnar file format is standardized by MoSPI DIID for long-term open microdata archiving to optimize compression and fast column-specific reads?",
+        "question_type": "Conceptual",
+        "options": [
+          "Uncompressed TXT file",
+          "Apache Parquet format with Snappy compression",
+          "HTML web table",
+          "XML schema 1.0"
+        ],
+        "correct_index": 1,
+        "explanation": "Apache Parquet format provides superior columnar compression (up to 85% storage savings over CSV) and enables analytical engines to read only the requested columns without loading entire multi-gigabyte files into RAM.",
+        "citation": "Section 1: High-Performance Microdata Ingestion",
+        "difficulty": "Easy",
+        "karma_reward": 20
+      }
+    ]
+  },
+  {
+    "assessment_id": "ASM-DPDPA-2026",
+    "material_id": "MAT-DPDPA-05",
+    "title": "DPDPA 2023 & Statistical Confidentiality Compliance Assessment",
+    "target_competency": "GOV-02",
+    "time_limit_minutes": 15,
+    "pass_percentage": 70,
+    "questions": [
+      {
+        "id": "Q-DPDPA-01",
+        "question_text": "Under Statistical Disclosure Control (SDC) guidelines for MoSPI public microdata releases, what does the principle of k-Anonymity ($k \\ge 5$) guarantee?",
+        "question_type": "Technical",
+        "options": [
+          "That exactly 5 variables are included in the published file",
+          "That every combination of quasi-identifiers (Age, District, Gender, Occupation) is shared by at least $k$ (5) distinct individuals in the released dataset",
+          "That the data is encrypted with 5 independent AES keys",
+          "That the survey was completed in 5 days"
+        ],
+        "correct_index": 1,
+        "explanation": "k-Anonymity ensures that an individual cannot be distinguished from at least k-1 other individuals whose quasi-identifying attributes (e.g., Age 42, Male, District Varanasi, Weaver) appear in the anonymized release.",
+        "citation": "Section 2: Statistical Anonymization Standards",
+        "difficulty": "Intermediate",
+        "karma_reward": 25
+      },
+      {
+        "id": "Q-DPDPA-02",
+        "question_text": "What is the mandatory statistical treatment for extreme high-income outliers (e.g., top 1% richest households) prior to public microdata release to prevent re-identification?",
+        "question_type": "Conceptual",
+        "options": [
+          "Publish their exact bank account numbers for audit",
+          "Apply Top-Coding (capping reported values at the 99th percentile threshold)",
+          "Delete all household members except the head",
+          "Multiply income by a random factor of 100"
+        ],
+        "correct_index": 1,
+        "explanation": "Top-coding replaces all values above a designated percentile threshold (e.g., \u20b950,00,000+) with a single top-code value, eliminating distinctive extreme income values that could easily match public tax or corporate records.",
+        "citation": "Section 2: Statistical Anonymization Standards",
+        "difficulty": "Intermediate",
+        "karma_reward": 25
+      },
+      {
+        "id": "Q-DPDPA-03",
+        "question_text": "Under Section 8(6) of the Digital Personal Data Protection Act 2023, what is the mandatory action for a Data Fiduciary upon discovering a personal data breach in a government portal?",
+        "question_type": "Conceptual",
+        "options": [
+          "Wait until the end of the financial year to mention it in the annual report",
+          "Notify the Data Protection Board of India and each affected Data Principal within the prescribed timeline",
+          "Only notify internal IT staff without external reporting",
+          "Permanently delete all server hard drives immediately"
+        ],
+        "correct_index": 1,
+        "explanation": "DPDPA 2023 mandates prompt intimation of data breaches to both the Data Protection Board of India and each affected data principal to enable immediate mitigation and statutory accountability.",
+        "citation": "Section 3: Penalty Framework and Breach Notification",
+        "difficulty": "Easy",
+        "karma_reward": 20
+      },
+      {
+        "id": "Q-DPDPA-04",
+        "question_text": "A junior statistical officer is preparing a public research brief on rural indebtedness and wants to include the name and village address of the highest indebted farmer as a case study. What is the correct supervisory directive?",
+        "question_type": "Scenario",
+        "options": [
+          "Approve the publication if the farmer signed the consent form",
+          "Reject the inclusion of direct personal identifiers (name, exact address); mandate replacement with a synthetic pseudonymized case to preserve statutory confidentiality under the Collection of Statistics Act and DPDPA",
+          "Publish only the farmer's mobile number instead",
+          "Forward the case study directly to commercial banks"
+        ],
+        "correct_index": 1,
+        "explanation": "Statutory statistical confidentiality strictly prohibits releasing identifiable individual records collected during official surveys. Case studies must be completely anonymized or pseudonymized.",
+        "citation": "Section 1: Statutory Role as Data Fiduciary",
+        "difficulty": "Intermediate",
+        "karma_reward": 30
+      },
+      {
+        "id": "Q-DPDPA-05",
+        "question_text": "What maximum financial penalty is stipulated under DPDPA 2023 for significant data fiduciaries failing to implement reasonable security safeguards resulting in catastrophic data breaches?",
+        "question_type": "Conceptual",
+        "options": [
+          "\u20b950,000",
+          "Up to \u20b9250 Crore",
+          "\u20b910 Lakhs",
+          "No financial penalty for government ministries"
+        ],
+        "correct_index": 1,
+        "explanation": "DPDPA 2023 prescribes heavy financial penalties of up to \u20b9250 Crore for failure to maintain reasonable security safeguards to prevent personal data breaches.",
+        "citation": "Section 3: Penalty Framework and Breach Notification",
+        "difficulty": "Easy",
+        "karma_reward": 20
+      }
+    ]
+  }
+]

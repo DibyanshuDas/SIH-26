@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KASHYAP-STAT | AI-Enabled Skill Intelligence & Learning Platform</title>
+  <meta name="description" content="AI-enabled Skill Intelligence, Competency Gap Analysis, iGOT Karmayogi & NSSTA TPAC Integration, and Intelligent Assessment Generation for India's Official Statistical System.">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Apache ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- 1. Top Government Header -->
+  <header class="top-gov-header">
+    <div class="header-inner">
+      <div class="brand-section">
+        <div class="national-emblem">
+          <div class="emblem-core">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+        </div>
+        <div>
+          <div class="brand-title">
+            KASHYAP-STAT
+            <span class="badge-igot">iGOT KARMAYOGI ENABLED</span>
+          </div>
+          <div class="brand-sub">
+            AI Skill Intelligence & Capacity Augmentation Platform • MoSPI & NSSTA
+          </div>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <!-- Cadre & Role Switcher -->
+        <div class="role-switcher-container">
+          <span class="role-switcher-label"><i class="fa-solid fa-user-shield"></i> View Cadre:</span>
+          <select id="cadreRoleSelect" class="role-select" onchange="switchOfficerRole(this.value)">
+            <option value="ISS_JAG_DIR" selected>Dr. Rajeshwar Sharma (Director, NAD - ISS)</option>
+            <option value="ISS_SAG_DDG">Dr. Anita Mukherjee (DDG, SDRD - ISS)</option>
+            <option value="ISS_STS_DD">Sh. Amit Verma (Deputy Director, ESD - ISS)</option>
+            <option value="ISS_JTS_AD">Ms. Priya Nair (Assistant Director, SSD - ISS)</option>
+            <option value="SSS_SSO">Sh. Gaurav Patel (Senior Statistical Officer, FOD - SSS)</option>
+            <option value="SSS_JSO">Ms. Ananya Das (Junior Statistical Officer, FOD - SSS)</option>
+            <option value="STATE_DES_OFFICER">Dr. K. S. Reddy (Joint Director, State DES)</option>
+            <option value="MINISTRY_STAT_ANALYST">Sh. Vikram Malhotra (Statistical Advisor, Agri)</option>
+          </select>
+        </div>
+
+        <!-- Download PDF Report -->
+        <a href="/KASHYAP_AI_STATISTICAL_LEARNING_PLATFORM_REPORT.pdf" target="_blank" class="btn-icon" title="Download Official MoSPI Flash Report (PDF)">
+          <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+        </a>
+
+        <!-- Theme Toggle -->
+        <button id="themeToggleBtn" class="btn-icon" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. Primary Navigation Bar -->
+  <nav class="main-nav-bar">
+    <div class="nav-inner">
+      <button class="nav-tab active" onclick="switchTab('tab-passport')">
+        <i class="fa-solid fa-id-card-clip"></i> Digital Competency Passport
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-pathways')">
+        <i class="fa-solid fa-route"></i> Personalized iGOT & NSSTA Pathways
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-assessment')">
+        <i class="fa-solid fa-brain"></i> AI Assessment & Quiz Studio
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-admin')">
+        <i class="fa-solid fa-chart-pie"></i> MoSPI Cadre Administration
+      </button>
+    </div>
+  </nav>
+
+  <!-- 3. Main Application Container -->
+  <main class="app-container">
+
+    <!-- ================================================================= -->
+    <!-- TAB 1: DIGITAL COMPETENCY PASSPORT & SKILL GAP MATRIX -->
+    <!-- ================================================================= -->
+    <section id="tab-passport" class="tab-pane active">
+      <!-- Officer Hero Card -->
+      <div class="officer-hero-card" id="officerHeroCard">
+        <div class="officer-avatar" id="heroAvatar">RS</div>
+        <div class="officer-meta">
+          <h2>
+            <span id="heroName">Dr. Rajeshwar Sharma</span>
+            <span class="cadre-badge" id="heroCadre">Indian Statistical Service (ISS)</span>
+          </h2>
+          <div class="officer-tags">
+            <span><i class="fa-solid fa-briefcase"></i> <strong id="heroDesignation">Director (NAD)</strong></span>
+            <span><i class="fa-solid fa-building-columns"></i> <span id="heroDivision">National Accounts Division (NAD)</span></span>
+            <span><i class="fa-solid fa-location-dot"></i> <span id="heroHQ">New Delhi</span></span>
+            <span><i class="fa-solid fa-graduation-cap"></i> <span id="heroEducation">M.Stat (ISI Kolkata)</span></span>
+          </div>
+          <div style="margin-top: 10px; font-size: 12.5px; color: var(--text-secondary);">
+            <strong style="color: var(--gov-saffron);"><i class="fa-solid fa-diagram-project"></i> Current Assignment:</strong> 
+            <span id="heroAssignment">Base Year Revision of CPI & System of National Accounts (SNA 2025 Benchmarking)</span>
+          </div>
+        </div>
+
+        <div class="officer-stats-pills">
+          <div class="stat-pill">
+            <div class="stat-pill-val highlight-green" id="heroIndexVal">78.4%</div>
+            <div class="stat-pill-lbl">Competency Index</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-pill-val highlight-blue" id="heroHoursVal">64 hrs</div>
+            <div class="stat-pill-lbl">iGOT Learning</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-pill-val highlight-saffron" id="heroKarmaVal">1,840</div>
+            <div class="stat-pill-lbl">Karma Points</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Radar & Top Gaps Row -->
+      <div class="grid-1-2" style="margin-bottom: 24px;">
+        <!-- 4-Domain Radar Chart -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i class="fa-solid fa-circle-nodes"></i> Competency Radar Matrix</div>
+              <div class="card-subtitle">Assessed Capability vs. Cadre Mandate across 4 Core Domains</div>
+            </div>
+          </div>
+          <div id="radarChart" class="chart-container"></div>
+        </div>
+
+        <!-- Priority Skill Gap Diagnosis -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i class="fa-solid fa-triangle-exclamation" style="color: #fb7185;"></i> Identified Priority Skill Gaps</div>
+              <div class="card-subtitle">Urgent competency deltas requiring iGOT / NSSTA intervention</div>
+            </div>
+            <button class="btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="switchTab('tab-pathways')">
+              <i class="fa-solid fa-bolt"></i> Fast-Track Close Gaps
+            </button>
+          </div>
+          <div id="priorityGapsList" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Full 28 Competency Units Breakdown -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="fa-solid fa-list-check"></i> Comprehensive Official Statistical Competency Taxonomy (28 Units)</div>
+            <div class="card-subtitle">Filter by domain to inspect target proficiency, current assessment, and status</div>
+          </div>
+          <!-- Filter Chips -->
+          <div style="display: flex; gap: 8px;">
+            <button class="tag-pill active" style="cursor: pointer;" onclick="filterCompetencyList('ALL', this)">All (28)</button>
+            <button class="tag-pill" style="cursor: pointer;" onclick="filterCompetencyList('STAT', this)">Statistical (10)</button>
+            <button class="tag-pill" style="cursor: pointer;" onclick="filterCompetencyList('TECH', this)">Tech & Data Science (8)</button>
+            <button class="tag-pill" style="cursor: pointer;" onclick="filterCompetencyList('GOV', this)">Digital Governance (5)</button>
+            <button class="tag-pill" style="cursor: pointer;" onclick="filterCompetencyList('LEAD', this)">Leadership (5)</button>
+          </div>
+        </div>
+
+        <div id="fullCompetencyList" style="max-height: 480px; overflow-y: auto; padding-right: 6px;">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 2: PERSONALIZED iGOT & NSSTA LEARNING PATHWAYS -->
+    <!-- ================================================================= -->
+    <section id="tab-pathways" class="tab-pane">
+      <!-- Summary Uplift Banner -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <h3 style="font-size: 18px; margin-bottom: 4px;">
+              <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--gov-saffron);"></i> AI-Recommended Learning Trajectory
+            </h3>
+            <p style="font-size: 13px; color: var(--text-secondary);">
+              Completing the top 3 recommended micro-courses will uplift your readiness index from 
+              <strong style="color: var(--gov-primary-light);" id="currentIdxRec">78.4%</strong> to 
+              <strong style="color: var(--gov-emerald);" id="projectedIdxRec">86.8% (+8.4% Uplift)</strong>.
+            </p>
+          </div>
+          <button class="btn-primary btn-saffron" onclick="openIgotCatalogModal()">
+            <i class="fa-solid fa-magnifying-glass"></i> Browse Full iGOT Catalog (60+ Courses)
+          </button>
+        </div>
+      </div>
+
+      <!-- Progressive 3-Stage Learning Journey -->
+      <div style="margin-bottom: 28px;">
+        <!-- Stage 1: Urgent -->
+        <div class="pathway-stage-header">
+          <span class="stage-badge urgent">Stage 1: Urgent Gap Remediation</span>
+          <span style="font-size: 13px; color: var(--text-secondary);">High severity deficits affecting primary departmental mandates</span>
+        </div>
+        <div class="grid-3" id="stage1CoursesGrid">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Stage 2: Applied -->
+        <div class="pathway-stage-header">
+          <span class="stage-badge applied">Stage 2: Applied Modernization</span>
+          <span style="font-size: 13px; color: var(--text-secondary);">Advanced data science, computing & regulatory compliance</span>
+        </div>
+        <div class="grid-3" id="stage2CoursesGrid">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Stage 3: Strategic -->
+        <div class="pathway-stage-header">
+          <span class="stage-badge strategic">Stage 3: Executive Leadership & Policy Advisory</span>
+          <span style="font-size: 13px; color: var(--text-secondary);">High-level dissemination, media briefing & parliamentary framing</span>
+        </div>
+        <div class="grid-3" id="stage3CoursesGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- NSSTA TPAC Flagship In-Service Workshops -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="fa-solid fa-landmark-dome" style="color: var(--gov-saffron);"></i> NSSTA TPAC In-Service Recommended Training Programmes</div>
+            <div class="card-subtitle">Residential & Hybrid executive computational labs (National Statistical Systems Training Academy)</div>
+          </div>
+        </div>
+        <div id="tpacProgrammesList">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 3: AI ASSESSMENT & MCQ QUIZ STUDIO -->
+    <!-- ================================================================= -->
+    <section id="tab-assessment" class="tab-pane">
+      <!-- Ingestion & Configuration Studio -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="fa-solid fa-microchip-ai" style="color: var(--gov-purple);"></i> AI Intelligent Assessment & MCQ Generation Engine</div>
+            <div class="card-subtitle">Ingest official statistical manuals, circulars, or custom text to generate interactive MCQs with instant explanations</div>
+          </div>
+        </div>
+
+        <div class="quiz-config-panel">
+          <div class="grid-2" style="margin-bottom: 16px;">
+            <div>
+              <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 6px;">
+                Choose Preloaded MoSPI Knowledge Document:
+              </label>
+              <select id="preloadedDocSelect" class="select-field" onchange="loadPreloadedMaterial(this.value)">
+                <option value="MAT-SNA-01">01. MoSPI National Accounts & GDP Manual (SNA 2008 / SUT)</option>
+                <option value="MAT-CPI-02">02. MoSPI Consumer Price Index (CPI) Guidelines (Laspeyres/Jevons)</option>
+                <option value="MAT-PLFS-03">03. Periodic Labour Force Survey (PLFS) Standards & Estimations</option>
+                <option value="MAT-TECH-04">04. Modern Python & Polars Workflow for Official Microdata</option>
+                <option value="MAT-DPDPA-05">05. Digital Personal Data Protection Act (DPDPA 2023) Guidelines</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 6px;">
+                Target Competency Unit:
+              </label>
+              <select id="targetCompSelect" class="select-field">
+                <option value="STAT-02">STAT-02: National Accounts & GDP/GVA Compilation</option>
+                <option value="STAT-03">STAT-03: Price Statistics & Inflation Indices</option>
+                <option value="STAT-05">STAT-05: Labour Market Dynamics & PLFS</option>
+                <option value="TECH-01">TECH-01: Python for Statistical Computing</option>
+                <option value="GOV-02">GOV-02: Data Privacy, DPDPA 2023 & Confidentiality</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 6px;">
+              Learning Material Text Content (Edit or paste any guideline/circular):
+            </label>
+            <textarea id="materialTextContent" class="textarea-field" rows="6" placeholder="Paste training manual text, guideline circular, or survey documentation here..."></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 12px; color: var(--text-secondary);">Question Count:</span>
+              <select id="questionCountSelect" class="select-field" style="width: auto; padding: 6px 12px;">
+                <option value="5" selected>5 Questions (Standard Diagnostic)</option>
+                <option value="10">10 Questions (Comprehensive Certification)</option>
+              </select>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+              <button class="btn-primary" onclick="generateAIQuiz()">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Generate Assessment
+              </button>
+              <button class="btn-primary btn-saffron" onclick="loadPresetAssessment()">
+                <i class="fa-solid fa-play"></i> Start Pre-Built Exam
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Quiz Arena -->
+      <div id="quizArenaContainer" class="quiz-arena" style="display: none;">
+        <div class="quiz-header">
+          <div>
+            <h3 id="quizTitle" style="font-size: 17px;">National Accounts (SNA 2008) Assessment</h3>
+            <div style="font-size: 12px; color: var(--text-secondary);" id="quizSubtitle">
+              Question <span id="currentQuestionNum">1</span> of <span id="totalQuestionsNum">5</span>
+            </div>
+          </div>
+          <div class="quiz-timer">
+            <i class="fa-regular fa-clock"></i> <span id="timerDisplay">14:59</span>
+          </div>
+        </div>
+
+        <div id="questionContainer">
+          <!-- Rendered by quiz_engine.js -->
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-glass);">
+          <button class="btn-primary" style="background: rgba(255, 255, 255, 0.1);" id="prevQuestionBtn" onclick="navigateQuestion(-1)">
+            <i class="fa-solid fa-arrow-left"></i> Previous
+          </button>
+          
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-primary" id="nextQuestionBtn" onclick="navigateQuestion(1)">
+              Next <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button class="btn-primary btn-saffron" id="submitQuizBtn" onclick="submitAssessment()" style="display: none;">
+              <i class="fa-solid fa-check-double"></i> Submit & Evaluate
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz Results & Explanations Card -->
+      <div id="quizResultsCard" class="card" style="display: none; margin-top: 24px;">
+        <div class="card-header">
+          <div>
+            <div class="card-title" id="resultHeaderTitle"><i class="fa-solid fa-award" style="color: var(--gov-saffron);"></i> Assessment Evaluation & Certification</div>
+            <div class="card-subtitle" id="resultHeaderSubtitle">Detailed pedagogical breakdown with statutory and methodological citations</div>
+          </div>
+          <button class="btn-primary" onclick="resetQuiz()">
+            <i class="fa-solid fa-rotate-right"></i> Take Another Assessment
+          </button>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 24px;">
+          <div class="stat-pill" style="padding: 16px;">
+            <div class="stat-pill-val" id="resultScoreVal">80%</div>
+            <div class="stat-pill-lbl">Final Score</div>
+          </div>
+          <div class="stat-pill" style="padding: 16px;">
+            <div class="stat-pill-val highlight-green" id="resultUpliftVal">+0.6 Level</div>
+            <div class="stat-pill-lbl">Competency Uplift</div>
+          </div>
+          <div class="stat-pill" style="padding: 16px;">
+            <div class="stat-pill-val highlight-saffron" id="resultKarmaVal">+120</div>
+            <div class="stat-pill-lbl">Karma Points Earned</div>
+          </div>
+        </div>
+
+        <h4 style="font-size: 15px; margin-bottom: 14px;"><i class="fa-solid fa-book-open"></i> Question-by-Question Pedagogical Review:</h4>
+        <div id="questionsReviewList" style="display: flex; flex-direction: column; gap: 16px;">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 4: MoSPI CADRE ADMINISTRATION & WORKFORCE ANALYTICS -->
+    <!-- ================================================================= -->
+    <section id="tab-admin" class="tab-pane">
+      <!-- Administrative KPI Highlights -->
+      <div class="grid-4" style="margin-bottom: 24px;">
+        <div class="card" style="text-align: center;">
+          <div class="stat-pill-val highlight-blue" id="adminTotalOfficers">2,850</div>
+          <div class="stat-pill-lbl">Active Cadre Officers</div>
+        </div>
+        <div class="card" style="text-align: center;">
+          <div class="stat-pill-val highlight-green" id="adminAvgIndex">78.4%</div>
+          <div class="stat-pill-lbl">National Competency Index</div>
+        </div>
+        <div class="card" style="text-align: center;">
+          <div class="stat-pill-val highlight-saffron" id="adminTotalHours">182,450</div>
+          <div class="stat-pill-lbl">Total iGOT Hours Logged</div>
+        </div>
+        <div class="card" style="text-align: center;">
+          <div class="stat-pill-val" style="color: var(--gov-purple);" id="adminTotalKarma">4.82M</div>
+          <div class="stat-pill-lbl">Karma Points Accrued</div>
+        </div>
+      </div>
+
+      <!-- Division Heatmap & Deficit Charts -->
+      <div class="grid-2" style="margin-bottom: 24px;">
+        <!-- Division Competency Benchmark -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i class="fa-solid fa-chart-column"></i> Division-wise Competency Index</div>
+              <div class="card-subtitle">Comparing average readiness across all 8 MoSPI Divisions</div>
+            </div>
+          </div>
+          <div id="divisionBarChart" class="chart-container"></div>
+        </div>
+
+        <!-- Top National Skill Deficits -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i class="fa-solid fa-chart-pie"></i> Top 10 National Skill Deficits</div>
+              <div class="card-subtitle">Volume of officers requiring urgent training intervention</div>
+            </div>
+          </div>
+          <div id="deficitPieChart" class="chart-container"></div>
+        </div>
+      </div>
+
+      <!-- Predictive 2026-2030 Capacity Demand Forecast -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="fa-solid fa-crystal-ball" style="color: var(--gov-saffron);"></i> Predictive Capacity Building Forecast (2026 - 2030 Modernization)</div>
+            <div class="card-subtitle">AI-modeled training demand for emerging national statistical technologies</div>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="stat-pill" style="text-align: left; padding: 16px;">
+            <div style="font-weight: 700; color: var(--gov-primary-light); margin-bottom: 4px;">1. High-Frequency Economic Nowcasting</div>
+            <p style="font-size: 12px; color: var(--text-secondary);">Estimated 620 officers in NAD and ESD requiring ML nowcasting & time-series modeling before the 2026-27 SNA revision.</p>
+          </div>
+          <div class="stat-pill" style="text-align: left; padding: 16px;">
+            <div style="font-weight: 700; color: var(--gov-purple); margin-bottom: 4px;">2. Geospatial Survey Stratification</div>
+            <p style="font-size: 12px; color: var(--text-secondary);">Estimated 1,140 field investigators in FOD needing ISRO Bhuvan GIS & spatial raster processing for the 80th NSS Round.</p>
+          </div>
+          <div class="stat-pill" style="text-align: left; padding: 16px;">
+            <div style="font-weight: 700; color: var(--gov-emerald); margin-bottom: 4px;">3. DPDPA 2023 Microdata Privacy</div>
+            <p style="font-size: 12px; color: var(--text-secondary);">100% mandatory compliance certification for all 2,850 officers as statutory Data Fiduciaries under the new data privacy framework.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Officer Directory Table -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="fa-solid fa-users"></i> Nationwide Cadre Officer Directory (2,850 Profiles)</div>
+            <div class="card-subtitle">Search, filter, and inspect individual competency records</div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <input type="text" id="officerSearchInput" class="input-field" style="width: 220px; padding: 6px 12px;" placeholder="Search name, ID, or division..." oninput="searchOfficerDirectory()">
+            <select id="divisionFilterSelect" class="select-field" style="width: auto; padding: 6px 12px;" onchange="searchOfficerDirectory()">
+              <option value="All">All Divisions</option>
+              <option value="FOD">FOD</option>
+              <option value="NAD">NAD</option>
+              <option value="ESD">ESD</option>
+              <option value="SSD">SSD</option>
+              <option value="SDRD">SDRD</option>
+              <option value="DIID">DIID</option>
+              <option value="STATE_DES">State DES</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-glass); color: var(--text-muted); font-size: 11.5px; text-transform: uppercase;">
+                <th style="padding: 10px;">Officer ID</th>
+                <th style="padding: 10px;">Name</th>
+                <th style="padding: 10px;">Designation</th>
+                <th style="padding: 10px;">Cadre</th>
+                <th style="padding: 10px;">Division</th>
+                <th style="padding: 10px;">Competency Index</th>
+                <th style="padding: 10px;">iGOT Hours</th>
+                <th style="padding: 10px;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="officersTableBody">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 4. Floating AI Karmayogi Statistical Learning Assistant -->
+  <div class="floating-assistant-btn" onclick="toggleAssistantModal()" title="Ask KASHYAP AI Statistical Assistant">
+    <i class="fa-solid fa-robot"></i>
+  </div>
+
+  <div id="assistantModal" class="assistant-modal" style="display: none;">
+    <div class="assistant-header">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-microchip-ai" style="color: var(--gov-saffron);"></i>
+        <strong>KASHYAP AI Statistical Assistant</strong>
+      </div>
+      <button onclick="toggleAssistantModal()" style="background: none; border: none; color: #fff; cursor: pointer; font-size: 16px;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="assistant-body" id="chatMessages">
+      <div class="chat-msg bot">
+        👋 Namaste! I am your <strong>KASHYAP AI Karmayogi Assistant</strong>. How can I help with your competency gaps, iGOT course recommendations, or official statistical standards (SNA 2008, CPI, PLFS, Python for survey data)?
+      </div>
+    </div>
+
+    <!-- Suggested Quick Chips -->
+    <div style="padding: 0 12px 6px; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;">
+      <button class="tag-pill" style="cursor: pointer; white-space: nowrap;" onclick="sendAssistantPrompt('Analyze my top skill gaps')">🎯 Analyze My Gaps</button>
+      <button class="tag-pill" style="cursor: pointer; white-space: nowrap;" onclick="sendAssistantPrompt('Explain SNA 2008 GDP Compilation')">📊 Explain SNA 2008</button>
+      <button class="tag-pill" style="cursor: pointer; white-space: nowrap;" onclick="sendAssistantPrompt('How does DPDPA 2023 apply to MoSPI?')">🔒 DPDPA 2023 Rules</button>
+    </div>
+
+    <div class="assistant-input-area">
+      <input type="text" id="assistantInput" class="input-field" placeholder="Ask statistical questions or request courses..." onkeydown="if(event.key==='Enter') sendAssistantMessage()">
+      <button class="btn-primary" style="padding: 8px 14px;" onclick="sendAssistantMessage()">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="app.js"></script>
+  <script src="quiz_engine.js"></script>
+  <script src="assistant.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+[
+  {
+    "program_id": "NSSTA-TPAC-2026-01",
+    "title": "Advanced Residential Workshop on National Accounts & SNA Modernization",
+    "format": "5-Day Full-Time Residential",
+    "venue": "NSSTA Greater Noida Campus",
+    "target_cadres": [
+      "ISS (SAG, JAG, STS)",
+      "State DES Directors"
+    ],
+    "primary_competencies": [
+      "STAT-02",
+      "STAT-08",
+      "TECH-01"
+    ],
+    "calendar_dates": "April 14 - 18, 2026",
+    "capacity_seats": 35,
+    "description": "Intensive hands-on computational lab focused on compilation of Supply-Use Tables, Capital Stock, and Hedonic Quality Adjustments for the upcoming 2026-27 National Accounts Base Revision.",
+    "nomination_deadline": "March 25, 2026",
+    "prerequisites": "Completion of iGOT-STAT-102 or minimum 3 years experience in economic statistics."
+  },
+  {
+    "program_id": "NSSTA-TPAC-2026-02",
+    "title": "Executive Immersion in AI, Machine Learning & Big Data for Official Statistics",
+    "format": "2-Week Hybrid (1 Week Virtual + 1 Week IIT Delhi Lab)",
+    "venue": "IIT Delhi & NSSTA Greater Noida",
+    "target_cadres": [
+      "ISS (JAG, STS, JTS)",
+      "DIID Technical Officers"
+    ],
+    "primary_competencies": [
+      "TECH-07",
+      "TECH-01",
+      "TECH-05"
+    ],
+    "calendar_dates": "May 11 - 22, 2026",
+    "capacity_seats": 40,
+    "description": "Collaborative masterclass on implementing high-frequency economic nowcasting, transformer-based occupation code mapping, and satellite geospatial remote sensing.",
+    "nomination_deadline": "April 20, 2026",
+    "prerequisites": "Working knowledge of Python (Pandas/NumPy) or completion of iGOT-TECH-201."
+  },
+  {
+    "program_id": "NSSTA-TPAC-2026-03",
+    "title": "CAPI Field Operations & Quality Assurance for SSS Senior Officers",
+    "format": "4-Day Regional Residential Workshop",
+    "venue": "NSSTA Regional Centre (Hyderabad / Kolkata / Mumbai)",
+    "target_cadres": [
+      "SSS (SSO, JSO)",
+      "FOD Field Superintendents"
+    ],
+    "primary_competencies": [
+      "STAT-01",
+      "LEAD-02",
+      "STAT-08"
+    ],
+    "calendar_dates": "June 08 - 11, 2026",
+    "capacity_seats": 50,
+    "description": "Practical field-level troubleshooting: automated scrutiny rules, handling resistant households, GPS-tagged survey verification, and live survey administration.",
+    "nomination_deadline": "May 15, 2026",
+    "prerequisites": "Field posting in FOD or State Statistical Bureau."
+  },
+  {
+    "program_id": "NSSTA-TPAC-2026-04",
+    "title": "Geospatial Statistics & Frame Modernization using ISRO Bhuvan",
+    "format": "5-Day Residential Workshop",
+    "venue": "NRSC Hyderabad & NSSTA Greater Noida",
+    "target_cadres": [
+      "ISS (STS, JTS)",
+      "State DES Geographers"
+    ],
+    "primary_competencies": [
+      "TECH-05",
+      "STAT-06",
+      "STAT-01"
+    ],
+    "calendar_dates": "July 13 - 17, 2026",
+    "capacity_seats": 30,
+    "description": "Direct satellite GIS integration: spatial sampling frame construction, primary sampling unit (PSU) boundaries, urban slum delineation, and disaster impact assessment.",
+    "nomination_deadline": "June 20, 2026",
+    "prerequisites": "Completion of iGOT-TECH-205 or prior QGIS experience."
+  },
+  {
+    "program_id": "NSSTA-TPAC-2026-05",
+    "title": "Statistical Leadership, Policy Dissemination & Parliamentary Advisory",
+    "format": "3-Day Executive Retreat",
+    "venue": "Indian Institute of Public Administration (IIPA) New Delhi",
+    "target_cadres": [
+      "ISS (SAG, JAG)",
+      "MoSPI Senior Management"
+    ],
+    "primary_competencies": [
+      "LEAD-01",
+      "LEAD-03",
+      "LEAD-05"
+    ],
+    "calendar_dates": "August 04 - 06, 2026",
+    "capacity_seats": 25,
+    "description": "Advanced media management, proactive statistical defense, parliamentary question framing, and inter-ministerial consensus building for national data harmonization.",
+    "nomination_deadline": "July 10, 2026",
+    "prerequisites": "Cadre rank of Director / Joint Director or above."
+  }
+]

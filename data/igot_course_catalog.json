@@ -1,0 +1,386 @@
+[
+  {
+    "course_id": "IGOT-STAT-101",
+    "title": "Modern Survey Sampling & Complex Multi-Stage Design",
+    "provider": "NSSTA & Indian Statistical Institute (ISI)",
+    "duration_hours": 12,
+    "level": "Intermediate",
+    "primary_competency": "STAT-01",
+    "competency_tags": [
+      "STAT-01",
+      "STAT-08",
+      "TECH-02"
+    ],
+    "rating": 4.9,
+    "enrolled_count": 1420,
+    "description": "Master probability proportional to size (PPS) sampling, stratified cluster design, variance estimation, and non-response calibration in large-scale national surveys.",
+    "syllabus": [
+      "Module 1: Foundations of Probability Sampling vs Purposive Frames",
+      "Module 2: Multi-Stage Stratified Sampling in NSS Rounds",
+      "Module 3: Sub-Sample Replicate Variance Estimation (Jackknife & Bootstrap)",
+      "Module 4: Multiplier and Multi-Stage Weight Calculation"
+    ],
+    "badge_name": "Certified Survey Sampling Specialist",
+    "karma_points": 180
+  },
+  {
+    "course_id": "IGOT-STAT-102",
+    "title": "System of National Accounts (SNA 2008) & GDP Compilation",
+    "provider": "National Accounts Division (NAD) & IMF",
+    "duration_hours": 16,
+    "level": "Advanced",
+    "primary_competency": "STAT-02",
+    "competency_tags": [
+      "STAT-02",
+      "STAT-08",
+      "LEAD-01"
+    ],
+    "rating": 4.95,
+    "enrolled_count": 980,
+    "description": "Comprehensive practical deep-dive into Gross Value Added (GVA) at basic prices, Supply-Use Tables (SUT), Sequence of Accounts, and FISIM allocation.",
+    "syllabus": [
+      "Module 1: Production Boundary and Institutional Sector Classifications",
+      "Module 2: GVA Estimation across Agriculture, Industry and Services",
+      "Module 3: Supply-Use Tables (SUT) Balancing & Input-Output Matrices",
+      "Module 4: Financial Accounts, Balance Sheets & Capital Stock Estimation"
+    ],
+    "badge_name": "National Accounts Master Practitioner",
+    "karma_points": 240
+  },
+  {
+    "course_id": "IGOT-STAT-103",
+    "title": "Consumer Price Index (CPI) & Inflation Measurement Methodologies",
+    "provider": "Economic Statistics Division (ESD) & MoSPI",
+    "duration_hours": 8,
+    "level": "Intermediate",
+    "primary_competency": "STAT-03",
+    "competency_tags": [
+      "STAT-03",
+      "STAT-08",
+      "TECH-01"
+    ],
+    "rating": 4.8,
+    "enrolled_count": 1640,
+    "description": "Practical workflows for price collection, geometric mean vs ratio of arithmetic means, chain-linking, core inflation derivation, and housing index imputation.",
+    "syllabus": [
+      "Module 1: CPI Urban/Rural/Combined Architecture and Laspeyres Index",
+      "Module 2: Price Quotation Scrutiny & Missing Price Imputation",
+      "Module 3: Geometric Mean Jevons Price Indices at Item Level",
+      "Module 4: Base Year Revision & Item Basket Recalibration Protocols"
+    ],
+    "badge_name": "Price Index Analyst",
+    "karma_points": 120
+  },
+  {
+    "course_id": "IGOT-STAT-104",
+    "title": "Annual Survey of Industries (ASI) & IIP Index Compilation",
+    "provider": "Economic Statistics Division (ESD)",
+    "duration_hours": 10,
+    "level": "Intermediate",
+    "primary_competency": "STAT-04",
+    "competency_tags": [
+      "STAT-04",
+      "TECH-03",
+      "STAT-08"
+    ],
+    "rating": 4.75,
+    "enrolled_count": 1120,
+    "description": "Understand factory sector frame validation, Block-wise scrutiny in ASI schedules, GVA in manufacturing, and monthly IIP production index tracking.",
+    "syllabus": [
+      "Module 1: ASI Census vs Sample Sectors and Frame Updating",
+      "Module 2: Scrutiny of Capital, Inputs, Outputs, and Depreciation Blocks",
+      "Module 3: Index of Industrial Production (IIP) Item Weighting and Production Growth",
+      "Module 4: Reconciling ASI with MCA-21 Corporate Registry Data"
+    ],
+    "badge_name": "Industrial Statistics Specialist",
+    "karma_points": 150
+  },
+  {
+    "course_id": "IGOT-STAT-105",
+    "title": "Periodic Labour Force Survey (PLFS) Concepts & Data Analytics",
+    "provider": "Social Statistics Division (SSD) & ILO",
+    "duration_hours": 10,
+    "level": "Intermediate",
+    "primary_competency": "STAT-05",
+    "competency_tags": [
+      "STAT-05",
+      "TECH-01",
+      "STAT-07"
+    ],
+    "rating": 4.9,
+    "enrolled_count": 1890,
+    "description": "Master activity status classifications (ps+ss, cws), hours worked, informal enterprise employment, earnings distribution, and quarterly urban bulletin analytics.",
+    "syllabus": [
+      "Module 1: Usual Status vs Current Weekly Status Activity Frameworks",
+      "Module 2: Labour Force Participation Rate (LFPR) and Unemployment Rates",
+      "Module 3: Rotational Panel Sampling in Urban PLFS",
+      "Module 4: Analyzing Microdata in Python and R for Policy Reports"
+    ],
+    "badge_name": "Labour Statistics Expert",
+    "karma_points": 150
+  },
+  {
+    "course_id": "IGOT-STAT-107",
+    "title": "SDG National Indicator Framework (NIF) Monitoring & Data Disaggregation",
+    "provider": "MoSPI SDG Unit & NITI Aayog",
+    "duration_hours": 8,
+    "level": "Foundation",
+    "primary_competency": "STAT-07",
+    "competency_tags": [
+      "STAT-07",
+      "STAT-09",
+      "LEAD-01"
+    ],
+    "rating": 4.85,
+    "enrolled_count": 2100,
+    "description": "Aligning national datasets with 17 UN SDGs, MoSPI NIF 3.0 metadata protocols, state/district SDG localization, and vulnerability disaggregation.",
+    "syllabus": [
+      "Module 1: 2030 Agenda & India's National Indicator Framework (NIF)",
+      "Module 2: Standardizing Indicator Definitions & Tier Classifications",
+      "Module 3: Multi-Source Harmonization (Surveys, Administrative Registries)",
+      "Module 4: MoSPI SDG Dashboard Publishing and Policy Feedback"
+    ],
+    "badge_name": "SDG Statistical Practitioner",
+    "karma_points": 120
+  },
+  {
+    "course_id": "IGOT-STAT-108",
+    "title": "National Quality Assurance Framework (NQAF) & Audit Protocols",
+    "provider": "NSSTA & UN Statistics Division",
+    "duration_hours": 6,
+    "level": "Intermediate",
+    "primary_competency": "STAT-08",
+    "competency_tags": [
+      "STAT-08",
+      "STAT-10",
+      "LEAD-04"
+    ],
+    "rating": 4.9,
+    "enrolled_count": 870,
+    "description": "Applying UN-NQAF across survey lifecycle: managing statistical processes, error prevention, metadata transparency, and peer review audits.",
+    "syllabus": [
+      "Module 1: Principles of UN-NQAF and MoSPI Quality Policy",
+      "Module 2: Managing Process Quality from Design to Dissemination",
+      "Module 3: Quality Reporting & Producer-User Dialogue",
+      "Module 4: Institutional Audits of Official Statistical Releases"
+    ],
+    "badge_name": "Quality Assurance Auditor",
+    "karma_points": 90
+  },
+  {
+    "course_id": "IGOT-TECH-201",
+    "title": "Python for Official Statistics: Microdata Wrangling & Analysis",
+    "provider": "Data Informatics & Innovation Division (DIID) & IIT Madras",
+    "duration_hours": 20,
+    "level": "Intermediate",
+    "primary_competency": "TECH-01",
+    "competency_tags": [
+      "TECH-01",
+      "TECH-03",
+      "TECH-06"
+    ],
+    "rating": 4.95,
+    "enrolled_count": 3120,
+    "description": "Modern Python workflow for official statisticians: reading fixed-width NSS microdata, Pandas/Polars aggregation, automated tabulations, and statistical tests.",
+    "syllabus": [
+      "Module 1: Fast I/O with Large Government Datasets (Parquet, Polars)",
+      "Module 2: Microdata Cleaning, Anomaly Identification & Imputation",
+      "Module 3: Automated Survey Multiplier Application & Tabulation",
+      "Module 4: Scripting Automated Monthly Statistical Bulletins"
+    ],
+    "badge_name": "Statistical Python Developer",
+    "karma_points": 300
+  },
+  {
+    "course_id": "IGOT-TECH-202",
+    "title": "Advanced Survey Data Modeling & Econometrics in R",
+    "provider": "NSSTA & Delhi School of Economics",
+    "duration_hours": 18,
+    "level": "Advanced",
+    "primary_competency": "TECH-02",
+    "competency_tags": [
+      "TECH-02",
+      "STAT-01",
+      "TECH-07"
+    ],
+    "rating": 4.88,
+    "enrolled_count": 1780,
+    "description": "Using R's survey, srvyr, and surveyplanning packages for complex sampling variance estimation, Small Area Estimation (SAE), and econometric causal inference.",
+    "syllabus": [
+      "Module 1: Declaring Survey Designs (`svydesign`) and Replicate Weights",
+      "Module 2: Generalized Linear Models with Complex Survey Weights",
+      "Module 3: Small Area Estimation (Fay-Herriot & Unit-Level EBLUP)",
+      "Module 4: R Markdown for Reproducible Official Statistical Publications"
+    ],
+    "badge_name": "R Survey Modeling Specialist",
+    "karma_points": 270
+  },
+  {
+    "course_id": "IGOT-TECH-203",
+    "title": "SQL Data Pipelines & Statistical Warehousing on MeghRaj Cloud",
+    "provider": "NIC & MoSPI IT Division",
+    "duration_hours": 14,
+    "level": "Intermediate",
+    "primary_competency": "TECH-03",
+    "competency_tags": [
+      "TECH-03",
+      "TECH-08",
+      "GOV-01"
+    ],
+    "rating": 4.78,
+    "enrolled_count": 1450,
+    "description": "Master SQL window functions, distributed query execution, census table indexing, and ETL pipelines for administrative data ingestion into MoSPI Data Lake.",
+    "syllabus": [
+      "Module 1: Advanced SQL Joins, CTEs, and Window Aggregations",
+      "Module 2: Relational Schema vs Columnar Stores (ClickHouse/DuckDB)",
+      "Module 3: Automated Quality Validation Checks in ETL Pipelines",
+      "Module 4: REST API Integration with Government Portals"
+    ],
+    "badge_name": "Data Pipeline Architect",
+    "karma_points": 210
+  },
+  {
+    "course_id": "IGOT-TECH-205",
+    "title": "Geospatial Statistics & GIS Integration (Bhuvan, QGIS & Spatial R)",
+    "provider": "ISRO & National Remote Sensing Centre (NRSC)",
+    "duration_hours": 15,
+    "level": "Intermediate",
+    "primary_competency": "TECH-05",
+    "competency_tags": [
+      "TECH-05",
+      "STAT-06",
+      "STAT-01"
+    ],
+    "rating": 4.92,
+    "enrolled_count": 1620,
+    "description": "Harness satellite imagery and spatial GIS layers for sampling frame stratification, PSU delineation, crop yield estimation, and spatial autocorrelation mapping.",
+    "syllabus": [
+      "Module 1: Coordinate Reference Systems & Vector/Raster Data in QGIS",
+      "Module 2: Primary Sampling Unit (PSU) Digitization & Bhuvan Geo-Portal",
+      "Module 3: Spatial Autocorrelation (Moran's I) & Geographically Weighted Regression",
+      "Module 4: High-Resolution Crop Area Estimation via Remote Sensing"
+    ],
+    "badge_name": "Geospatial Statistical Analyst",
+    "karma_points": 225
+  },
+  {
+    "course_id": "IGOT-TECH-207",
+    "title": "AI & Machine Learning for Nowcasting & Automated Survey Scrutiny",
+    "provider": "MeitY AI Mission & NSSTA",
+    "duration_hours": 16,
+    "level": "Advanced",
+    "primary_competency": "TECH-07",
+    "competency_tags": [
+      "TECH-07",
+      "TECH-01",
+      "STAT-02"
+    ],
+    "rating": 4.96,
+    "enrolled_count": 2240,
+    "description": "Implement Random Forests, XGBoost, and Transformer LLMs for economic nowcasting, automatic classification of NIC/NCO occupation codes, and outlier detection.",
+    "syllabus": [
+      "Module 1: High-Frequency Economic Nowcasting with ML Algorithms",
+      "Module 2: NLP for Automated Industry (NIC) & Occupation (NCO) Text Coding",
+      "Module 3: Unsupervised Outlier & Anomaly Detection in CAPI Submissions",
+      "Module 4: Synthetic Microdata Generation with Differential Privacy"
+    ],
+    "badge_name": "AI Official Statistics Specialist",
+    "karma_points": 240
+  },
+  {
+    "course_id": "IGOT-GOV-301",
+    "title": "Cybersecurity & CERT-In Guidelines for Statistical Enclaves",
+    "provider": "CERT-In & DoPT",
+    "duration_hours": 6,
+    "level": "Foundation",
+    "primary_competency": "GOV-01",
+    "competency_tags": [
+      "GOV-01",
+      "GOV-03",
+      "TECH-08"
+    ],
+    "rating": 4.82,
+    "enrolled_count": 3400,
+    "description": "Essential cyber hygiene, protecting statistical servers, password policies, encrypted data transfers, and compliance with national cybersecurity directives.",
+    "syllabus": [
+      "Module 1: Cyber Threat Landscape for Critical Government Information Systems",
+      "Module 2: Enclave Isolation & Unidirectional Data Flow Architectures",
+      "Module 3: CERT-In Mandatory Security Auditing & Incident Reporting",
+      "Module 4: Secure Data Storage and Cryptographic Protocols"
+    ],
+    "badge_name": "Certified Cyber Aware Official",
+    "karma_points": 90
+  },
+  {
+    "course_id": "IGOT-GOV-302",
+    "title": "Digital Personal Data Protection Act (DPDPA 2023) & Microdata Privacy",
+    "provider": "Ministry of Law & Justice & MoSPI",
+    "duration_hours": 8,
+    "level": "Intermediate",
+    "primary_competency": "GOV-02",
+    "competency_tags": [
+      "GOV-02",
+      "STAT-10",
+      "STAT-09"
+    ],
+    "rating": 4.94,
+    "enrolled_count": 2890,
+    "description": "Legal obligations under DPDPA 2023 for statistical data fiduciaries: purpose limitation, consent frameworks, anonymization vs pseudonymization, and penalties.",
+    "syllabus": [
+      "Module 1: DPDPA 2023 Key Provisions for Government Data Collectors",
+      "Module 2: Statistical Anonymization Standards (k-anonymity, l-diversity, t-closeness)",
+      "Module 3: Handling Household and Enterprise Identifiable Information (PII)",
+      "Module 4: Microdata Dissemination Risk Assessment Framework"
+    ],
+    "badge_name": "Data Privacy & Governance Officer",
+    "karma_points": 120
+  },
+  {
+    "course_id": "IGOT-LEAD-401",
+    "title": "Evidence-Based Policy Formulation & Executive Statistical Advisory",
+    "provider": "NITI Aayog, NSSTA & ISB Hyderabad",
+    "duration_hours": 12,
+    "level": "Executive",
+    "primary_competency": "LEAD-01",
+    "competency_tags": [
+      "LEAD-01",
+      "LEAD-03",
+      "STAT-02"
+    ],
+    "rating": 4.97,
+    "enrolled_count": 810,
+    "description": "Translating econometric and survey results into clear, actionable Cabinet notes, policy briefings, and high-impact Parliamentary committee presentations.",
+    "syllabus": [
+      "Module 1: Framing Macroeconomic Narratives for Decision Makers",
+      "Module 2: Synthesizing Disparate Statistical Sources into Unified Briefs",
+      "Module 3: Communicating Uncertainty, Margin of Error and Confidence Bounds",
+      "Module 4: Case Studies: PLFS and CPI Advisory during Economic Shifts"
+    ],
+    "badge_name": "Strategic Statistical Policy Advisor",
+    "karma_points": 180
+  },
+  {
+    "course_id": "IGOT-LEAD-402",
+    "title": "Field Survey Leadership, CAPI Operations & Logistics Management",
+    "provider": "Field Operations Division (FOD) & NSSTA",
+    "duration_hours": 10,
+    "level": "Intermediate",
+    "primary_competency": "LEAD-02",
+    "competency_tags": [
+      "LEAD-02",
+      "STAT-01",
+      "GOV-05"
+    ],
+    "rating": 4.86,
+    "enrolled_count": 1950,
+    "description": "Operational mastery of field survey deployment: CAPI tablet device management, enumerator motivation, surprise inspection protocols, and community engagement.",
+    "syllabus": [
+      "Module 1: Nationwide Survey Round Deployment Planning & Timelines",
+      "Module 2: Computer Assisted Personal Interviewing (CAPI) Supervision",
+      "Module 3: Real-Time Field Verification & Re-Interviewing Protocols",
+      "Module 4: Conflict Resolution and Non-Response Reduction in Urban Areas"
+    ],
+    "badge_name": "Survey Operations Commander",
+    "karma_points": 150
+  }
+]

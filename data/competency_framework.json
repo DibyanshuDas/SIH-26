@@ -1,0 +1,198 @@
+{
+  "Statistical_Competencies": {
+    "domain_id": "STAT",
+    "domain_name": "Official Statistical Methodologies & National Frameworks",
+    "color": "#2563eb",
+    "competencies": [
+      {
+        "id": "STAT-01",
+        "name": "Survey Sampling & Multi-Stage Research Design",
+        "description": "Sampling frames, stratified multi-stage cluster sampling, sample size determination, non-sampling error mitigation, weight adjustments.",
+        "importance_weight": 0.95
+      },
+      {
+        "id": "STAT-02",
+        "name": "National Accounts & GDP/GVA Compilation (SNA 2008)",
+        "description": "System of National Accounts, Supply-Use Tables (SUT), Gross Value Added, sequence of accounts, capital formation estimation.",
+        "importance_weight": 0.95
+      },
+      {
+        "id": "STAT-03",
+        "name": "Price Statistics & Inflation Indices (CPI, WPI)",
+        "description": "Laspeyres, Paasche, and Fisher index numbers, chained indices, hedonic pricing, item basket selection, base year revision methodologies.",
+        "importance_weight": 0.9
+      },
+      {
+        "id": "STAT-04",
+        "name": "Industrial Statistics & Annual Survey of Industries (ASI / IIP)",
+        "description": "National Industrial Classification (NIC), Index of Industrial Production compilation, factory sector census & sampling, enterprise surveys.",
+        "importance_weight": 0.85
+      },
+      {
+        "id": "STAT-05",
+        "name": "Labour Market Dynamics & Periodic Labour Force Surveys (PLFS)",
+        "description": "Usual Status vs Current Weekly Status, Labour Force Participation Rate (LFPR), Worker Population Ratio (WPR), informal sector accounting.",
+        "importance_weight": 0.9
+      },
+      {
+        "id": "STAT-06",
+        "name": "Agricultural Statistics, Land-Use & Crop Forecasting",
+        "description": "General Crop Estimation Surveys (GCES), area & yield statistics, remote sensing integration, livestock & fisheries statistics.",
+        "importance_weight": 0.8
+      },
+      {
+        "id": "STAT-07",
+        "name": "SDG Indicators & National Indicator Framework (NIF)",
+        "description": "MoSPI National Indicator Framework monitoring, localized SDG indices, metadata harmonization, data disaggregation for vulnerability tracking.",
+        "importance_weight": 0.85
+      },
+      {
+        "id": "STAT-08",
+        "name": "National Quality Assurance Framework for Statistics (NQAF)",
+        "description": "UN-NQAF compliance, data accuracy, timeliness, punctuality, accessibility, coherence, comparability, and integrity auditing.",
+        "importance_weight": 0.9
+      },
+      {
+        "id": "STAT-09",
+        "name": "Statistical Metadata & Microdata Dissemination (DDI/SDMX)",
+        "description": "Data Documentation Initiative (DDI), Statistical Data and Metadata eXchange (SDMX), open microdata anonymization, anonymized data lakes.",
+        "importance_weight": 0.8
+      },
+      {
+        "id": "STAT-10",
+        "name": "UN Fundamental Principles of Official Statistics & Ethics",
+        "description": "Relevance, impartiality, professional standards, confidentiality of individual records, statutory accountability, prevention of misuse.",
+        "importance_weight": 0.95
+      }
+    ]
+  },
+  "Technical_Data_Science": {
+    "domain_id": "TECH",
+    "domain_name": "Modern Data Science, AI & Statistical Computing",
+    "color": "#7c3aed",
+    "competencies": [
+      {
+        "id": "TECH-01",
+        "name": "Python for Statistical Computing & Survey Processing",
+        "description": "Pandas, Polars, NumPy, SciPy for official microdata wrangling, automated tabulation, validation scripting, and data pipelines.",
+        "importance_weight": 0.95
+      },
+      {
+        "id": "TECH-02",
+        "name": "R for Advanced Statistical Modeling & Microdata Analysis",
+        "description": "Survey package in R, complex survey sampling estimation, econometrics, Generalized Linear Models, Bayesian inference for small area estimation.",
+        "importance_weight": 0.9
+      },
+      {
+        "id": "TECH-03",
+        "name": "SQL, Modern Data Warehouses & Automated ETL",
+        "description": "PostgreSQL, ClickHouse, BigQuery for census and large-scale registry data processing, distributed queries, star-schema modeling.",
+        "importance_weight": 0.85
+      },
+      {
+        "id": "TECH-04",
+        "name": "Econometric Modeling & Survey Software (Stata, SPSS, CSPro)",
+        "description": "CAPI questionnaire development in CSPro, panel econometric modeling in Stata, complex cross-tabulation in SPSS.",
+        "importance_weight": 0.75
+      },
+      {
+        "id": "TECH-05",
+        "name": "Geospatial Analytics & Spatial Statistics (GIS, Bhuvan, QGIS)",
+        "description": "Spatial weights, Moran's I, point pattern analysis, satellite raster processing, administrative boundary mapping for census enumeration.",
+        "importance_weight": 0.85
+      },
+      {
+        "id": "TECH-06",
+        "name": "Interactive Data Visualization & Visual Storytelling",
+        "description": "Apache ECharts, D3.js, PowerBI, Tableau for interactive statistical dissemination, executive dashboards, infographic publishing.",
+        "importance_weight": 0.8
+      },
+      {
+        "id": "TECH-07",
+        "name": "Machine Learning, Nowcasting & Anomaly Detection in Surveys",
+        "description": "High-frequency economic nowcasting, automated outlier detection in survey responses, synthetic data generation, NLP for text coding (NIC/NCO).",
+        "importance_weight": 0.9
+      },
+      {
+        "id": "TECH-08",
+        "name": "Cloud Data Architecture, APIs & Government Cloud (MeghRaj)",
+        "description": "NIC MeghRaj cloud infrastructure, REST APIs for statistical data exchange, scalable compute clusters for census processing.",
+        "importance_weight": 0.8
+      }
+    ]
+  },
+  "Digital_Governance": {
+    "domain_id": "GOV",
+    "domain_name": "Digital Public Infrastructure, Security & Compliance",
+    "color": "#059669",
+    "competencies": [
+      {
+        "id": "GOV-01",
+        "name": "Cybersecurity & CERT-In Compliance for Statistical Enclaves",
+        "description": "Information security policies, cyber incident response, access controls, ISO 27001 guidelines for high-value government datasets.",
+        "importance_weight": 0.9
+      },
+      {
+        "id": "GOV-02",
+        "name": "Data Privacy, DPDPA 2023 & Statistical Confidentiality",
+        "description": "Compliance with the Digital Personal Data Protection Act 2023, differential privacy, k-anonymity, consent architectures in statistical collection.",
+        "importance_weight": 0.95
+      },
+      {
+        "id": "GOV-03",
+        "name": "Digital Public Infrastructure (DPI) & Interoperability",
+        "description": "India Stack integrations, Aadhaar/DigiLocker verification protocols, open API standards, National Data Governance Framework Policy.",
+        "importance_weight": 0.85
+      },
+      {
+        "id": "GOV-04",
+        "name": "Government Procurement & Asset Governance (GeM, GFR 2017)",
+        "description": "General Financial Rules (GFR), GeM portal procurement for IT/survey hardware, contract lifecycle management, auditor compliance.",
+        "importance_weight": 0.75
+      },
+      {
+        "id": "GOV-05",
+        "name": "Digital Office Systems & Paperless Administration (e-Office)",
+        "description": "e-Office workflows, digital signatures, file lifecycle tracking, administrative knowledge management in MoSPI divisions.",
+        "importance_weight": 0.7
+      }
+    ]
+  },
+  "Leadership_Management": {
+    "domain_id": "LEAD",
+    "domain_name": "Statistical Leadership, Policy Advisory & Survey Operations",
+    "color": "#d97706",
+    "competencies": [
+      {
+        "id": "LEAD-01",
+        "name": "Strategic Statistical Leadership & Policy Advisory",
+        "description": "Synthesizing complex statistical findings into actionable policy briefs for PMO, NITI Aayog, Finance Ministry, and Parliamentary Committees.",
+        "importance_weight": 0.95
+      },
+      {
+        "id": "LEAD-02",
+        "name": "Field Survey Administration & Nationwide Operations Control",
+        "description": "Supervision of regional field offices (FOD), field investigator training, spot-check protocols, survey logistical contingencies.",
+        "importance_weight": 0.9
+      },
+      {
+        "id": "LEAD-03",
+        "name": "Statistical Communication, Media Briefing & Public Trust",
+        "description": "Press release framing, combating statistical misinformation, non-technical visualization for public transparency, media Q&A.",
+        "importance_weight": 0.85
+      },
+      {
+        "id": "LEAD-04",
+        "name": "Project Portfolio Management & Monitoring Timelines",
+        "description": "Flash reporting, milestone tracking, resource balancing across concurrent survey rounds, inter-cadre collaboration.",
+        "importance_weight": 0.85
+      },
+      {
+        "id": "LEAD-05",
+        "name": "Inter-Ministerial Statistical Coordination & Data Harmonization",
+        "description": "Coordination with line ministry statistical cells (Agriculture, Commerce, Health, Labour), State DES harmonization, unified registries.",
+        "importance_weight": 0.9
+      }
+    ]
+  }
+}

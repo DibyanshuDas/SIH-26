@@ -1,0 +1,383 @@
+{
+  "officer_id": "OFF-ISS-2026-HQ",
+  "name": "Dr. Rajeshwar Sharma, ISS",
+  "email": "manish.pillai@gov.in",
+  "designation": "Director (National Accounts & Price Statistics)",
+  "cadre": "Indian Statistical Service (ISS)",
+  "role_key": "ISS_JTS_AD",
+  "division_code": "NAD",
+  "division_name": "National Accounts Division (GDP / SUT)",
+  "headquarters": "Kolkata",
+  "years_of_experience": 1,
+  "education": "M.Sc. Mathematics & Statistics",
+  "current_assignment": "Base Year Revision of CPI & System of National Accounts (SNA 2025 Benchmarking)",
+  "overall_competency_index": 78.4,
+  "total_learning_hours": 64,
+  "karma_points": 1840,
+  "completed_courses_count": 7,
+  "current_competencies": {
+    "STAT-01": 5,
+    "STAT-02": 3,
+    "STAT-03": 2,
+    "STAT-04": 1,
+    "STAT-05": 2,
+    "STAT-06": 1,
+    "STAT-07": 3,
+    "STAT-08": 3,
+    "STAT-09": 3,
+    "STAT-10": 2,
+    "TECH-01": 5,
+    "TECH-02": 3,
+    "TECH-03": 3,
+    "TECH-04": 2,
+    "TECH-05": 1,
+    "TECH-06": 3,
+    "TECH-07": 2,
+    "TECH-08": 1,
+    "GOV-01": 2,
+    "GOV-02": 2,
+    "GOV-03": 1,
+    "GOV-04": 1,
+    "GOV-05": 2,
+    "LEAD-01": 1,
+    "LEAD-02": 3,
+    "LEAD-03": 1,
+    "LEAD-04": 2,
+    "LEAD-05": 1
+  },
+  "target_competencies": {
+    "STAT-01": 4,
+    "STAT-02": 3,
+    "STAT-03": 3,
+    "STAT-04": 3,
+    "STAT-05": 4,
+    "STAT-06": 3,
+    "STAT-07": 3,
+    "STAT-08": 4,
+    "STAT-09": 3,
+    "STAT-10": 4,
+    "TECH-01": 5,
+    "TECH-02": 4,
+    "TECH-03": 4,
+    "TECH-04": 4,
+    "TECH-05": 3,
+    "TECH-06": 4,
+    "TECH-07": 3,
+    "TECH-08": 3,
+    "GOV-01": 3,
+    "GOV-02": 3,
+    "GOV-03": 3,
+    "GOV-04": 2,
+    "GOV-05": 3,
+    "LEAD-01": 2,
+    "LEAD-02": 3,
+    "LEAD-03": 2,
+    "LEAD-04": 3,
+    "LEAD-05": 2
+  },
+  "skill_gaps": {
+    "STAT-01": {
+      "current": 5,
+      "target": 4,
+      "gap": 0,
+      "severity": "None",
+      "name": "Survey Sampling & Multi-Stage Research Design",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    "STAT-02": {
+      "current": 3,
+      "target": 3,
+      "gap": 0,
+      "severity": "None",
+      "name": "National Accounts & GDP/GVA Compilation (SNA 2008)",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    "STAT-03": {
+      "current": 2,
+      "target": 3,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "Price Statistics & Inflation Indices (CPI, WPI)",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    "STAT-04": {
+      "current": 1,
+      "target": 3,
+      "gap": 2,
+      "severity": "High",
+      "name": "Industrial Statistics & Annual Survey of Industries (ASI / IIP)",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    "STAT-05": {
+      "current": 2,
+      "target": 4,
+      "gap": 2,
+      "severity": "High",
+      "name": "Labour Market Dynamics & Periodic Labour Force Surveys (PLFS)",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    "STAT-06": {
+      "current": 1,
+      "target": 3,
+      "gap": 2,
+      "severity": "High",
+      "name": "Agricultural Statistics, Land-Use & Crop Forecasting",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    "STAT-07": {
+      "current": 3,
+      "target": 3,
+      "gap": 0,
+      "severity": "None",
+      "name": "SDG Indicators & National Indicator Framework (NIF)",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    "STAT-08": {
+      "current": 3,
+      "target": 4,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "National Quality Assurance Framework for Statistics (NQAF)",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    "STAT-09": {
+      "current": 3,
+      "target": 3,
+      "gap": 0,
+      "severity": "None",
+      "name": "Statistical Metadata & Microdata Dissemination (DDI/SDMX)",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    "STAT-10": {
+      "current": 2,
+      "target": 4,
+      "gap": 2,
+      "severity": "High",
+      "name": "UN Fundamental Principles of Official Statistics & Ethics",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    "TECH-01": {
+      "current": 5,
+      "target": 5,
+      "gap": 0,
+      "severity": "None",
+      "name": "Python for Statistical Computing & Survey Processing",
+      "domain": "Modern Data Science, AI & Statistical Computing"
+    },
+    "TECH-02": {
+      "current": 3,
+      "target": 4,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "R for Advanced Statistical Modeling & Microdata Analysis",
+      "domain": "Modern Data Science, AI & Statistical Computing"
+    },
+    "TECH-03": {
+      "current": 3,
+      "target": 4,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "SQL, Modern Data Warehouses & Automated ETL",
+      "domain": "Modern Data Science, AI & Statistical Computing"
+    },
+    "TECH-04": {
+      "current": 2,
+      "target": 4,
+      "gap": 2,
+      "severity": "High",
+      "name": "Econometric Modeling & Survey Software (Stata, SPSS, CSPro)",
+      "domain": "Modern Data Science, AI & Statistical Computing"
+    },
+    "TECH-05": {
+      "current": 1,
+      "target": 3,
+      "gap": 2,
+      "severity": "High",
+      "name": "Geospatial Analytics & Spatial Statistics (GIS, Bhuvan, QGIS)",
+      "domain": "Modern Data Science, AI & Statistical Computing"
+    },
+    "TECH-06": {
+      "current": 3,
+      "target": 4,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "Interactive Data Visualization & Visual Storytelling",
+      "domain": "Modern Data Science, AI & Statistical Computing"
+    },
+    "TECH-07": {
+      "current": 2,
+      "target": 3,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "Machine Learning, Nowcasting & Anomaly Detection in Surveys",
+      "domain": "Modern Data Science, AI & Statistical Computing"
+    },
+    "TECH-08": {
+      "current": 1,
+      "target": 3,
+      "gap": 2,
+      "severity": "High",
+      "name": "Cloud Data Architecture, APIs & Government Cloud (MeghRaj)",
+      "domain": "Modern Data Science, AI & Statistical Computing"
+    },
+    "GOV-01": {
+      "current": 2,
+      "target": 3,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "Cybersecurity & CERT-In Compliance for Statistical Enclaves",
+      "domain": "Digital Public Infrastructure, Security & Compliance"
+    },
+    "GOV-02": {
+      "current": 2,
+      "target": 3,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "Data Privacy, DPDPA 2023 & Statistical Confidentiality",
+      "domain": "Digital Public Infrastructure, Security & Compliance"
+    },
+    "GOV-03": {
+      "current": 1,
+      "target": 3,
+      "gap": 2,
+      "severity": "High",
+      "name": "Digital Public Infrastructure (DPI) & Interoperability",
+      "domain": "Digital Public Infrastructure, Security & Compliance"
+    },
+    "GOV-04": {
+      "current": 1,
+      "target": 2,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "Government Procurement & Asset Governance (GeM, GFR 2017)",
+      "domain": "Digital Public Infrastructure, Security & Compliance"
+    },
+    "GOV-05": {
+      "current": 2,
+      "target": 3,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "Digital Office Systems & Paperless Administration (e-Office)",
+      "domain": "Digital Public Infrastructure, Security & Compliance"
+    },
+    "LEAD-01": {
+      "current": 1,
+      "target": 2,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "Strategic Statistical Leadership & Policy Advisory",
+      "domain": "Statistical Leadership, Policy Advisory & Survey Operations"
+    },
+    "LEAD-02": {
+      "current": 3,
+      "target": 3,
+      "gap": 0,
+      "severity": "None",
+      "name": "Field Survey Administration & Nationwide Operations Control",
+      "domain": "Statistical Leadership, Policy Advisory & Survey Operations"
+    },
+    "LEAD-03": {
+      "current": 1,
+      "target": 2,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "Statistical Communication, Media Briefing & Public Trust",
+      "domain": "Statistical Leadership, Policy Advisory & Survey Operations"
+    },
+    "LEAD-04": {
+      "current": 2,
+      "target": 3,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "Project Portfolio Management & Monitoring Timelines",
+      "domain": "Statistical Leadership, Policy Advisory & Survey Operations"
+    },
+    "LEAD-05": {
+      "current": 1,
+      "target": 2,
+      "gap": 1,
+      "severity": "Medium",
+      "name": "Inter-Ministerial Statistical Coordination & Data Harmonization",
+      "domain": "Statistical Leadership, Policy Advisory & Survey Operations"
+    }
+  },
+  "top_priority_gaps": [
+    {
+      "id": "STAT-04",
+      "current": 1,
+      "target": 3,
+      "gap": 2,
+      "severity": "High",
+      "name": "Industrial Statistics & Annual Survey of Industries (ASI / IIP)",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    {
+      "id": "STAT-06",
+      "current": 1,
+      "target": 3,
+      "gap": 2,
+      "severity": "High",
+      "name": "Agricultural Statistics, Land-Use & Crop Forecasting",
+      "domain": "Official Statistical Methodologies & National Frameworks"
+    },
+    {
+      "id": "TECH-05",
+      "current": 1,
+      "target": 3,
+      "gap": 2,
+      "severity": "High",
+      "name": "Geospatial Analytics & Spatial Statistics (GIS, Bhuvan, QGIS)",
+      "domain": "Modern Data Science, AI & Statistical Computing"
+    },
+    {
+      "id": "TECH-08",
+      "current": 1,
+      "target": 3,
+      "gap": 2,
+      "severity": "High",
+      "name": "Cloud Data Architecture, APIs & Government Cloud (MeghRaj)",
+      "domain": "Modern Data Science, AI & Statistical Computing"
+    },
+    {
+      "id": "GOV-03",
+      "current": 1,
+      "target": 3,
+      "gap": 2,
+      "severity": "High",
+      "name": "Digital Public Infrastructure (DPI) & Interoperability",
+      "domain": "Digital Public Infrastructure, Security & Compliance"
+    }
+  ],
+  "domain_scores": {
+    "Statistical_Competencies": {
+      "name": "Official Statistical Methodologies & National Frameworks",
+      "color": "#2563eb",
+      "current_avg": 2.5,
+      "target_avg": 3.4,
+      "index_pct": 73.5
+    },
+    "Technical_Data_Science": {
+      "name": "Modern Data Science, AI & Statistical Computing",
+      "color": "#7c3aed",
+      "current_avg": 2.5,
+      "target_avg": 3.75,
+      "index_pct": 66.7
+    },
+    "Digital_Governance": {
+      "name": "Digital Public Infrastructure, Security & Compliance",
+      "color": "#059669",
+      "current_avg": 1.6,
+      "target_avg": 2.8,
+      "index_pct": 57.1
+    },
+    "Leadership_Management": {
+      "name": "Statistical Leadership, Policy Advisory & Survey Operations",
+      "color": "#d97706",
+      "current_avg": 1.6,
+      "target_avg": 2.4,
+      "index_pct": 66.7
+    }
+  },
+  "status": "Active Learner",
+  "last_active": "Today"
+}
