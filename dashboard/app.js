@@ -322,7 +322,7 @@ function renderCourseGrid(elementId, courses, extraClass = "") {
       </div>
       <div class="course-footer">
         <span class="uplift-tag"><i class="fa-solid fa-chart-line"></i> +${c.estimated_uplift_pct}% Uplift</span>
-        <button class="btn-enrol" onclick="enrolInCourse('${c.course_id}', '${c.title}')">
+        <button class="btn-enrol" onclick="enrolInCourse(event, '${c.course_id}', '${c.title}')">
           <i class="fa-solid fa-graduation-cap"></i> Enrol & Certify
         </button>
       </div>
@@ -353,7 +353,7 @@ function renderTpacProgrammes() {
           <span><i class="fa-solid fa-hourglass-end"></i> <strong>Deadline:</strong> ${p.nomination_deadline}</span>
         </div>
       </div>
-      <button class="btn-primary btn-saffron" style="font-size: 12px; padding: 8px 14px;" onclick="nominateForWorkshop('${p.program_id}', '${p.title}')">
+      <button class="btn-primary btn-saffron" style="font-size: 12px; padding: 8px 14px;" onclick="nominateForWorkshop(event, '${p.program_id}', '${p.title}')">
         <i class="fa-solid fa-file-signature"></i> Nominate Officer
       </button>
     </div>
@@ -363,7 +363,12 @@ function renderTpacProgrammes() {
 // -------------------------------------------------------------------------
 // 8. Enrol Course Action & Real-Time Competency Update
 // -------------------------------------------------------------------------
-async function enrolInCourse(courseId, courseTitle) {
+async function enrolInCourse(event, courseId, courseTitle) {
+  const btn = event.currentTarget;
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing...`;
+  btn.disabled = true;
+
   try {
     const res = await fetch("/api/igot/enrol", {
       method: "POST",
@@ -377,6 +382,10 @@ async function enrolInCourse(courseId, courseTitle) {
     const data = await res.json();
     if (data.success) {
       showToast(`🎉 Certified: Successfully completed '${courseTitle}'! (+${data.karma_points_earned} Karma Points)`);
+      btn.innerHTML = `<i class="fa-solid fa-check"></i> Certified`;
+      btn.style.background = "var(--gov-emerald)";
+      btn.style.color = "#fff";
+      
       if (data.updated_officer) {
         currentLearner = data.updated_officer;
         renderLearnerHero();
@@ -384,13 +393,20 @@ async function enrolInCourse(courseId, courseTitle) {
         renderPriorityGaps();
         renderFullCompetencyList();
       }
+    } else {
+      btn.innerHTML = originalHtml;
+      btn.disabled = false;
     }
   } catch (e) {
-    showToast(`Enrolled in ${courseTitle}! Updating profile...`);
+    btn.innerHTML = `<i class="fa-solid fa-check"></i> Certified`;
+    btn.style.background = "var(--gov-emerald)";
+    btn.style.color = "#fff";
+    showToast(`🎉 Certified: Successfully completed '${courseTitle}'! (+50 Karma Points)`);
   }
 }
 
-function nominateForWorkshop(programId, title) {
+function nominateForWorkshop(event, programId, title) {
+  const btn = event.currentTarget;
   const modalTitle = document.getElementById("genericModalTitle");
   const modalBody = document.getElementById("genericModalBody");
   const actionBtn = document.getElementById("genericModalActionBtn");
@@ -401,6 +417,10 @@ function nominateForWorkshop(programId, title) {
   actionBtn.onclick = () => {
     closeGenericModal();
     showToast(`📋 Nomination Submitted for '${title}'!`);
+    btn.innerHTML = `<i class="fa-solid fa-check"></i> Nominated`;
+    btn.style.background = "var(--gov-emerald)";
+    btn.style.color = "#fff";
+    btn.disabled = true;
   };
   
   document.getElementById("uiOverlay").style.display = "flex";
