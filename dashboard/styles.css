@@ -20,6 +20,11 @@
   --saas-bg: #f8fafc;
   --saas-border: #e2e8f0;
 
+  /* Brutal Fallbacks */
+  --brutal-white: #ffffff;
+  --brutal-black: #0f172a;
+  --border-brutal: 1px solid var(--saas-border);
+
   /* Neutral Spectrum */
   --bg-main: var(--saas-bg);
   --bg-card: var(--saas-white);
