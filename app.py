@@ -71,16 +71,30 @@ def get_skill_gaps():
 def get_officers():
     division = request.args.get('division')
     cadre = request.args.get('cadre')
+    search = request.args.get('q', '').lower()
     page = int(request.args.get('page', 1))
     
-    query = db.collection('official_profiles')
+    # Load all docs and filter in memory to avoid Firestore composite index errors and support search
+    # In a real production app, we would use Algolia or Typesense for full-text search.
+    docs = [d.to_dict() for d in db.collection('official_profiles').stream()]
+    
     if division and division != "All":
-        query = query.where('division_code', '==', division)
+        docs = [d for d in docs if d.get('division_code') == division]
     if cadre and cadre != "All":
-        query = query.where('cadre', '==', cadre)
+        docs = [d for d in docs if d.get('cadre') == cadre]
+    if search:
+        docs = [d for d in docs if search in d.get('name', '').lower() or search in d.get('officer_id', '').lower() or search in d.get('division_code', '').lower()]
         
-    docs = query.order_by('officer_id').offset((page - 1) * 15).limit(15).stream()
-    return jsonify([d.to_dict() for d in docs])
+    docs.sort(key=lambda x: x.get('officer_id', ''))
+    
+    start = (page - 1) * 15
+    end = start + 15
+    
+    return jsonify({
+        "officers": docs[start:end],
+        "total_pages": max(1, (len(docs) + 14) // 15),
+        "total_results": len(docs)
+    })
 
 @app.route('/api/recommendations', methods=['GET'])
 def get_recommendations():

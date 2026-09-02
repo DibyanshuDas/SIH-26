@@ -551,7 +551,9 @@ async function searchOfficerDirectory(page = 1) {
 
   try {
     const res = await fetch(`/api/officers?q=${encodeURIComponent(search)}&division=${division}&page=${currentOfficerPage}`);
-    const officers = await res.json();
+    const data = await res.json();
+    const officers = data.officers || [];
+    const totalPages = data.total_pages || 1;
 
     tbody.innerHTML = officers.map(o => `
       <tr style="border-bottom: 1px solid var(--border-glass); transition: 0.15s ease;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
@@ -570,7 +572,11 @@ async function searchOfficerDirectory(page = 1) {
       </tr>
     `).join("");
 
-    renderPagination(currentOfficerPage, 190); // Hardcoded max pages for mockup
+    if (officers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:var(--text-muted);">No officers found matching the filter criteria.</td></tr>`;
+    }
+
+    renderPagination(currentOfficerPage, totalPages);
   } catch (e) {
     console.error("Error searching officers:", e);
   }
