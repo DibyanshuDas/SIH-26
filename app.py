@@ -24,7 +24,7 @@ def serve_static(path):
 @app.route('/api/framework', methods=['GET'])
 def get_framework():
     doc = db.collection('config').document('competency_framework').get()
-    return jsonify(doc.to_dict().get('data', {}) if doc.exists else {})
+    return jsonify(doc.to_dict() if doc.exists else {})
 
 @app.route('/api/learner-profile', methods=['GET'])
 def get_learner_profile():
