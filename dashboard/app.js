@@ -93,7 +93,8 @@ function initRadarChart() {
   if (radarChartInstance) {
     radarChartInstance.dispose();
   }
-  radarChartInstance = echarts.init(chartDom);
+  const isDark = document.body.classList.contains("dark-theme");
+  radarChartInstance = echarts.init(chartDom, isDark ? "dark" : null);
 
   const domainScores = currentLearner?.domain_scores || {
     "Statistical_Competencies": { current_avg: 3.8, target_avg: 4.6 },
@@ -464,7 +465,8 @@ function initDivisionBarChart() {
   if (!chartDom || !administrativeAnalytics) return;
 
   if (divisionBarChartInstance) divisionBarChartInstance.dispose();
-  divisionBarChartInstance = echarts.init(chartDom);
+  const isDark = document.body.classList.contains("dark-theme");
+  divisionBarChartInstance = echarts.init(chartDom, isDark ? "dark" : null);
 
   const divData = administrativeAnalytics.division_analytics || {};
   const divNames = Object.keys(divData);
@@ -509,7 +511,8 @@ function initDeficitPieChart() {
   if (!chartDom || !administrativeAnalytics) return;
 
   if (deficitPieChartInstance) deficitPieChartInstance.dispose();
-  deficitPieChartInstance = echarts.init(chartDom);
+  const isDark = document.body.classList.contains("dark-theme");
+  deficitPieChartInstance = echarts.init(chartDom, isDark ? "dark" : null);
 
   const deficits = administrativeAnalytics.top_national_skill_deficits || [];
   const pieData = deficits.slice(0, 6).map(d => ({

@@ -15,74 +15,74 @@
 </head>
 <body>
 
-  <!-- 1. Top Government Header -->
-  <header class="top-gov-header">
-    <div class="header-inner">
-      <div class="brand-section">
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
         <div class="national-emblem">
-          <div class="emblem-core">
-            <i class="fa-solid fa-chart-line"></i>
-          </div>
+          <i class="fa-solid fa-chart-line"></i>
         </div>
-        <div>
-          <div class="brand-title">
-            KASHYAP-STAT
-            <span class="badge-igot">iGOT KARMAYOGI ENABLED</span>
-          </div>
-          <div class="brand-sub">
-            AI Skill Intelligence & Capacity Augmentation Platform • MoSPI & NSSTA
-          </div>
+        <div class="brand-text">
+          <div class="brand-title">KASHYAP-STAT</div>
+          <div class="badge-igot">iGOT ENABLED</div>
         </div>
       </div>
-
-      <div class="header-controls">
-        <!-- Cadre & Role Switcher -->
-        <div class="role-switcher-container">
-          <span class="role-switcher-label"><i class="fa-solid fa-user-shield"></i> View Cadre:</span>
-          <select id="cadreRoleSelect" class="role-select" onchange="switchOfficerRole(this.value)">
-            <option value="ISS_JAG_DIR" selected>Dr. Rajeshwar Sharma (Director, NAD - ISS)</option>
-            <option value="ISS_SAG_DDG">Dr. Anita Mukherjee (DDG, SDRD - ISS)</option>
-            <option value="ISS_STS_DD">Sh. Amit Verma (Deputy Director, ESD - ISS)</option>
-            <option value="ISS_JTS_AD">Ms. Priya Nair (Assistant Director, SSD - ISS)</option>
-            <option value="SSS_SSO">Sh. Gaurav Patel (Senior Statistical Officer, FOD - SSS)</option>
-            <option value="SSS_JSO">Ms. Ananya Das (Junior Statistical Officer, FOD - SSS)</option>
-            <option value="STATE_DES_OFFICER">Dr. K. S. Reddy (Joint Director, State DES)</option>
-            <option value="MINISTRY_STAT_ANALYST">Sh. Vikram Malhotra (Statistical Advisor, Agri)</option>
-          </select>
-        </div>
-
-        <!-- Download PDF Report -->
-        <a href="/KASHYAP_AI_STATISTICAL_LEARNING_PLATFORM_REPORT.pdf" target="_blank" class="btn-icon" title="Download Official MoSPI Flash Report (PDF)">
-          <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
-        </a>
-
-        <!-- Theme Toggle -->
-        <button id="themeToggleBtn" class="btn-icon" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-          <i class="fa-solid fa-moon"></i>
+      
+      <div class="sidebar-nav-title">MAIN</div>
+      <nav class="sidebar-nav">
+        <button class="nav-tab active" onclick="switchTab('tab-passport')">
+          <i class="fa-solid fa-id-card-clip"></i> <span>Digital Passport</span>
         </button>
-      </div>
-    </div>
-  </header>
+        <button class="nav-tab" onclick="switchTab('tab-pathways')">
+          <i class="fa-solid fa-route"></i> <span>Learning Pathways</span>
+        </button>
+        <button class="nav-tab" onclick="switchTab('tab-assessment')">
+          <i class="fa-solid fa-brain"></i> <span>AI Assessment</span>
+        </button>
+        
+        <div class="sidebar-nav-title" style="margin-top: 24px;">TOOLS</div>
+        <button class="nav-tab" onclick="switchTab('tab-admin')">
+          <i class="fa-solid fa-chart-pie"></i> <span>Cadre Admin</span>
+        </button>
+      </nav>
+    </aside>
 
-  <!-- 2. Primary Navigation Bar -->
-  <nav class="main-nav-bar">
-    <div class="nav-inner">
-      <button class="nav-tab active" onclick="switchTab('tab-passport')">
-        <i class="fa-solid fa-id-card-clip"></i> Digital Competency Passport
-      </button>
-      <button class="nav-tab" onclick="switchTab('tab-pathways')">
-        <i class="fa-solid fa-route"></i> Personalized iGOT & NSSTA Pathways
-      </button>
-      <button class="nav-tab" onclick="switchTab('tab-assessment')">
-        <i class="fa-solid fa-brain"></i> AI Assessment & Quiz Studio
-      </button>
-      <button class="nav-tab" onclick="switchTab('tab-admin')">
-        <i class="fa-solid fa-chart-pie"></i> MoSPI Cadre Administration
-      </button>
-    </div>
-  </nav>
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Top Utility Header -->
+      <header class="top-utility-header">
+        <div class="header-left">
+          <div class="header-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search resources or officers... (Press '/' to focus)" id="globalSearch">
+          </div>
+        </div>
 
-  <!-- 3. Main Application Container -->
+        <div class="header-controls">
+          <div class="role-switcher-container">
+            <select id="cadreRoleSelect" class="role-select" onchange="switchOfficerRole(this.value)">
+              <option value="ISS_JAG_DIR" selected>Dr. Rajeshwar Sharma (Director, NAD - ISS)</option>
+              <option value="ISS_SAG_DDG">Dr. Anita Mukherjee (DDG, SDRD - ISS)</option>
+              <option value="ISS_STS_DD">Sh. Amit Verma (Deputy Director, ESD - ISS)</option>
+              <option value="ISS_JTS_AD">Ms. Priya Nair (Assistant Director, SSD - ISS)</option>
+              <option value="SSS_SSO">Sh. Gaurav Patel (Senior Statistical Officer, FOD - SSS)</option>
+              <option value="SSS_JSO">Ms. Ananya Das (Junior Statistical Officer, FOD - SSS)</option>
+              <option value="STATE_DES_OFFICER">Dr. K. S. Reddy (Joint Director, State DES)</option>
+              <option value="MINISTRY_STAT_ANALYST">Sh. Vikram Malhotra (Statistical Advisor, Agri)</option>
+            </select>
+          </div>
+
+          <a href="/KASHYAP_AI_STATISTICAL_LEARNING_PLATFORM_REPORT.pdf" target="_blank" class="btn-icon" title="Download Official MoSPI Flash Report (PDF)">
+            <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+          </a>
+
+          <button id="themeToggleBtn" class="btn-icon" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        </div>
+      </header>
+
+    <!-- (Primary Navigation is now in Sidebar) -->
   <main class="app-container">
 
     <!-- ================================================================= -->
@@ -503,8 +503,8 @@
         </div>
       </div>
     </section>
-
-</main>
+  </main>
+</div>
 
   <!-- 4. Floating AI Karmayogi Statistical Learning Assistant -->
   <button class="assistant-fab" onclick="toggleAssistantModal()">
