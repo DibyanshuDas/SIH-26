@@ -28,10 +28,24 @@ def get_framework():
 
 @app.route('/api/learner-profile', methods=['GET'])
 def get_learner_profile():
-    officer_id = request.args.get('id', 'OFF-ISS-2026-HQ')
-    doc = db.collection('official_profiles').document(officer_id).get()
+    officer_id = request.args.get('id')
+    role_key = request.args.get('role')
+    
+    if role_key:
+        docs = db.collection('official_profiles').where('role_key', '==', role_key).limit(1).stream()
+        for doc in docs:
+            return jsonify(doc.to_dict())
+    
+    if officer_id:
+        doc = db.collection('official_profiles').document(officer_id).get()
+        if doc.exists:
+            return jsonify(doc.to_dict())
+            
+    # Default fallback
+    doc = db.collection('official_profiles').document('OFF-ISS-2026-HQ').get()
     if doc.exists:
         return jsonify(doc.to_dict())
+        
     return jsonify({"error": "Profile not found"}), 404
 
 @app.route('/api/recommendations', methods=['GET'])
