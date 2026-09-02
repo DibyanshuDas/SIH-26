@@ -336,7 +336,7 @@ function renderTpacProgrammes() {
   const container = document.getElementById("tpacProgrammesList");
   if (!container || !currentRecommendations) return;
 
-  const progs = currentRecommendations.nssta_tpac_flagship_programmes || [];
+  const progs = currentRecommendations.nssta_tpac_flagship_programmes || currentRecommendations.nssta_executive_programmes || [];
   container.innerHTML = progs.map(p => `
     <div class="tpac-card">
       <div class="tpac-date-box">
@@ -537,14 +537,20 @@ function initDeficitPieChart() {
   deficitPieChartInstance.setOption(option);
 }
 
-async function searchOfficerDirectory() {
+let currentOfficerPage = 1;
+
+async function searchOfficerDirectory(page = 1) {
+  currentOfficerPage = page;
   const search = document.getElementById("officerSearchInput")?.value || "";
   const division = document.getElementById("divisionFilterSelect")?.value || "All";
   const tbody = document.getElementById("officersTableBody");
   if (!tbody) return;
 
+  const pageSpan = document.getElementById("currentPageSpan");
+  if (pageSpan) pageSpan.innerText = currentOfficerPage;
+
   try {
-    const res = await fetch(`/api/officers?q=${encodeURIComponent(search)}&division=${division}&limit=20`);
+    const res = await fetch(`/api/officers?q=${encodeURIComponent(search)}&division=${division}&page=${currentOfficerPage}`);
     const officers = await res.json();
 
     tbody.innerHTML = officers.map(o => `
@@ -629,11 +635,11 @@ function switchTab(tabId) {
 }
 
 function toggleTheme() {
-  document.body.classList.toggle("light-theme");
-  const isLight = document.body.classList.contains("light-theme");
+  document.body.classList.toggle("dark-theme");
+  const isDark = document.body.classList.contains("dark-theme");
   const btn = document.getElementById("themeToggleBtn");
   if (btn) {
-    btn.innerHTML = isLight ? `<i class="fa-solid fa-sun" style="color: #f59e0b;"></i>` : `<i class="fa-solid fa-moon"></i>`;
+    btn.innerHTML = isDark ? `<i class="fa-solid fa-sun" style="color: #f59e0b;"></i>` : `<i class="fa-solid fa-moon"></i>`;
   }
   setTimeout(() => {
     initRadarChart();

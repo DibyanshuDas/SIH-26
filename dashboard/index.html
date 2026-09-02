@@ -497,6 +497,11 @@
             </tbody>
           </table>
         </div>
+        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 16px;">
+          <button class="btn-secondary" onclick="searchOfficerDirectory(currentOfficerPage > 1 ? currentOfficerPage - 1 : 1)"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+          <span style="color: var(--text-secondary); font-size: 14px;">Page <span id="currentPageSpan">1</span></span>
+          <button class="btn-secondary" onclick="searchOfficerDirectory(currentOfficerPage + 1)">Next <i class="fa-solid fa-chevron-right"></i></button>
+        </div>
       </div>
     </section>
 

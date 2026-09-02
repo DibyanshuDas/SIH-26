@@ -59,9 +59,21 @@
   --radius-pill: 9999px;
 }
 
-/* Force light theme always for this pure SaaS UI */
-body.light-theme {
+/* Force light theme always for this pure SaaS UI (Overridden: Dark Mode implemented) */
+body.dark-theme {
+  --saas-black: #ffffff;
+  --saas-white: #0f172a;
+  --saas-bg: #020617;
+  --saas-border: #1e293b;
+  
   --bg-main: var(--saas-bg);
+  --bg-card: #0f172a;
+  --bg-card-hover: #1e293b;
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0f172a;
 }
 
 /* Reset & Base Setup */

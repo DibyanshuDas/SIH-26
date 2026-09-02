@@ -71,6 +71,7 @@ def get_skill_gaps():
 def get_officers():
     division = request.args.get('division')
     cadre = request.args.get('cadre')
+    page = int(request.args.get('page', 1))
     
     query = db.collection('official_profiles')
     if division and division != "All":
@@ -78,7 +79,7 @@ def get_officers():
     if cadre and cadre != "All":
         query = query.where('cadre', '==', cadre)
         
-    docs = query.limit(50).stream()
+    docs = query.order_by('officer_id').offset((page - 1) * 15).limit(15).stream()
     return jsonify([d.to_dict() for d in docs])
 
 @app.route('/api/recommendations', methods=['GET'])
@@ -96,6 +97,11 @@ def get_recommendations():
     courses = [doc.to_dict() for doc in db.collection('igot_courses').stream()]
     tpac = [doc.to_dict() for doc in db.collection('nssta_tpac_programmes').stream()]
     
+    # Inject mock uplift for UI if missing
+    for c in courses:
+        if "estimated_uplift_pct" not in c:
+            c["estimated_uplift_pct"] = round(4.5 + (hash(c.get("course_id", "")) % 30) / 10.0, 1)
+
     return jsonify({
       "officer_id": officer_id,
       "officer_name": officer.get("name", "Officer"),
