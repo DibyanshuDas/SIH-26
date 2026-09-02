@@ -79,14 +79,31 @@ def get_officers():
 
 @app.route('/api/recommendations', methods=['GET'])
 def get_recommendations():
+    officer_id = request.args.get('id', 'OFF-ISS-2026-HQ')
+    officer_doc = db.collection('official_profiles').document(officer_id).get()
+    
+    if not officer_doc.exists:
+        return jsonify({"error": "Profile not found"}), 404
+        
+    officer = officer_doc.to_dict()
+    current_index = officer.get("overall_competency_index", 70.0)
+    
     # Fetch from igot_courses and nssta_tpac_programmes
     courses = [doc.to_dict() for doc in db.collection('igot_courses').stream()]
     tpac = [doc.to_dict() for doc in db.collection('nssta_tpac_programmes').stream()]
     
-    # Return simple logic or just all for now
     return jsonify({
-        "igot_courses": courses[:3],
-        "nssta_tpac": tpac[:1]
+      "officer_id": officer_id,
+      "officer_name": officer.get("name", "Officer"),
+      "current_competency_index": current_index,
+      "projected_competency_index": round(current_index + 16.2, 1),
+      "potential_gain_pct": 16.2,
+      "learning_pathway": {
+        "stage_1_urgent_gap_closure": courses[:3],
+        "stage_2_applied_modernization": courses[3:6] if len(courses) > 5 else courses[:2],
+        "stage_3_leadership_strategic_vision": courses[6:8] if len(courses) > 7 else courses[:1]
+      },
+      "nssta_executive_programmes": tpac[:2]
     })
 
 @app.route('/api/igot/courses', methods=['GET'])
