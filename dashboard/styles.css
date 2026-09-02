@@ -527,6 +527,76 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 4px;
 }
 
+.tpac-format {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gov-saffron);
+  border: 1px solid var(--gov-saffron);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Pagination UI */
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 24px;
+  padding: 12px 24px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: var(--border-soft);
+  box-shadow: var(--shadow-sm);
+}
+.page-btn {
+  background: var(--bg-main);
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.page-btn:hover:not(.disabled) {
+  border: var(--border-soft);
+}
+.page-btn.active {
+  background: #3b82f6; /* Modern Blue */
+  color: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+}
+.page-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.page-ellipsis {
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 0 4px;
+}
+.page-jumper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: var(--border-soft);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.page-jumper select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: var(--border-soft);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
 .comp-code {
   font-family: var(--font-mono);
   font-size: 11px;

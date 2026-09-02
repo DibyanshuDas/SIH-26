@@ -569,9 +569,51 @@ async function searchOfficerDirectory(page = 1) {
         </td>
       </tr>
     `).join("");
+
+    renderPagination(currentOfficerPage, 190); // Hardcoded max pages for mockup
   } catch (e) {
     console.error("Error searching officers:", e);
   }
+}
+
+function renderPagination(current, total) {
+  const container = document.getElementById("paginationContainer");
+  if (!container) return;
+
+  let html = `<button class="page-btn ${current === 1 ? 'disabled' : ''}" onclick="if(${current} > 1) searchOfficerDirectory(${current - 1})">Previous</button>`;
+
+  // Simple window of 5 pages
+  let start = Math.max(1, current - 2);
+  let end = Math.min(total, start + 4);
+  if (end - start < 4) start = Math.max(1, end - 4);
+
+  if (start > 1) {
+    html += `<button class="page-btn" onclick="searchOfficerDirectory(1)">1</button>`;
+    if (start > 2) html += `<span class="page-ellipsis">...</span>`;
+  }
+
+  for (let i = start; i <= end; i++) {
+    html += `<button class="page-btn ${i === current ? 'active' : ''}" onclick="searchOfficerDirectory(${i})">${i}</button>`;
+  }
+
+  if (end < total) {
+    if (end < total - 1) html += `<span class="page-ellipsis">...</span>`;
+    html += `<button class="page-btn" onclick="searchOfficerDirectory(${total})">${total}</button>`;
+  }
+
+  html += `<button class="page-btn ${current === total ? 'disabled' : ''}" onclick="if(${current} < ${total}) searchOfficerDirectory(${current + 1})">Next</button>`;
+
+  html += `
+    <div class="page-jumper">
+      Page 
+      <select onchange="searchOfficerDirectory(parseInt(this.value))">
+        ${Array.from({length: total}, (_, i) => `<option value="${i+1}" ${i+1 === current ? 'selected' : ''}>${i+1}</option>`).join('')}
+      </select>
+      of ${total}
+    </div>
+  `;
+
+  container.innerHTML = html;
 }
 
 async function viewOfficerRecord(officerId) {
