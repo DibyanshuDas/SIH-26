@@ -48,6 +48,35 @@ def get_learner_profile():
         
     return jsonify({"error": "Profile not found"}), 404
 
+@app.route('/api/skill-gaps', methods=['GET'])
+def get_skill_gaps():
+    officer_id = request.args.get('id', 'OFF-ISS-2026-HQ')
+    doc = db.collection('official_profiles').document(officer_id).get()
+    if doc.exists:
+        profile = doc.to_dict()
+        return jsonify({
+            "officer_id": profile.get("officer_id"),
+            "overall_competency_index": profile.get("overall_competency_index"),
+            "domain_scores": profile.get("domain_scores", {}),
+            "skill_gaps": profile.get("skill_gaps", {}),
+            "top_priority_gaps": profile.get("top_priority_gaps", [])
+        })
+    return jsonify({"error": "Profile not found"}), 404
+
+@app.route('/api/officers', methods=['GET'])
+def get_officers():
+    division = request.args.get('division')
+    cadre = request.args.get('cadre')
+    
+    query = db.collection('official_profiles')
+    if division and division != "All":
+        query = query.where('division_code', '==', division)
+    if cadre and cadre != "All":
+        query = query.where('cadre', '==', cadre)
+        
+    docs = query.limit(50).stream()
+    return jsonify([d.to_dict() for d in docs])
+
 @app.route('/api/recommendations', methods=['GET'])
 def get_recommendations():
     # Fetch from igot_courses and nssta_tpac_programmes
@@ -103,6 +132,23 @@ def enrol_course():
         "new_competency_index": officer.get('overall_competency_index', 0),
         "karma_points_earned": 50,
         "updated_officer": officer
+    })
+
+@app.route('/api/assistant/query', methods=['POST'])
+def assistant_query():
+    # Basic mock for the assistant so the UI doesn't crash
+    return jsonify({
+        "answer": "I am your AI Karmayogi Assistant. This is a mock response from the new Firebase backend.",
+        "suggested_actions": ["Analyze my skill gaps", "Recommend iGOT courses"],
+        "recommended_course_id": "IGOT-STAT-101"
+    })
+
+@app.route('/api/admin/analytics', methods=['GET'])
+def get_admin_analytics():
+    # Mocking admin analytics for now
+    return jsonify({
+        "total_officers": 2850,
+        "avg_competency_index": 72.5
     })
 
 if __name__ == '__main__':
