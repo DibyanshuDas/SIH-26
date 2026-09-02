@@ -3,6 +3,8 @@ from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials, firestore
 import os
+import json
+import assessment_engine
 
 app = Flask(__name__, static_folder='dashboard')
 CORS(app)
@@ -118,13 +120,51 @@ def get_nssta_programmes():
 
 @app.route('/api/materials', methods=['GET'])
 def get_materials():
-    materials = [doc.to_dict() for doc in db.collection('learning_materials').stream()]
-    return jsonify({m.get('id', str(i)): m for i, m in enumerate(materials)})
+    # Because db_init.py uploaded it as a single 'data' document, we fetch the document directly
+    doc = db.collection('learning_materials').document('data').get()
+    return jsonify(doc.to_dict() if doc.exists else {})
 
 @app.route('/api/assessments', methods=['GET'])
 def get_assessments():
-    assessments = [doc.to_dict() for doc in db.collection('assessments').stream()]
-    return jsonify({a.get('assessment_id', str(i)): a for i, a in enumerate(assessments)})
+    # Because db_init.py uploaded it as a single 'data' document, we fetch the document directly
+    doc = db.collection('assessments').document('data').get()
+    return jsonify(doc.to_dict() if doc.exists else {})
+
+@app.route('/api/assessments/generate', methods=['POST'])
+def generate_assessment():
+    payload = request.json or {}
+    title = payload.get("title", "Uploaded Statistical Guidelines")
+    content = payload.get("content", "")
+    target_comp = payload.get("target_competency", "STAT-01")
+    num_q = int(payload.get("num_questions", 5))
+
+    if not content.strip():
+        # Pick from default material if empty
+        mats = list(assessment_engine.materials.values())
+        content = mats[0]["content"]
+        title = mats[0]["title"]
+
+    generated_asm = assessment_engine.generate_assessment_from_text(title, content, target_comp, num_q)
+    return jsonify(generated_asm)
+
+@app.route('/api/assessments/submit', methods=['POST'])
+def submit_assessment():
+    payload = request.json or {}
+    officer_id = payload.get("officer_id", "OFF-ISS-2026-HQ")
+    asm_id = payload.get("assessment_id")
+    answers = payload.get("answers", {})
+
+    result = assessment_engine.grade_submission(officer_id, asm_id, answers)
+    
+    # Update karma points in Firebase as well
+    officer_ref = db.collection('official_profiles').document(officer_id)
+    officer_doc = officer_ref.get()
+    if officer_doc.exists:
+        officer = officer_doc.to_dict()
+        officer['karma_points'] = officer.get('karma_points', 0) + result.get('karma_points_earned', 0)
+        officer_ref.set(officer)
+
+    return jsonify(result)
 
 @app.route('/api/igot/enrol', methods=['POST'])
 def enrol_course():
@@ -162,11 +202,12 @@ def assistant_query():
 
 @app.route('/api/admin/analytics', methods=['GET'])
 def get_admin_analytics():
-    # Mocking admin analytics for now
-    return jsonify({
-        "total_officers": 2850,
-        "avg_competency_index": 72.5
-    })
+    # Read the analytics from local data file, because it wasn't migrated to Firestore
+    analytics_file = os.path.join(os.path.dirname(__file__), "data", "administrative_analytics.json")
+    if os.path.exists(analytics_file):
+        with open(analytics_file, "r") as f:
+            return jsonify(json.load(f))
+    return jsonify({})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8050))
