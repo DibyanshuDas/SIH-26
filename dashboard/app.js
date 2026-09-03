@@ -73,6 +73,12 @@ function renderLearnerHero() {
   document.getElementById("heroHoursVal").innerText = `${currentLearner.total_learning_hours} hrs`;
   document.getElementById("heroKarmaVal").innerText = currentLearner.karma_points.toLocaleString();
 
+  // Update top header role display
+  const roleNameEl = document.getElementById("currentRoleName");
+  const roleTitleEl = document.getElementById("currentRoleTitle");
+  if (roleNameEl) roleNameEl.innerText = currentLearner.name;
+  if (roleTitleEl) roleTitleEl.innerText = `${currentLearner.designation}, ${currentLearner.division_code} (${currentLearner.cadre.split('(')[0].trim()})`;
+
   if (document.getElementById("currentIdxRec")) {
     document.getElementById("currentIdxRec").innerText = `${currentLearner.overall_competency_index}%`;
   }
@@ -587,6 +593,7 @@ async function searchOfficerDirectory(page = 1) {
   currentOfficerPage = page;
   const search = document.getElementById("officerSearchInput")?.value || "";
   const division = document.getElementById("divisionFilterSelect")?.value || "All";
+  const cadre = document.getElementById("cadreFilterSelect")?.value || "All";
   const tbody = document.getElementById("officersTableBody");
   if (!tbody) return;
 
@@ -594,7 +601,7 @@ async function searchOfficerDirectory(page = 1) {
   if (pageSpan) pageSpan.innerText = currentOfficerPage;
 
   try {
-    const res = await fetch(`/api/officers?q=${encodeURIComponent(search)}&division=${division}&page=${currentOfficerPage}`);
+    const res = await fetch(`/api/officers?q=${encodeURIComponent(search)}&division=${division}&cadre=${encodeURIComponent(cadre)}&page=${currentOfficerPage}`);
     const data = await res.json();
     const officers = data.officers || [];
     const totalPages = data.total_pages || 1;

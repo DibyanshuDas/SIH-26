@@ -614,7 +614,16 @@ class CompetencyEngine:
         # Save Profiles (Full to data, sample/compact to dashboard)
         with open(os.path.join(DATA_DIR, "official_profiles.json"), "w") as f:
             json.dump(self.officers, f, indent=2)
-            
+             
+        # Create 8 specific persona officers for Role Switcher (ensure they exist in directory)
+        persona_officers = self.create_persona_officers()
+        # Replace first 8 officers with personas to guarantee they exist
+        self.officers[:8] = persona_officers
+        
+        # Re-save with personas included
+        with open(os.path.join(DATA_DIR, "official_profiles.json"), "w") as f:
+            json.dump(self.officers, f, indent=2)
+        
         # Also create a rich primary demo officer for default dashboard view
         primary_officer = self.officers[0]
         # Ensure the primary officer has rich realistic gaps in Python/Data Science and National Accounts
@@ -640,6 +649,130 @@ class CompetencyEngine:
             json.dump(analytics, f, indent=2)
 
         print(f"[OK] Generated {len(self.officers)} official statistical profiles and administrative analytics.")
+
+    def create_persona_officers(self) -> List[Dict[str, Any]]:
+        """Create the 8 specific persona officers matching the Role Switcher dropdown."""
+        personas = []
+        
+        # 1. Dr. Rajeshwar Sharma - ISS JAG Director (NAD)
+        p1 = self._create_persona_base("OFF-ISS-2026-HQ", "Dr. Rajeshwar Sharma", "Director (National Accounts & Price Statistics)", 
+            "Indian Statistical Service (ISS)", "ISS_JAG_DIR", "NAD", "National Accounts Division (GDP / SUT)", "New Delhi",
+            "M.Stat (ISI Kolkata)", "Base Year Revision of CPI & System of National Accounts (SNA 2025 Benchmarking)",
+            78.4, 64, 1840, 7, 15)
+        personas.append(p1)
+        
+        # 2. Dr. Anita Mukherjee - ISS SAG DDG (SDRD)
+        p2 = self._create_persona_base("OFF-ISS-2026-002", "Dr. Anita Mukherjee", "Deputy Director General (Survey Design)",
+            "Indian Statistical Service (ISS)", "ISS_SAG_DDG", "SDRD", "Survey Design and Research Division", "Kolkata",
+            "Ph.D. Statistics (ISI Kolkata)", "79th Round NSS Survey on Services Sector & Unincorporated Enterprises",
+            88.2, 120, 3200, 12, 22)
+        personas.append(p2)
+        
+        # 3. Sh. Amit Verma - ISS STS Deputy Director (ESD)
+        p3 = self._create_persona_base("OFF-ISS-2026-003", "Sh. Amit Verma", "Deputy Director (Economic Statistics)",
+            "Indian Statistical Service (ISS)", "ISS_STS_DD", "ESD", "Economic Statistics Division (CPI, IIP, ASI)", "New Delhi",
+            "M.Sc. Applied Econometrics", "Base Year Revision of All-India Consumer Price Index (CPI 2024=100)",
+            82.1, 85, 2100, 9, 10)
+        personas.append(p3)
+        
+        # 4. Ms. Priya Nair - ISS JTS Assistant Director (SSD)
+        p4 = self._create_persona_base("OFF-ISS-2026-004", "Ms. Priya Nair", "Assistant Director (Social Statistics)",
+            "Indian Statistical Service (ISS)", "ISS_JTS_AD", "SSD", "Social Statistics Division (PLFS, Time-Use, Gender, SDGs)", "New Delhi",
+            "M.A. Economics (DSE)", "Periodic Labour Force Survey (PLFS) 2025-26 Annual Report",
+            75.6, 42, 1100, 5, 3)
+        personas.append(p4)
+        
+        # 5. Sh. Gaurav Patel - SSS Senior Statistical Officer (FOD)
+        p5 = self._create_persona_base("OFF-SSS-2026-005", "Sh. Gaurav Patel", "Senior Statistical Officer (Field Operations)",
+            "Subordinate Statistical Service (SSS)", "SSS_SSO", "FOD", "Field Operations Division (NSS Survey Network)", "New Delhi / Faridabad & 52 Regional Offices",
+            "M.Sc. Statistics (Delhi Univ)", "79th Round NSS Survey on Services Sector - Regional Supervision",
+            71.3, 95, 1950, 11, 12)
+        personas.append(p5)
+        
+        # 6. Ms. Ananya Das - SSS Junior Statistical Officer (FOD)
+        p6 = self._create_persona_base("OFF-SSS-2026-006", "Ms. Ananya Das", "Junior Statistical Officer (Field Investigator)",
+            "Subordinate Statistical Service (SSS)", "SSS_JSO", "FOD", "Field Operations Division (NSS Survey Network)", "New Delhi / Faridabad & 52 Regional Offices",
+            "B.Tech Computer Science & Statistics", "CAPI Field Data Collection - Urban Frame Survey",
+            64.8, 28, 650, 3, 2)
+        personas.append(p6)
+        
+        # 7. Dr. K. S. Reddy - State DES Joint Director
+        p7 = self._create_persona_base("OFF-DES-2026-007", "Dr. K. S. Reddy", "Joint Director (State DES)",
+            "State Directorate of Economics and Statistics", "STATE_DES_OFFICER", "STATE_DES", "State Directorate of Economics and Statistics (State Govts)", "Hyderabad",
+            "M.Sc. Mathematics & Statistics", "State GSDP & District Domestic Product (DDP) Technical Harmonization",
+            73.5, 110, 2400, 13, 18)
+        personas.append(p7)
+        
+        # 8. Sh. Vikram Malhotra - Ministry Statistical Advisor
+        p8 = self._create_persona_base("OFF-MIN-2026-008", "Sh. Vikram Malhotra", "Statistical Advisor (Agriculture Ministry)",
+            "Line Ministry Statistical Cell (Agri / Health / Finance / Commerce)", "MINISTRY_STAT_ANALYST", "STATE_DES", "Line Ministry Statistical Cell (Agri / Health / Finance / Commerce)", "New Delhi",
+            "M.Sc. Applied Econometrics", "Agricultural Statistics, Land-Use & Crop Forecasting (GCES)",
+            79.2, 78, 1850, 8, 11)
+        personas.append(p8)
+        
+        return personas
+
+    def _create_persona_base(self, officer_id, name, designation, cadre, role_key, division_code, division_name, headquarters,
+                              education, assignment, competency_index, learning_hours, karma_points, completed_count, exp_years):
+        """Helper to create a persona officer with proper competency structure."""
+        all_comp_ids = self.get_all_competency_ids()
+        target_levels = CADRE_ROLE_REQUIREMENTS[role_key]["target_levels"]
+        
+        # Generate realistic current competencies based on role targets with small variations
+        current_levels = {}
+        gaps = {}
+        for comp_id in all_comp_ids:
+            target = target_levels.get(comp_id, 3)
+            meta = self.get_competency_metadata(comp_id)
+            # Slight variation: most at target, some 1 below, few 2 below for emerging tech
+            if comp_id in ["TECH-01", "TECH-02", "TECH-07", "TECH-08", "GOV-02", "STAT-07"]:
+                base = max(1, min(5, target - 1))
+            else:
+                base = target if target <= 4 else target - 1
+            current_levels[comp_id] = base
+            gap = max(0, target - base)
+            gaps[comp_id] = {
+                "current": base, "target": target, "gap": gap,
+                "severity": "High" if gap >= 2 else ("Medium" if gap == 1 else "None"),
+                "name": meta.get("name", comp_id), "domain": meta.get("domain_name", "")
+            }
+        
+        # Domain scores
+        domain_scores = {}
+        for d_key, domain in COMPETENCY_FRAMEWORK.items():
+            d_comps = [c["id"] for c in domain["competencies"]]
+            d_cur = sum(current_levels[c] for c in d_comps)
+            d_tgt = sum(target_levels.get(c, 3) for c in d_comps)
+            domain_scores[d_key] = {
+                "name": domain["domain_name"], "color": domain["color"],
+                "current_avg": round(d_cur / len(d_comps), 2),
+                "target_avg": round(d_tgt / len(d_comps), 2),
+                "index_pct": round(100 * (d_cur / d_tgt), 1)
+            }
+        
+        sorted_gaps = sorted(
+            [{"id": k, **v} for k, v in gaps.items() if v["gap"] > 0],
+            key=lambda x: (x["gap"], -x["current"]), reverse=True
+        )
+        
+        fname = name.split()[1] if len(name.split()) > 1 else name
+        lname = name.split()[-1]
+        email = f"{fname.lower()}.{lname.lower()}@gov.in"
+        
+        return {
+            "officer_id": officer_id, "name": name, "email": email,
+            "designation": designation, "cadre": cadre, "role_key": role_key,
+            "division_code": division_code, "division_name": division_name,
+            "headquarters": headquarters, "years_of_experience": exp_years,
+            "education": education, "current_assignment": assignment,
+            "overall_competency_index": competency_index,
+            "total_learning_hours": learning_hours, "karma_points": karma_points,
+            "completed_courses_count": completed_count,
+            "current_competencies": current_levels, "target_competencies": target_levels,
+            "skill_gaps": gaps, "top_priority_gaps": sorted_gaps[:5],
+            "domain_scores": domain_scores, "status": "Active Learner",
+            "last_active": "Today", "completed_courses": [], "nominated_programmes": []
+        }
 
 if __name__ == "__main__":
     engine = CompetencyEngine()

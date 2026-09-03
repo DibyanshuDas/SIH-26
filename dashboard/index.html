@@ -60,17 +60,9 @@
 
         <div class="header-controls">
           <div class="role-switcher-container">
-            <span style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-right: 4px;">View Profile:</span>
-            <select id="cadreRoleSelect" class="role-select" onchange="switchOfficerRole(this.value)">
-              <option value="ISS_JAG_DIR" selected>Dr. Rajeshwar Sharma (Director, NAD - ISS)</option>
-              <option value="ISS_SAG_DDG">Dr. Anita Mukherjee (DDG, SDRD - ISS)</option>
-              <option value="ISS_STS_DD">Sh. Amit Verma (Deputy Director, ESD - ISS)</option>
-              <option value="ISS_JTS_AD">Ms. Priya Nair (Assistant Director, SSD - ISS)</option>
-              <option value="SSS_SSO">Sh. Gaurav Patel (Senior Statistical Officer, FOD - SSS)</option>
-              <option value="SSS_JSO">Ms. Ananya Das (Junior Statistical Officer, FOD - SSS)</option>
-              <option value="STATE_DES_OFFICER">Dr. K. S. Reddy (Joint Director, State DES)</option>
-              <option value="MINISTRY_STAT_ANALYST">Sh. Vikram Malhotra (Statistical Advisor, Agri)</option>
-            </select>
+            <span id="currentRoleDisplay" style="font-size: 13px; font-weight: 600; color: var(--gov-primary-light); background: rgba(59, 130, 246, 0.1); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(59, 130, 246, 0.2);">
+              <i class="fa-solid fa-user-circle"></i> <span id="currentRoleName">Dr. Rajeshwar Sharma</span> — <span id="currentRoleTitle">Director, NAD (ISS)</span>
+            </span>
           </div>
 
           <a href="/KASHYAP_AI_STATISTICAL_LEARNING_PLATFORM_REPORT.pdf" target="_blank" class="btn-icon" title="Download Official MoSPI Flash Report (PDF)">
@@ -473,7 +465,7 @@
             <div class="card-title"><i class="fa-solid fa-users"></i> Nationwide Cadre Officer Directory (2,850 Profiles)</div>
             <div class="card-subtitle">Search, filter, and inspect individual competency records</div>
           </div>
-          <div style="display: flex; gap: 10px;">
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
             <input type="text" id="officerSearchInput" class="input-field" style="width: 220px; padding: 6px 12px;" placeholder="Search name, ID, or division..." oninput="searchOfficerDirectory()">
             <select id="divisionFilterSelect" class="select-field" style="width: auto; padding: 6px 12px;" onchange="searchOfficerDirectory()">
               <option value="All">All Divisions</option>
@@ -484,6 +476,13 @@
               <option value="SDRD">SDRD</option>
               <option value="DIID">DIID</option>
               <option value="STATE_DES">State DES</option>
+            </select>
+            <select id="cadreFilterSelect" class="select-field" style="width: auto; padding: 6px 12px;" onchange="searchOfficerDirectory()">
+              <option value="All">All Cadres</option>
+              <option value="Indian Statistical Service (ISS)">ISS</option>
+              <option value="Subordinate Statistical Service (SSS)">SSS</option>
+              <option value="State Directorate of Economics and Statistics">State DES</option>
+              <option value="Line Ministry Statistical Cell (Agri / Health / Finance / Commerce)">Ministry Stat Cell</option>
             </select>
           </div>
         </div>
