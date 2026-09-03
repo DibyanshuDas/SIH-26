@@ -35,20 +35,23 @@ def get_learner_profile():
     officer_id = request.args.get('id')
     role_key = request.args.get('role')
     
-    if role_key:
-        docs = db.collection('official_profiles').where('role_key', '==', role_key).limit(1).stream()
-        for doc in docs:
-            return jsonify(doc.to_dict())
-            
-    if officer_id:
-        doc = db.collection('official_profiles').document(officer_id).get()
+    try:
+        if role_key:
+            docs = db.collection('official_profiles').where('role_key', '==', role_key).limit(1).stream()
+            for doc in docs:
+                return jsonify(doc.to_dict())
+                
+        if officer_id:
+            doc = db.collection('official_profiles').document(officer_id).get()
+            if doc.exists:
+                return jsonify(doc.to_dict())
+                
+        # Default fallback
+        doc = db.collection('official_profiles').document('OFF-ISS-2026-HQ').get()
         if doc.exists:
             return jsonify(doc.to_dict())
-            
-    # Default fallback
-    doc = db.collection('official_profiles').document('OFF-ISS-2026-HQ').get()
-    if doc.exists:
-        return jsonify(doc.to_dict())
+    except Exception as e:
+        print(f"Firestore error in get_learner_profile: {e}")
         
     # Final fallback to local file
     try:
@@ -62,16 +65,19 @@ def get_learner_profile():
 @app.route('/api/skill-gaps', methods=['GET'])
 def get_skill_gaps():
     officer_id = request.args.get('id', 'OFF-ISS-2026-HQ')
-    doc = db.collection('official_profiles').document(officer_id).get()
-    if doc.exists:
-        profile = doc.to_dict()
-        return jsonify({
-            "officer_id": profile.get("officer_id"),
-            "overall_competency_index": profile.get("overall_competency_index"),
-            "domain_scores": profile.get("domain_scores", {}),
-            "skill_gaps": profile.get("skill_gaps", {}),
-            "top_priority_gaps": profile.get("top_priority_gaps", [])
-        })
+    try:
+        doc = db.collection('official_profiles').document(officer_id).get()
+        if doc.exists:
+            profile = doc.to_dict()
+            return jsonify({
+                "officer_id": profile.get("officer_id"),
+                "overall_competency_index": profile.get("overall_competency_index"),
+                "domain_scores": profile.get("domain_scores", {}),
+                "skill_gaps": profile.get("skill_gaps", {}),
+                "top_priority_gaps": profile.get("top_priority_gaps", [])
+            })
+    except Exception as e:
+        print(f"Firestore error in get_skill_gaps: {e}")
     return jsonify({"error": "Profile not found"}), 404
 
 @app.route('/api/officers', methods=['GET'])
@@ -81,9 +87,15 @@ def get_officers():
     search = request.args.get('q', '').lower()
     page = int(request.args.get('page', 1))
     
-    # Load all docs and filter in memory to avoid Firestore composite index errors and support search
-    # In a real production app, we would use Algolia or Typesense for full-text search.
-    docs = [d.to_dict() for d in db.collection('official_profiles').stream()]
+    docs = []
+    try:
+        # Load all docs and filter in memory to avoid Firestore composite index errors and support search
+        # In a real production app, we would use Algolia or Typesense for full-text search.
+        docs = [d.to_dict() for d in db.collection('official_profiles').stream()]
+    except Exception as e:
+        print(f"Firestore error in get_officers: {e}")
+        # Could read from data/official_profiles.json here if needed
+        pass
     
     if division and division != "All":
         docs = [d for d in docs if d.get('division_code') == division]
@@ -106,36 +118,43 @@ def get_officers():
 @app.route('/api/recommendations', methods=['GET'])
 def get_recommendations():
     officer_id = request.args.get('id', 'OFF-ISS-2026-HQ')
-    officer_doc = db.collection('official_profiles').document(officer_id).get()
-    
-    if not officer_doc.exists:
-        return jsonify({"error": "Profile not found"}), 404
+    try:
+        officer_doc = db.collection('official_profiles').document(officer_id).get()
+        if not officer_doc.exists:
+            return jsonify({"error": "Profile not found"}), 404
+            
+        officer = officer_doc.to_dict()
+        current_index = officer.get("overall_competency_index", 70.0)
         
-    officer = officer_doc.to_dict()
-    current_index = officer.get("overall_competency_index", 70.0)
-    
-    # Fetch from igot_courses and nssta_tpac_programmes
-    courses = [doc.to_dict() for doc in db.collection('igot_courses').stream()]
-    tpac = [doc.to_dict() for doc in db.collection('nssta_tpac_programmes').stream()]
-    
-    # Inject mock uplift for UI if missing
-    for c in courses:
-        if "estimated_uplift_pct" not in c:
-            c["estimated_uplift_pct"] = round(4.5 + (hash(c.get("course_id", "")) % 30) / 10.0, 1)
+        # Fetch from igot_courses and nssta_tpac_programmes
+        courses = [doc.to_dict() for doc in db.collection('igot_courses').stream()]
+        tpac = [doc.to_dict() for doc in db.collection('nssta_tpac_programmes').stream()]
+        
+        # Inject mock uplift for UI if missing
+        for c in courses:
+            if "estimated_uplift_pct" not in c:
+                c["estimated_uplift_pct"] = round(4.5 + (hash(c.get("course_id", "")) % 30) / 10.0, 1)
 
-    return jsonify({
-      "officer_id": officer_id,
-      "officer_name": officer.get("name", "Officer"),
-      "current_competency_index": current_index,
-      "projected_competency_index": round(current_index + 16.2, 1),
-      "potential_gain_pct": 16.2,
-      "learning_pathway": {
-        "stage_1_urgent_gap_closure": courses[:3],
-        "stage_2_applied_modernization": courses[3:6] if len(courses) > 5 else courses[:2],
-        "stage_3_leadership_strategic": courses[6:8] if len(courses) > 7 else courses[:1]
-      },
-      "nssta_executive_programmes": tpac[:2]
-    })
+        return jsonify({
+          "officer_id": officer_id,
+          "officer_name": officer.get("name", "Officer"),
+          "current_competency_index": current_index,
+          "projected_competency_index": round(current_index + 16.2, 1),
+          "potential_gain_pct": 16.2,
+          "learning_pathway": {
+            "stage_1_urgent_gap_closure": courses[:3],
+            "stage_2_applied_modernization": courses[3:6] if len(courses) > 5 else courses[:2],
+            "stage_3_leadership_strategic": courses[6:8] if len(courses) > 7 else courses[:1]
+          },
+          "nssta_tpac_flagship_programmes": tpac[:2]
+        })
+    except Exception as e:
+        print(f"Firestore error in get_recommendations: {e}")
+        try:
+            with open(os.path.join(os.path.dirname(__file__), "dashboard", "data", "primary_recommendations.json"), "r") as f:
+                return jsonify(json.load(f))
+        except:
+            return jsonify({})
 
 @app.route('/api/igot/courses', methods=['GET'])
 def get_igot_courses():
