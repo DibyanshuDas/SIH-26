@@ -206,6 +206,12 @@ def enrol_course():
         return jsonify({"error": "Profile not found"}), 404
         
     officer = officer_doc.to_dict()
+    # Track completed courses
+    completed = officer.get('completed_courses', [])
+    if course_id not in completed:
+        completed.append(course_id)
+    officer['completed_courses'] = completed
+    
     # Simple simulated uplift logic
     officer['karma_points'] = officer.get('karma_points', 0) + 50
     officer['total_learning_hours'] = officer.get('total_learning_hours', 0) + 2
@@ -216,6 +222,32 @@ def enrol_course():
         "message": f"Successfully enrolled & completed certification!",
         "new_competency_index": officer.get('overall_competency_index', 0),
         "karma_points_earned": 50,
+        "updated_officer": officer
+    })
+
+@app.route('/api/nssta/nominate', methods=['POST'])
+def nominate_programme():
+    data = request.json
+    program_id = data.get('program_id')
+    officer_id = data.get('officer_id', 'OFF-ISS-2026-HQ')
+    
+    officer_ref = db.collection('official_profiles').document(officer_id)
+    officer_doc = officer_ref.get()
+    if not officer_doc.exists:
+        return jsonify({"error": "Profile not found"}), 404
+        
+    officer = officer_doc.to_dict()
+    # Track nominated programmes
+    nominated = officer.get('nominated_programmes', [])
+    if program_id not in nominated:
+        nominated.append(program_id)
+    officer['nominated_programmes'] = nominated
+    
+    officer_ref.set(officer)
+    
+    return jsonify({
+        "success": True,
+        "message": f"Successfully nominated for programme!",
         "updated_officer": officer
     })
 

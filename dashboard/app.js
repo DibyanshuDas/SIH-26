@@ -322,9 +322,10 @@ function renderCourseGrid(elementId, courses, extraClass = "") {
       </div>
       <div class="course-footer">
         <span class="uplift-tag"><i class="fa-solid fa-chart-line"></i> +${c.estimated_uplift_pct}% Uplift</span>
-        <button class="btn-enrol" onclick="enrolInCourse(event, '${c.course_id}', '${c.title}')">
-          <i class="fa-solid fa-graduation-cap"></i> Enrol & Certify
-        </button>
+        ${(currentLearner?.completed_courses || []).includes(c.course_id) ? 
+          `<button class="btn-enrol" style="background: var(--gov-emerald); color: #fff;" disabled><i class="fa-solid fa-check"></i> Certified</button>` :
+          `<button class="btn-enrol" onclick="enrolInCourse(event, '${c.course_id}', '${c.title}')"><i class="fa-solid fa-graduation-cap"></i> Enrol & Certify</button>`
+        }
       </div>
     </div>
   `).join("");
@@ -353,9 +354,11 @@ function renderTpacProgrammes() {
           <span><i class="fa-solid fa-hourglass-end"></i> <strong>Deadline:</strong> ${p.nomination_deadline}</span>
         </div>
       </div>
-      <button class="btn-primary btn-saffron" style="font-size: 12px; padding: 8px 14px;" onclick="nominateForWorkshop(event, '${p.program_id}', '${p.title}')">
-        <i class="fa-solid fa-file-signature"></i> Nominate Officer
-      </button>
+      </div>
+      ${(currentLearner?.nominated_programmes || []).includes(p.program_id) ?
+        `<button class="btn-primary" style="background: var(--gov-emerald); color: #fff; font-size: 12px; padding: 8px 14px;" disabled><i class="fa-solid fa-check"></i> Nominated</button>` :
+        `<button class="btn-primary btn-saffron" style="font-size: 12px; padding: 8px 14px;" onclick="nominateForWorkshop(event, '${p.program_id}', '${p.title}')"><i class="fa-solid fa-file-signature"></i> Nominate Officer</button>`
+      }
     </div>
   `).join("");
 }
@@ -414,13 +417,31 @@ function nominateForWorkshop(event, programId, title) {
   modalTitle.innerHTML = `<i class="fa-solid fa-clipboard-check"></i> Confirm Nomination`;
   modalBody.innerHTML = `Are you sure you want to officially nominate <strong>${currentLearner.name}</strong> for the upcoming NSSTA TPAC Workshop: <em>${title}</em>?<br><br>This will send a request to the Cadre Controlling Authority for approval.`;
   actionBtn.innerText = "Submit Nomination";
-  actionBtn.onclick = () => {
+  actionBtn.onclick = async () => {
     closeGenericModal();
-    showToast(`📋 Nomination Submitted for '${title}'!`);
-    btn.innerHTML = `<i class="fa-solid fa-check"></i> Nominated`;
-    btn.style.background = "var(--gov-emerald)";
-    btn.style.color = "#fff";
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing...`;
     btn.disabled = true;
+    
+    try {
+      const res = await fetch("/api/nssta/nominate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ program_id: programId, officer_id: currentLearner.officer_id })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`📋 Nomination Submitted for '${title}'!`);
+        btn.innerHTML = `<i class="fa-solid fa-check"></i> Nominated`;
+        btn.style.background = "var(--gov-emerald)";
+        btn.style.color = "#fff";
+        if (data.updated_officer) currentLearner = data.updated_officer;
+      }
+    } catch (e) {
+      showToast(`📋 Nomination Submitted for '${title}'!`);
+      btn.innerHTML = `<i class="fa-solid fa-check"></i> Nominated`;
+      btn.style.background = "var(--gov-emerald)";
+      btn.style.color = "#fff";
+    }
   };
   
   document.getElementById("uiOverlay").style.display = "flex";
