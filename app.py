@@ -39,7 +39,7 @@ def get_learner_profile():
         docs = db.collection('official_profiles').where('role_key', '==', role_key).limit(1).stream()
         for doc in docs:
             return jsonify(doc.to_dict())
-    
+            
     if officer_id:
         doc = db.collection('official_profiles').document(officer_id).get()
         if doc.exists:
@@ -49,6 +49,13 @@ def get_learner_profile():
     doc = db.collection('official_profiles').document('OFF-ISS-2026-HQ').get()
     if doc.exists:
         return jsonify(doc.to_dict())
+        
+    # Final fallback to local file
+    try:
+        with open(os.path.join(os.path.dirname(__file__), "dashboard", "data", "primary_learner.json"), "r") as f:
+            return jsonify(json.load(f))
+    except:
+        return jsonify({})
         
     return jsonify({"error": "Profile not found"}), 404
 

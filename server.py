@@ -181,6 +181,14 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_json_response({"success": True, "assessment": generated_asm})
             return
 
+        # 3. API: NSSTA Nominate
+        elif path == "/api/nssta/nominate":
+            program_id = payload.get("program_id")
+            officer_id = payload.get("officer_id", "OFF-ISS-2026-HQ")
+            res = self.handle_nssta_nomination(officer_id, program_id)
+            self.send_json_response(res)
+            return
+
         # 3. API: Submit Assessment Answers
         elif path == "/api/assessments/submit":
             asm_id = payload.get("assessment_id")
@@ -307,6 +315,12 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
         officer["karma_points"] += course["karma_points"]
         officer["completed_courses_count"] += 1
         
+        # Ensure completed_courses array exists
+        completed = officer.get("completed_courses", [])
+        if course_id not in completed:
+            completed.append(course_id)
+        officer["completed_courses"] = completed
+        
         # Recalculate gaps
         if primary_comp in officer["skill_gaps"]:
             officer["skill_gaps"][primary_comp]["current"] = new_level
@@ -325,6 +339,30 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
             "message": f"Successfully enrolled & completed certification for '{course['title']}'!",
             "new_competency_index": officer["overall_competency_index"],
             "karma_points_earned": course["karma_points"],
+            "updated_officer": officer
+        }
+
+    def handle_nssta_nomination(self, officer_id, program_id):
+        primary_file = os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")
+        if os.path.exists(primary_file):
+            with open(primary_file, "r") as f:
+                officer = json.load(f)
+        else:
+            return {"error": "Learner profile not found"}
+
+        # Track nominated programmes
+        nominated = officer.get('nominated_programmes', [])
+        if program_id not in nominated:
+            nominated.append(program_id)
+        officer['nominated_programmes'] = nominated
+        
+        # Save back
+        with open(primary_file, "w") as f:
+            json.dump(officer, f, indent=2)
+            
+        return {
+            "success": True,
+            "message": f"Successfully nominated for programme!",
             "updated_officer": officer
         }
 

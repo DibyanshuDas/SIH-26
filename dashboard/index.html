@@ -531,19 +531,19 @@
         <i class="fa-solid fa-times"></i>
       </button>
     </div>
-    <div id="assistantChatBody" class="assistant-body">
-      <div class="chat-message assistant-message">
+    <div id="chatMessages" class="assistant-body">
+      <div class="chat-msg bot">
         Hello! I am your AI Statistical Assistant. How can I assist you with your competency journey today?
       </div>
     </div>
     <div class="assistant-suggestions" id="assistantSuggestions">
-      <button class="tag-pill" style="cursor: pointer; white-space: nowrap;" onclick="sendAssistantPrompt('Analyze my top skill gaps')">🎯 Analyze My Gaps</button>
-      <button class="tag-pill" style="cursor: pointer; white-space: nowrap;" onclick="sendAssistantPrompt('Explain SNA 2008 GDP Compilation')">📊 Explain SNA 2008</button>
-      <button class="tag-pill" style="cursor: pointer; white-space: nowrap;" onclick="sendAssistantPrompt('How does DPDPA 2023 apply to MoSPI?')">🔒 DPDPA 2023 Rules</button>
+      <button class="suggestion-chip" onclick="sendAssistantPrompt('Analyze my top skill gaps')">🎯 Analyze My Gaps</button>
+      <button class="suggestion-chip" onclick="sendAssistantPrompt('Explain SNA 2008 GDP Compilation')">📊 Explain SNA 2008</button>
+      <button class="suggestion-chip" onclick="sendAssistantPrompt('How does DPDPA 2023 apply to MoSPI?')">🔒 DPDPA 2023 Rules</button>
     </div>
     <div class="assistant-footer">
-      <input type="text" id="assistantInput" placeholder="Ask about statistics, courses, gaps..." onkeypress="if(event.key === 'Enter') sendAssistantMessage()">
-      <button class="btn-primary" style="padding: 8px 14px;" onclick="sendAssistantMessage()">
+      <input type="text" id="assistantInput" placeholder="Ask about statistics, courses..." onkeypress="if(event.key === 'Enter') sendAssistantMessage()">
+      <button onclick="sendAssistantMessage()" title="Send">
         <i class="fa-solid fa-paper-plane"></i>
       </button>
     </div>
