@@ -606,7 +606,9 @@ async function searchOfficerDirectory(page = 1) {
     const officers = data.officers || [];
     const totalPages = data.total_pages || 1;
 
-    tbody.innerHTML = officers.map(o => `
+    tbody.innerHTML = officers.map(o => {
+      const isCurrent = currentLearner && o.officer_id === currentLearner.officer_id;
+      return `
       <tr style="border-bottom: 1px solid var(--border-glass); transition: 0.15s ease;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
         <td style="padding: 10px; font-family: var(--font-mono); color: var(--gov-primary-light);">${o.officer_id}</td>
         <td style="padding: 10px; font-weight: 600;">${o.name}</td>
@@ -616,12 +618,12 @@ async function searchOfficerDirectory(page = 1) {
         <td style="padding: 10px; font-weight: 700; color: ${o.overall_competency_index >= 80 ? 'var(--gov-emerald)' : 'var(--gov-rose)'};">${o.overall_competency_index}%</td>
         <td style="padding: 10px; color: var(--text-secondary);">${o.total_learning_hours} hrs</td>
         <td style="padding: 10px;">
-          <button class="btn-primary" style="padding: 4px 8px; font-size: 11px;" onclick="viewOfficerRecord('${o.officer_id}')">
-            <i class="fa-solid fa-eye"></i> View
+          <button class="btn-primary" style="padding: 4px 8px; font-size: 11px;" ${!isCurrent ? 'disabled title="Only the active profile can be viewed"' : ''} onclick="${isCurrent ? `viewOfficerRecord('${o.officer_id}')` : ''}">
+            <i class="fa-solid fa-eye"></i> ${isCurrent ? 'View Profile' : 'Active'}
           </button>
         </td>
       </tr>
-    `).join("");
+    `}).join("");
 
     if (officers.length === 0) {
         tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:var(--text-muted);">No officers found matching the filter criteria.</td></tr>`;
