@@ -26,19 +26,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadInitialData() {
   try {
     // 1. Learner Profile
-    const learnerRes = await fetch("/api/learner-profile").catch(() => fetch("data/primary_learner.json"));
+    let learnerRes = await fetch("/api/learner-profile");
+    if (!learnerRes.ok) learnerRes = await fetch("data/primary_learner.json");
     currentLearner = await learnerRes.json();
 
     // 2. Recommendations
-    const recRes = await fetch("/api/recommendations").catch(() => fetch("data/primary_recommendations.json"));
+    let recRes = await fetch("/api/recommendations");
+    if (!recRes.ok) recRes = await fetch("data/primary_recommendations.json");
     currentRecommendations = await recRes.json();
 
     // 3. Framework
-    const fwRes = await fetch("/api/framework").catch(() => fetch("data/competency_framework.json"));
+    let fwRes = await fetch("/api/framework");
+    if (!fwRes.ok) fwRes = await fetch("data/competency_framework.json");
     competencyFramework = await fwRes.json();
 
     // 4. Admin Analytics
-    const adminRes = await fetch("/api/admin/analytics").catch(() => fetch("data/administrative_analytics.json"));
+    let adminRes = await fetch("/api/admin/analytics");
+    if (!adminRes.ok) adminRes = await fetch("data/administrative_analytics.json");
     administrativeAnalytics = await adminRes.json();
 
     // Render UI Components
@@ -50,6 +54,15 @@ async function loadInitialData() {
     renderAdminAnalytics();
   } catch (err) {
     console.error("Error loading initial data:", err);
+    // Show error state in UI
+    const priorityContainer = document.getElementById("priorityGapsList");
+    if (priorityContainer) {
+      priorityContainer.innerHTML = `<div style="color: var(--gov-rose); padding: 16px; text-align: center;"><i class="fa-solid fa-triangle-exclamation"></i> Failed to load data: ${err.message}. Please ensure the server is running at http://localhost:8050/</div>`;
+    }
+    const compContainer = document.getElementById("fullCompetencyList");
+    if (compContainer) {
+      compContainer.innerHTML = `<div style="color: var(--gov-rose); padding: 16px; text-align: center;"><i class="fa-solid fa-triangle-exclamation"></i> Failed to load competency framework.</div>`;
+    }
   }
 }
 
@@ -121,12 +134,13 @@ function initRadarChart() {
   const option = {
     tooltip: { trigger: "item" },
     legend: {
-      bottom: 0,
-      textStyle: { color: legendColor, fontSize: 12, fontWeight: 500 },
+      bottom: 18,
+      textStyle: { color: legendColor, fontSize: 11, fontWeight: 500 },
       data: ["Current Assessed Capability", "Cadre Required Benchmark"]
     },
     radar: {
       shape: "polygon",
+      radius: "68%",
       indicator: [
         { name: "Statistical Methodologies\n& National Accounts", max: 5 },
         { name: "Modern Data Science,\nAI & Computing", max: 5 },
@@ -135,8 +149,9 @@ function initRadarChart() {
       ],
       axisName: {
         color: axisColor,
-        fontSize: 12.5,
-        fontWeight: 700
+        fontSize: 11.5,
+        fontWeight: 700,
+        padding: [0, 0, 8, 0]
       },
       splitArea: {
         areaStyle: {
@@ -186,10 +201,15 @@ function initRadarChart() {
 // -------------------------------------------------------------------------
 function renderPriorityGaps() {
   const container = document.getElementById("priorityGapsList");
-  if (!container || !currentLearner) return;
+  if (!container) return;
+  
+  if (!currentLearner) {
+    container.innerHTML = `<div style="color: var(--text-muted); font-size: 13px; padding: 16px; text-align: center;"><i class="fa-solid fa-circle-info"></i> No officer profile loaded. Please select a role or wait for data to load.</div>`;
+    return;
+  }
 
   const gaps = currentLearner.top_priority_gaps || [];
-  if (gaps.length === 0) {
+  if (!gaps.length) {
     container.innerHTML = `<div style="color: var(--gov-emerald); font-weight: 600; padding: 12px;"><i class="fa-solid fa-circle-check"></i> Outstanding! No urgent skill gaps identified. All competencies meet target requirements.</div>`;
     return;
   }
@@ -234,7 +254,17 @@ function filterCompetencyList(domainKey, btnEl) {
 
 function renderFullCompetencyList(domainKey = "ALL") {
   const container = document.getElementById("fullCompetencyList");
-  if (!container || !competencyFramework || !currentLearner) return;
+  if (!container) return;
+  
+  if (!competencyFramework) {
+    container.innerHTML = `<div style="color: var(--text-muted); font-size: 13px; padding: 16px; text-align: center;"><i class="fa-solid fa-circle-info"></i> Competency framework not loaded. Please refresh the page.</div>`;
+    return;
+  }
+  
+  if (!currentLearner) {
+    container.innerHTML = `<div style="color: var(--text-muted); font-size: 13px; padding: 16px; text-align: center;"><i class="fa-solid fa-circle-info"></i> No officer profile loaded. Please select a role or wait for data to load.</div>`;
+    return;
+  }
 
   const curComps = currentLearner.current_competencies || {};
   const tgtComps = currentLearner.target_competencies || {};
@@ -261,6 +291,11 @@ function renderFullCompetencyList(domainKey = "ALL") {
         severity: gapInfo.severity
       });
     }
+  }
+
+  if (!items.length) {
+    container.innerHTML = `<div style="color: var(--text-muted); font-size: 13px; padding: 16px; text-align: center;"><i class="fa-solid fa-filter-circle-xmark"></i> No competencies match the selected filter.</div>`;
+    return;
   }
 
   container.innerHTML = items.map(item => `
