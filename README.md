@@ -1,4 +1,4 @@
-# KASHYAP-STAT: AI-Enabled Skill Intelligence & Personalized Learning Platform
+# SKILL-STAT: AI-Enabled Skill Intelligence & Personalized Learning Platform
 
 An enterprise-grade, AI-powered Skill Intelligence, Competency Gap Analysis, and Personalized Learning Platform designed specifically for **India's Official Statistical System** (Ministry of Statistics and Programme Implementation - **MoSPI**, **NSSTA**, and State DES), seamlessly integrated with the **iGOT Karmayogi** ecosystem and **NSSTA TPAC** training frameworks.
 
@@ -8,7 +8,7 @@ An enterprise-grade, AI-powered Skill Intelligence, Competency Gap Analysis, and
 
 India's Official Statistical System is modernizing rapidly with the adoption of **Computer Assisted Personal Interviewing (CAPI)**, **AI/ML Automated Data Scrubbing**, **High-Frequency Economic Nowcasting**, **Geospatial Survey Stratification (ISRO Bhuvan)**, and **Cloud Data Lakes (NIC MeghRaj)**. However, statistical officers across the **Indian Statistical Service (ISS)** and **Subordinate Statistical Service (SSS)** often face challenges in identifying relevant upskilling pathways aligned with their specific assignments and evolving domain needs.
 
-**KASHYAP-STAT** solves this by delivering:
+**SKILL-STAT** solves this by delivering:
 1. **Automated Competency Gap Profiling**: Maps 28 official statistical units across 4 core domains against target cadre benchmarks.
 2. **Dual-Track Hybrid Recommendation Engine**: Integrates 60+ **iGOT Karmayogi digital micro-courses** with 15+ **NSSTA TPAC in-service residential programmes**.
 3. **AI-Powered Assessment & Generative MCQ Engine**: Ingests uploaded official manuals, survey guidelines, and circulars to synthesize high-quality objective MCQs with **pedagogical explanations**, **source citations**, and **real-time competency score calibration**.

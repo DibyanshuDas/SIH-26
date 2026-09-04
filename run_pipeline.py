@@ -1,5 +1,5 @@
 """
-Master Pipeline Runner for KASHYAP-STAT (Folder 101)
+Master Pipeline Runner for SKILL-STAT (Folder 101)
 AI-Enabled Skill Intelligence, Competency Gap Analysis, iGOT Karmayogi & NSSTA Integration,
 and Intelligent Assessment Generation for India's Official Statistical System.
 
@@ -8,7 +8,7 @@ Orchestrates:
 2. Dual-Track Hybrid Recommendation Engine (iGOT Karmayogi + NSSTA TPAC)
 3. AI Assessment & Generative MCQ Bank Compilation
 4. Publication-Grade MoSPI Executive Flash Report Generation (PDF)
-5. Starting KASHYAP-STAT Web Server on http://localhost:8001/
+5. Starting SKILL-STAT Web Server on http://localhost:8001/
 """
 
 import sys
@@ -31,7 +31,7 @@ def main():
     print("""
   ######################################################################
   #                                                                    #
-  #   KASHYAP-STAT: AI SKILL INTELLIGENCE & LEARNING PLATFORM          #
+  #   SKILL-STAT: AI SKILL INTELLIGENCE & LEARNING PLATFORM            #
   #   Capacity Building for India's Official Statistical System        #
   #   MoSPI • NSSTA • Mission Karmayogi (Folder 101)                   #
   #                                                                    #
@@ -52,7 +52,7 @@ def main():
 
     # Step 5: Launch Web Server
     print(f"\n==================================================================")
-    print(f"  LAUNCHING KASHYAP-STAT PLATFORM WEB SERVER (Port 8050)")
+    print(f"  LAUNCHING SKILL-STAT PLATFORM WEB SERVER (Port 8050)")
     print(f"  Access the Portal at: http://localhost:8050/")
     print(f"==================================================================\n")
     import server

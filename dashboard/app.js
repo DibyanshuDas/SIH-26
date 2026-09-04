@@ -1,5 +1,5 @@
 /**
- * KASHYAP-STAT Dashboard Application Engine
+ * SKILL-STAT Dashboard Application Engine
  * Manages State, ECharts Visualizations, Role Switching, Competency Profiling,
  * and iGOT / NSSTA Recommendations.
  */

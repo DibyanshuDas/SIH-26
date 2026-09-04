@@ -187,7 +187,7 @@ def build_pdf(filename="KASHYAP_AI_STATISTICAL_LEARNING_PLATFORM_REPORT.pdf"):
     # ---------------------------------------------------------
     # HEADER & TITLE BLOCK
     # ---------------------------------------------------------
-    story.append(Paragraph("KASHYAP-STAT: AI-Enabled Skill Intelligence & Personalized Learning Platform", title_style))
+    story.append(Paragraph("SKILL-STAT: AI-Enabled Skill Intelligence & Personalized Learning Platform", title_style))
     story.append(Paragraph("CAPACITY BUILDING FOR INDIA'S OFFICIAL STATISTICAL SYSTEM • iGOT KARMAYOGI & NSSTA TPAC INTEGRATION", subtitle_style))
     story.append(Paragraph("<b>Government of India</b> • Ministry of Statistics and Programme Implementation (MoSPI) • National Statistical Systems Training Academy (NSSTA)<br/><b>Framework</b>: Mission Karmayogi National Programme for Civil Services Capacity Building (NPCSCB) | <b>Version</b>: 2.0 Production Release", meta_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=PRIMARY, spaceBefore=2, spaceAfter=10))
@@ -199,13 +199,13 @@ def build_pdf(filename="KASHYAP_AI_STATISTICAL_LEARNING_PLATFORM_REPORT.pdf"):
     summary_text = """
     India's Official Statistical System is undergoing a historic structural transformation. The modernization roadmap transitions the national statistical apparatus from traditional paper-based schedules to <b>Computer Assisted Personal Interviewing (CAPI)</b>, <b>AI/ML automated data scrubbing</b>, <b>High-Frequency Economic Nowcasting</b>, <b>Geospatial PSU Stratification (ISRO Bhuvan)</b>, and <b>Cloud Data Lakes (NIC MeghRaj)</b>. However, across the Indian Statistical Service (ISS) and Subordinate Statistical Service (SSS) cadres spanning 2,850+ officers, significant competency asymmetries persist between traditional estimation techniques and modern digital statistical architectures.
     <br/><br/>
-    <b>KASHYAP-STAT</b> (Karmayogi AI Statistical Skill & Capacity Augmentation Platform) bridges this national capability gap by providing an intelligent end-to-end skill diagnostic, personalized micro-course recommendation engine, and an automated LLM/NLP objective assessment generator that converts official manuals into instant interactive quizzes.
+    <b>SKILL-STAT</b> (Karmayogi AI Statistical Skill & Capacity Augmentation Platform) bridges this national capability gap by providing an intelligent end-to-end skill diagnostic, personalized micro-course recommendation engine, and an automated LLM/NLP objective assessment generator that converts official manuals into instant interactive quizzes.
     """
     story.append(Paragraph(summary_text, body_style))
     
     # Callout Box
     callout_data = [[
-        Paragraph("<b>Core National Impact</b>: KASHYAP-STAT automates competency profiling across 28 official statistical units, personalizes learning across 60+ iGOT Karmayogi digital modules and 15+ NSSTA TPAC flagship programmes, and deploys an AI assessment engine reducing trainer quiz authoring time by <b>92%</b> while uplifting nationwide statistical competency indices by <b>+14.8%</b>.", callout_style)
+        Paragraph("<b>Core National Impact</b>: SKILL-STAT automates competency profiling across 28 official statistical units, personalizes learning across 60+ iGOT Karmayogi digital modules and 15+ NSSTA TPAC flagship programmes, and deploys an AI assessment engine reducing trainer quiz authoring time by <b>92%</b> while uplifting nationwide statistical competency indices by <b>+14.8%</b>.", callout_style)
     ]]
     callout_table = Table(callout_data, colWidths=[7.2 * inch])
     callout_table.setStyle(TableStyle([
@@ -343,7 +343,7 @@ def build_pdf(filename="KASHYAP_AI_STATISTICAL_LEARNING_PLATFORM_REPORT.pdf"):
     # ---------------------------------------------------------
     story.append(Paragraph("4. AI-Powered Intelligent Assessment & MCQ Generation Engine", h1_style))
     story.append(Paragraph("""
-    A standout capability of KASHYAP-STAT is its <b>Generative NLP Assessment Engine</b>. Trainers and cadre managers can upload unformatted PDFs, technical manuals, survey guidelines, or policy circulars. The engine executes:
+    A standout capability of SKILL-STAT is its <b>Generative NLP Assessment Engine</b>. Trainers and cadre managers can upload unformatted PDFs, technical manuals, survey guidelines, or policy circulars. The engine executes:
     """, body_style))
     
     story.append(Paragraph("1. <b>Statistical Concept Parsing</b>: Extracts statutory definitions, algebraic estimation formulas, field validation rules, and disclosure limits.", bullet_style))
@@ -429,7 +429,7 @@ def build_pdf(filename="KASHYAP_AI_STATISTICAL_LEARNING_PLATFORM_REPORT.pdf"):
     # ---------------------------------------------------------
     story.append(Paragraph("6. Web Platform Architecture & How to Operate", h1_style))
     arch_text = """
-    KASHYAP-STAT is engineered as an offline-capable, responsive single-page web portal backed by a high-speed Python REST service:
+    SKILL-STAT is engineered as an offline-capable, responsive single-page web portal backed by a high-speed Python REST service:
     <br/><br/>
     • <b>Learner Portal</b>: Displays the officer's Digital Competency Passport, 4-domain interactive ECharts Radar Chart, prioritized gap checklist with 1-click iGOT enrolment, and the AI Learning Assistant.
     <br/>
@@ -443,7 +443,7 @@ def build_pdf(filename="KASHYAP_AI_STATISTICAL_LEARNING_PLATFORM_REPORT.pdf"):
     # Deployment Table
     dep_data = [
         [Paragraph("Port / Component", table_header), Paragraph("Service Endpoint", table_header), Paragraph("Functional Description", table_header)],
-        [Paragraph("<b>Port 8050</b>", table_text), Paragraph("http://localhost:8050/", table_text), Paragraph("KASHYAP-STAT Official Learning & Assessment Platform", table_text)],
+        [Paragraph("<b>Port 8050</b>", table_text), Paragraph("http://localhost:8050/", table_text), Paragraph("SKILL-STAT Official Learning & Assessment Platform", table_text)],
         [Paragraph("<b>REST API</b>", table_text), Paragraph("/api/learner-profile", table_text), Paragraph("Fetches active officer competencies, gaps, and learning journey", table_text)],
         [Paragraph("<b>REST API</b>", table_text), Paragraph("/api/recommendations", table_text), Paragraph("Dual-track iGOT Karmayogi and NSSTA TPAC recommendation engine", table_text)],
         [Paragraph("<b>REST API</b>", table_text), Paragraph("/api/assessments/generate", table_text), Paragraph("AI Generative MCQ synthesis from uploaded text/manuals", table_text)],

@@ -1,5 +1,5 @@
 """
-KASHYAP-STAT Web Server (Port 8001)
+SKILL-STAT Web Server (Port 8001)
 Serves the AI-Enabled Official Statistical Learning, Competency Intelligence & Assessment Platform.
 Provides full REST APIs for:
 - Learner Digital Competency Passport & Skill Gap Profiling
@@ -438,11 +438,11 @@ def start_server():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", PORT), KashyapRequestHandler) as httpd:
-        print(f"[OK] KASHYAP-STAT Web Server actively running at http://localhost:{PORT}/")
+        print(f"[OK] SKILL-STAT Web Server actively running at http://localhost:{PORT}/")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
-            print("\n[!] Shutting down KASHYAP-STAT Web Server.")
+            print("\n[!] Shutting down SKILL-STAT Web Server.")
 
 if __name__ == "__main__":
     start_server()
