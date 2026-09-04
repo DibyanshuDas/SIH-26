@@ -4,6 +4,10 @@
  * diagnosing competency gaps, and providing course guidance.
  */
 
+const API_BASE = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' && window.location.port !== '8050') 
+  ? 'http://localhost:8050' 
+  : '';
+
 function toggleAssistantModal() {
   const modal = document.getElementById("assistantModal");
   if (!modal) return;
@@ -44,12 +48,12 @@ async function sendAssistantMessage() {
   msgContainer.scrollTop = msgContainer.scrollHeight;
 
   try {
-    const res = await fetch("/api/assistant/query", {
+    const res = await fetch(API_BASE + "/api/assistant/query", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         query: query,
-        officer_id: currentLearner?.officer_id || "OFF-ISS-2026-HQ"
+        officer_id: (typeof currentLearner !== 'undefined' && currentLearner) ? currentLearner.officer_id : "OFF-ISS-2026-HQ"
       })
     });
 

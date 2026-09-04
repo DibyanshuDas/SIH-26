@@ -230,7 +230,7 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Content-Type", "application/json")
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Headers", "*")
         self.send_header("Cache-Control", "no-cache")
         self.end_headers()
         self.wfile.write(json.dumps(data).encode("utf-8"))
@@ -240,12 +240,13 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
         try:
             body_bytes = self.rfile.read(content_length) if content_length > 0 else b""
 
-            # Parse multipart boundary
-            if "boundary=" not in content_type:
-                self.send_json_response({"success": False, "error": "Invalid upload format"})
+            # Parse multipart boundary (case insensitive check for content_type)
+            content_type_lower = content_type.lower()
+            if "boundary=" not in content_type_lower:
+                self.send_json_response({"success": False, "error": "Invalid upload format. Missing boundary."})
                 return
 
-            boundary = content_type.split("boundary=")[1].strip()
+            boundary = content_type[content_type_lower.find("boundary=") + 9:].strip()
             if boundary.startswith('"') and boundary.endswith('"'):
                 boundary = boundary[1:-1]
 
@@ -360,7 +361,7 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Headers", "*")
         self.end_headers()
 
     def get_officer_profile(self, officer_id=None, role_filter=None):
@@ -527,11 +528,36 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
     def handle_assistant_query(self, query: str, officer_id: str):
         q_lower = query.lower()
         
-        if "gap" in q_lower or "skill" in q_lower or "deficiencies" in q_lower:
+        if "gap" in q_lower or "skill" in q_lower or "deficiencies" in q_lower or "report" in q_lower or "analy" in q_lower:
+            primary_file = os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")
+            officer = {}
+            if os.path.exists(primary_file):
+                try:
+                    with open(primary_file, "r") as f:
+                        officer = json.load(f)
+                except: pass
+            
+            if officer and "skill_gaps" in officer:
+                gaps = sorted(officer["skill_gaps"].items(), key=lambda x: x[1].get("gap", 0), reverse=True)
+                if gaps and gaps[0][1].get("gap", 0) > 0:
+                    top_gap_id, top_gap_data = gaps[0]
+                    gap_name = top_gap_data.get("name", top_gap_id)
+                    gap_level = top_gap_data.get("gap", 0)
+                    overall_idx = officer.get("overall_competency_index", 0)
+                    
+                    course_rec = "Take a specialized module on iGOT"
+                    course_id = "IGOT-STAT-101"
+                    
+                    return {
+                        "answer": f"Based on my analysis of your official reports, your overall Competency Readiness Index is currently **{overall_idx}%**. Your top priority skill gap is in **{gap_name}** (Gap: -{gap_level} Levels). Closing this gap is critical for your role and will elevate your index significantly.",
+                        "suggested_actions": [f"Enrol in iGOT course for {gap_name}", f"Take the {gap_name} Assessment", "Analyze other gaps"],
+                        "recommended_course_id": course_id
+                    }
+            
             return {
-                "answer": "Based on your competency profile, your top priority skill gap is in **Modern Python for Microdata Processing (TECH-01)** (Gap: -2 Levels) and **AI & Machine Learning for Survey Nowcasting (TECH-07)**. Closing these gaps will elevate your Competency Readiness Index from **78.4% to 86.8%**.",
-                "suggested_actions": ["Enrol in 'Python for Official Statistics (IGOT-TECH-201)'", "Take the Python Microdata Assessment", "Register for NSSTA-TPAC AI Workshop"],
-                "recommended_course_id": "IGOT-TECH-201"
+                "answer": "Based on your reports, you currently have no major skill gaps! Your competency profile is fully aligned with your Cadre mandate.",
+                "suggested_actions": ["Explore advanced iGOT courses", "View NSSTA TPAC Nominations"],
+                "recommended_course_id": "IGOT-STAT-101"
             }
         elif "national account" in q_lower or "sna" in q_lower or "gdp" in q_lower:
             return {
