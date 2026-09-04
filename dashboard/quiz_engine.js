@@ -12,6 +12,11 @@ let timeRemainingSeconds = 900;
 let quizStartTime = null;
 let allMaterials = {};
 
+// Handle local file:/// loading by pointing to the localhost server
+const API_BASE = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' && window.location.port !== '8050') 
+  ? 'http://localhost:8050' 
+  : '';
+
 document.addEventListener("DOMContentLoaded", async () => {
   await loadMaterials();
   // Pre-fill text with first material
@@ -20,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadMaterials() {
   try {
-    const res = await fetch("/api/materials").catch(() => fetch("data/learning_materials.json"));
+    const res = await fetch(API_BASE + "/api/materials").catch(() => fetch("data/learning_materials.json"));
     allMaterials = await res.json();
   } catch (e) {
     console.error("Error loading learning materials:", e);
@@ -67,7 +72,7 @@ async function generateAIQuiz() {
   }
 
   try {
-    const res = await fetch("/api/assessments/generate", {
+    const res = await fetch(API_BASE + "/api/assessments/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -234,7 +239,7 @@ async function submitAssessment() {
   const timeSpent = Math.round((Date.now() - quizStartTime) / 1000);
 
   try {
-    const res = await fetch("/api/assessments/submit", {
+    const res = await fetch(API_BASE + "/api/assessments/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -418,7 +423,7 @@ function processUploadedFile(file) {
   const formData = new FormData();
   formData.append("file", file);
 
-  fetch("/api/assessments/upload-material", {
+  fetch(API_BASE + "/api/assessments/upload-material", {
     method: "POST",
     body: formData
   })

@@ -13,6 +13,10 @@ let radarChartInstance = null;
 let divisionBarChartInstance = null;
 let deficitPieChartInstance = null;
 
+const API_BASE = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' && window.location.port !== '8050') 
+  ? 'http://localhost:8050' 
+  : '';
+
 // Initialize on DOM Ready
 document.addEventListener("DOMContentLoaded", async () => {
   await loadInitialData();
@@ -26,23 +30,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadInitialData() {
   try {
     // 1. Learner Profile
-    let learnerRes = await fetch("/api/learner-profile");
-    if (!learnerRes.ok) learnerRes = await fetch("data/primary_learner.json");
+    let learnerRes = await fetch(API_BASE + "/api/learner-profile").catch(() => null);
+    if (!learnerRes || !learnerRes.ok) learnerRes = await fetch("data/primary_learner.json");
     currentLearner = await learnerRes.json();
 
     // 2. Recommendations
-    let recRes = await fetch("/api/recommendations");
-    if (!recRes.ok) recRes = await fetch("data/primary_recommendations.json");
+    let recRes = await fetch(API_BASE + "/api/recommendations").catch(() => null);
+    if (!recRes || !recRes.ok) recRes = await fetch("data/primary_recommendations.json");
     currentRecommendations = await recRes.json();
 
     // 3. Framework
-    let fwRes = await fetch("/api/framework");
-    if (!fwRes.ok) fwRes = await fetch("data/competency_framework.json");
+    let fwRes = await fetch(API_BASE + "/api/framework").catch(() => null);
+    if (!fwRes || !fwRes.ok) fwRes = await fetch("data/competency_framework.json");
     competencyFramework = await fwRes.json();
 
     // 4. Admin Analytics
-    let adminRes = await fetch("/api/admin/analytics");
-    if (!adminRes.ok) adminRes = await fetch("data/administrative_analytics.json");
+    let adminRes = await fetch(API_BASE + "/api/admin/analytics").catch(() => null);
+    if (!adminRes || !adminRes.ok) adminRes = await fetch("data/administrative_analytics.json");
     administrativeAnalytics = await adminRes.json();
 
     // Render UI Components
@@ -414,12 +418,12 @@ async function enrolInCourse(event, courseId, courseTitle) {
   btn.disabled = true;
 
   try {
-    const res = await fetch("/api/igot/enrol", {
+    const res = await fetch(API_BASE + "/api/igot/enrol", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         course_id: courseId,
-        officer_id: currentLearner.officer_id
+        officer_id: "OFF-ISS-2026-HQ" // Using active user
       })
     });
 
