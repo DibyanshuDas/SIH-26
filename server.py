@@ -38,7 +38,7 @@ assessment_engine = AssessmentEngine()
 
 # Initialize data if not already existing
 if not os.path.exists(os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")):
-    competency_engine.generate_officer_profiles(2850)
+    competency_engine.generate_officer_profiles(100)
     competency_engine.save_all_data()
     recommendation_engine.save_all_catalogs()
     assessment_engine.save_all_data()

@@ -1,122 +1,122 @@
 {
-  "total_officers": 2850,
+  "total_officers": 100,
   "national_avg_competency_index": 73.6,
-  "total_learning_hours_logged": 350012,
-  "total_karma_points_earned": 7941057,
+  "total_learning_hours_logged": 12604,
+  "total_karma_points_earned": 286180,
   "division_analytics": {
     "FOD": {
       "name": "Field Operations Division (NSS Survey Network)",
-      "officer_count": 357,
-      "avg_competency_index": 73.6,
-      "total_learning_hours": 45480,
-      "avg_learning_hours": 127.4
+      "officer_count": 16,
+      "avg_competency_index": 72.2,
+      "total_learning_hours": 2277,
+      "avg_learning_hours": 142.3
     },
     "SDRD": {
       "name": "Survey Design and Research Division",
-      "officer_count": 394,
-      "avg_competency_index": 73.7,
-      "total_learning_hours": 49553,
-      "avg_learning_hours": 125.8
+      "officer_count": 8,
+      "avg_competency_index": 74.5,
+      "total_learning_hours": 1030,
+      "avg_learning_hours": 128.8
     },
     "NAD": {
       "name": "National Accounts Division (GDP / National Balance Sheet)",
-      "officer_count": 341,
-      "avg_competency_index": 73.4,
-      "total_learning_hours": 40848,
-      "avg_learning_hours": 119.8
+      "officer_count": 9,
+      "avg_competency_index": 73.9,
+      "total_learning_hours": 880,
+      "avg_learning_hours": 97.8
     },
     "ESD": {
       "name": "Economic Statistics Division (CPI, IIP, ASI)",
-      "officer_count": 345,
-      "avg_competency_index": 73.6,
-      "total_learning_hours": 40581,
-      "avg_learning_hours": 117.6
+      "officer_count": 20,
+      "avg_competency_index": 73.0,
+      "total_learning_hours": 2493,
+      "avg_learning_hours": 124.7
     },
     "SSD": {
       "name": "Social Statistics Division (PLFS, Time-Use, Gender, SDGs)",
-      "officer_count": 360,
-      "avg_competency_index": 73.6,
-      "total_learning_hours": 45230,
-      "avg_learning_hours": 125.6
+      "officer_count": 13,
+      "avg_competency_index": 74.6,
+      "total_learning_hours": 1606,
+      "avg_learning_hours": 123.5
     },
     "DIID": {
       "name": "Data Informatics & Innovation Division (Data Lake & AI Lab)",
-      "officer_count": 370,
-      "avg_competency_index": 73.9,
-      "total_learning_hours": 45557,
-      "avg_learning_hours": 123.1
+      "officer_count": 10,
+      "avg_competency_index": 74.3,
+      "total_learning_hours": 1412,
+      "avg_learning_hours": 141.2
     },
     "NSSTA": {
       "name": "National Statistical Systems Training Academy",
-      "officer_count": 313,
-      "avg_competency_index": 73.7,
-      "total_learning_hours": 40403,
-      "avg_learning_hours": 129.1
+      "officer_count": 10,
+      "avg_competency_index": 74.7,
+      "total_learning_hours": 1544,
+      "avg_learning_hours": 154.4
     },
     "STATE_DES": {
       "name": "State Directorate of Economics and Statistics (State Govts)",
-      "officer_count": 370,
+      "officer_count": 14,
       "avg_competency_index": 73.2,
-      "total_learning_hours": 42360,
-      "avg_learning_hours": 114.5
+      "total_learning_hours": 1362,
+      "avg_learning_hours": 97.3
     }
   },
   "cadre_analytics": {
     "ISS_SAG_DDG": {
       "title": "Senior Administrative Grade (DDG / ADG)",
       "cadre": "Indian Statistical Service (ISS)",
-      "officer_count": 175,
-      "avg_competency_index": 77.5,
-      "avg_learning_hours": 122.5
+      "officer_count": 7,
+      "avg_competency_index": 79.1,
+      "avg_learning_hours": 74.0
     },
     "ISS_JAG_DIR": {
       "title": "Junior Administrative Grade (Director / Joint Director)",
       "cadre": "Indian Statistical Service (ISS)",
-      "officer_count": 339,
-      "avg_competency_index": 77.4,
-      "avg_learning_hours": 126.4
+      "officer_count": 11,
+      "avg_competency_index": 76.3,
+      "avg_learning_hours": 108.5
     },
     "ISS_STS_DD": {
       "title": "Senior Time Scale (Deputy Director)",
       "cadre": "Indian Statistical Service (ISS)",
-      "officer_count": 527,
-      "avg_competency_index": 74.9,
-      "avg_learning_hours": 121.6
+      "officer_count": 16,
+      "avg_competency_index": 74.4,
+      "avg_learning_hours": 131.1
     },
     "ISS_JTS_AD": {
       "title": "Junior Time Scale (Assistant Director)",
       "cadre": "Indian Statistical Service (ISS)",
-      "officer_count": 372,
-      "avg_competency_index": 71.2,
-      "avg_learning_hours": 124.7
+      "officer_count": 15,
+      "avg_competency_index": 71.4,
+      "avg_learning_hours": 129.9
     },
     "SSS_SSO": {
       "title": "Senior Statistical Officer (SSO)",
       "cadre": "Subordinate Statistical Service (SSS)",
-      "officer_count": 733,
-      "avg_competency_index": 73.0,
-      "avg_learning_hours": 122.4
+      "officer_count": 24,
+      "avg_competency_index": 72.9,
+      "avg_learning_hours": 147.2
     },
     "SSS_JSO": {
       "title": "Junior Statistical Officer (JSO / Field Investigator)",
       "cadre": "Subordinate Statistical Service (SSS)",
-      "officer_count": 425,
-      "avg_competency_index": 70.2,
-      "avg_learning_hours": 119.6
+      "officer_count": 16,
+      "avg_competency_index": 70.0,
+      "avg_learning_hours": 123.1
     },
     "STATE_DES_OFFICER": {
       "title": "State Statistical Officer / DES Joint Director",
       "cadre": "State Directorate of Economics and Statistics",
-      "officer_count": 139,
-      "avg_competency_index": 72.4,
-      "avg_learning_hours": 129.4
+      "officer_count": 5,
+      "avg_competency_index": 73.4,
+      "avg_learning_hours": 124.6
     },
     "MINISTRY_STAT_ANALYST": {
       "title": "Statistical Advisor / Senior Analyst (Line Ministry)",
       "cadre": "Line Ministry Statistical Cell (Agri / Health / Finance / Commerce)",
-      "officer_count": 140,
-      "avg_competency_index": 75.4,
-      "avg_learning_hours": 119.3
+      "officer_count": 6,
+      "avg_competency_index": 78.8,
+      "avg_learning_hours": 120.0
     }
   },
   "top_national_skill_deficits": [
@@ -125,90 +125,90 @@
       "name": "Python for Statistical Computing & Survey Processing",
       "domain_name": "Modern Data Science, AI & Statistical Computing",
       "domain_color": "#7c3aed",
-      "total_gap_points": 3716,
-      "officers_needing_training": 2446,
-      "officers_pct": 85.8
-    },
-    {
-      "competency_id": "GOV-02",
-      "name": "Data Privacy, DPDPA 2023 & Statistical Confidentiality",
-      "domain_name": "Digital Public Infrastructure, Security & Compliance",
-      "domain_color": "#059669",
-      "total_gap_points": 3666,
-      "officers_needing_training": 2413,
-      "officers_pct": 84.7
-    },
-    {
-      "competency_id": "STAT-07",
-      "name": "SDG Indicators & National Indicator Framework (NIF)",
-      "domain_name": "Official Statistical Methodologies & National Frameworks",
-      "domain_color": "#2563eb",
-      "total_gap_points": 3501,
-      "officers_needing_training": 2423,
-      "officers_pct": 85.0
+      "total_gap_points": 124,
+      "officers_needing_training": 83,
+      "officers_pct": 83.0
     },
     {
       "competency_id": "TECH-02",
       "name": "R for Advanced Statistical Modeling & Microdata Analysis",
       "domain_name": "Modern Data Science, AI & Statistical Computing",
       "domain_color": "#7c3aed",
-      "total_gap_points": 3492,
-      "officers_needing_training": 2429,
-      "officers_pct": 85.2
+      "total_gap_points": 123,
+      "officers_needing_training": 86,
+      "officers_pct": 86.0
+    },
+    {
+      "competency_id": "GOV-02",
+      "name": "Data Privacy, DPDPA 2023 & Statistical Confidentiality",
+      "domain_name": "Digital Public Infrastructure, Security & Compliance",
+      "domain_color": "#059669",
+      "total_gap_points": 119,
+      "officers_needing_training": 86,
+      "officers_pct": 86.0
     },
     {
       "competency_id": "TECH-07",
       "name": "Machine Learning, Nowcasting & Anomaly Detection in Surveys",
       "domain_name": "Modern Data Science, AI & Statistical Computing",
       "domain_color": "#7c3aed",
-      "total_gap_points": 3433,
-      "officers_needing_training": 2423,
+      "total_gap_points": 116,
+      "officers_needing_training": 85,
       "officers_pct": 85.0
+    },
+    {
+      "competency_id": "STAT-07",
+      "name": "SDG Indicators & National Indicator Framework (NIF)",
+      "domain_name": "Official Statistical Methodologies & National Frameworks",
+      "domain_color": "#2563eb",
+      "total_gap_points": 111,
+      "officers_needing_training": 84,
+      "officers_pct": 84.0
+    },
+    {
+      "competency_id": "STAT-05",
+      "name": "Labour Market Dynamics & Periodic Labour Force Surveys (PLFS)",
+      "domain_name": "Official Statistical Methodologies & National Frameworks",
+      "domain_color": "#2563eb",
+      "total_gap_points": 102,
+      "officers_needing_training": 70,
+      "officers_pct": 70.0
     },
     {
       "competency_id": "TECH-08",
       "name": "Cloud Data Architecture, APIs & Government Cloud (MeghRaj)",
       "domain_name": "Modern Data Science, AI & Statistical Computing",
       "domain_color": "#7c3aed",
-      "total_gap_points": 3157,
-      "officers_needing_training": 2436,
-      "officers_pct": 85.5
+      "total_gap_points": 101,
+      "officers_needing_training": 81,
+      "officers_pct": 81.0
     },
     {
-      "competency_id": "TECH-03",
-      "name": "SQL, Modern Data Warehouses & Automated ETL",
-      "domain_name": "Modern Data Science, AI & Statistical Computing",
-      "domain_color": "#7c3aed",
-      "total_gap_points": 2507,
-      "officers_needing_training": 1916,
-      "officers_pct": 67.2
-    },
-    {
-      "competency_id": "GOV-01",
-      "name": "Cybersecurity & CERT-In Compliance for Statistical Enclaves",
+      "competency_id": "GOV-05",
+      "name": "Digital Office Systems & Paperless Administration (e-Office)",
       "domain_name": "Digital Public Infrastructure, Security & Compliance",
       "domain_color": "#059669",
-      "total_gap_points": 2438,
-      "officers_needing_training": 1858,
-      "officers_pct": 65.2
+      "total_gap_points": 86,
+      "officers_needing_training": 65,
+      "officers_pct": 65.0
+    },
+    {
+      "competency_id": "STAT-01",
+      "name": "Survey Sampling & Multi-Stage Research Design",
+      "domain_name": "Official Statistical Methodologies & National Frameworks",
+      "domain_color": "#2563eb",
+      "total_gap_points": 85,
+      "officers_needing_training": 62,
+      "officers_pct": 62.0
     },
     {
       "competency_id": "STAT-08",
       "name": "National Quality Assurance Framework for Statistics (NQAF)",
       "domain_name": "Official Statistical Methodologies & National Frameworks",
       "domain_color": "#2563eb",
-      "total_gap_points": 2434,
-      "officers_needing_training": 1862,
-      "officers_pct": 65.3
-    },
-    {
-      "competency_id": "TECH-04",
-      "name": "Econometric Modeling & Survey Software (Stata, SPSS, CSPro)",
-      "domain_name": "Modern Data Science, AI & Statistical Computing",
-      "domain_color": "#7c3aed",
-      "total_gap_points": 2428,
-      "officers_needing_training": 1859,
-      "officers_pct": 65.2
+      "total_gap_points": 84,
+      "officers_needing_training": 66,
+      "officers_pct": 66.0
     }
   ],
   "competency_gap_all": [
@@ -217,252 +217,252 @@
       "name": "Python for Statistical Computing & Survey Processing",
       "domain_name": "Modern Data Science, AI & Statistical Computing",
       "domain_color": "#7c3aed",
-      "total_gap_points": 3716,
-      "officers_needing_training": 2446,
-      "officers_pct": 85.8
-    },
-    {
-      "competency_id": "GOV-02",
-      "name": "Data Privacy, DPDPA 2023 & Statistical Confidentiality",
-      "domain_name": "Digital Public Infrastructure, Security & Compliance",
-      "domain_color": "#059669",
-      "total_gap_points": 3666,
-      "officers_needing_training": 2413,
-      "officers_pct": 84.7
-    },
-    {
-      "competency_id": "STAT-07",
-      "name": "SDG Indicators & National Indicator Framework (NIF)",
-      "domain_name": "Official Statistical Methodologies & National Frameworks",
-      "domain_color": "#2563eb",
-      "total_gap_points": 3501,
-      "officers_needing_training": 2423,
-      "officers_pct": 85.0
+      "total_gap_points": 124,
+      "officers_needing_training": 83,
+      "officers_pct": 83.0
     },
     {
       "competency_id": "TECH-02",
       "name": "R for Advanced Statistical Modeling & Microdata Analysis",
       "domain_name": "Modern Data Science, AI & Statistical Computing",
       "domain_color": "#7c3aed",
-      "total_gap_points": 3492,
-      "officers_needing_training": 2429,
-      "officers_pct": 85.2
+      "total_gap_points": 123,
+      "officers_needing_training": 86,
+      "officers_pct": 86.0
+    },
+    {
+      "competency_id": "GOV-02",
+      "name": "Data Privacy, DPDPA 2023 & Statistical Confidentiality",
+      "domain_name": "Digital Public Infrastructure, Security & Compliance",
+      "domain_color": "#059669",
+      "total_gap_points": 119,
+      "officers_needing_training": 86,
+      "officers_pct": 86.0
     },
     {
       "competency_id": "TECH-07",
       "name": "Machine Learning, Nowcasting & Anomaly Detection in Surveys",
       "domain_name": "Modern Data Science, AI & Statistical Computing",
       "domain_color": "#7c3aed",
-      "total_gap_points": 3433,
-      "officers_needing_training": 2423,
+      "total_gap_points": 116,
+      "officers_needing_training": 85,
       "officers_pct": 85.0
     },
     {
-      "competency_id": "TECH-08",
-      "name": "Cloud Data Architecture, APIs & Government Cloud (MeghRaj)",
-      "domain_name": "Modern Data Science, AI & Statistical Computing",
-      "domain_color": "#7c3aed",
-      "total_gap_points": 3157,
-      "officers_needing_training": 2436,
-      "officers_pct": 85.5
-    },
-    {
-      "competency_id": "TECH-03",
-      "name": "SQL, Modern Data Warehouses & Automated ETL",
-      "domain_name": "Modern Data Science, AI & Statistical Computing",
-      "domain_color": "#7c3aed",
-      "total_gap_points": 2507,
-      "officers_needing_training": 1916,
-      "officers_pct": 67.2
-    },
-    {
-      "competency_id": "GOV-01",
-      "name": "Cybersecurity & CERT-In Compliance for Statistical Enclaves",
-      "domain_name": "Digital Public Infrastructure, Security & Compliance",
-      "domain_color": "#059669",
-      "total_gap_points": 2438,
-      "officers_needing_training": 1858,
-      "officers_pct": 65.2
-    },
-    {
-      "competency_id": "STAT-08",
-      "name": "National Quality Assurance Framework for Statistics (NQAF)",
+      "competency_id": "STAT-07",
+      "name": "SDG Indicators & National Indicator Framework (NIF)",
       "domain_name": "Official Statistical Methodologies & National Frameworks",
       "domain_color": "#2563eb",
-      "total_gap_points": 2434,
-      "officers_needing_training": 1862,
-      "officers_pct": 65.3
-    },
-    {
-      "competency_id": "TECH-04",
-      "name": "Econometric Modeling & Survey Software (Stata, SPSS, CSPro)",
-      "domain_name": "Modern Data Science, AI & Statistical Computing",
-      "domain_color": "#7c3aed",
-      "total_gap_points": 2428,
-      "officers_needing_training": 1859,
-      "officers_pct": 65.2
-    },
-    {
-      "competency_id": "STAT-06",
-      "name": "Agricultural Statistics, Land-Use & Crop Forecasting",
-      "domain_name": "Official Statistical Methodologies & National Frameworks",
-      "domain_color": "#2563eb",
-      "total_gap_points": 2411,
-      "officers_needing_training": 1847,
-      "officers_pct": 64.8
-    },
-    {
-      "competency_id": "STAT-01",
-      "name": "Survey Sampling & Multi-Stage Research Design",
-      "domain_name": "Official Statistical Methodologies & National Frameworks",
-      "domain_color": "#2563eb",
-      "total_gap_points": 2408,
-      "officers_needing_training": 1852,
-      "officers_pct": 65.0
-    },
-    {
-      "competency_id": "STAT-04",
-      "name": "Industrial Statistics & Annual Survey of Industries (ASI / IIP)",
-      "domain_name": "Official Statistical Methodologies & National Frameworks",
-      "domain_color": "#2563eb",
-      "total_gap_points": 2407,
-      "officers_needing_training": 1815,
-      "officers_pct": 63.7
-    },
-    {
-      "competency_id": "GOV-05",
-      "name": "Digital Office Systems & Paperless Administration (e-Office)",
-      "domain_name": "Digital Public Infrastructure, Security & Compliance",
-      "domain_color": "#059669",
-      "total_gap_points": 2407,
-      "officers_needing_training": 1835,
-      "officers_pct": 64.4
-    },
-    {
-      "competency_id": "STAT-03",
-      "name": "Price Statistics & Inflation Indices (CPI, WPI)",
-      "domain_name": "Official Statistical Methodologies & National Frameworks",
-      "domain_color": "#2563eb",
-      "total_gap_points": 2398,
-      "officers_needing_training": 1829,
-      "officers_pct": 64.2
+      "total_gap_points": 111,
+      "officers_needing_training": 84,
+      "officers_pct": 84.0
     },
     {
       "competency_id": "STAT-05",
       "name": "Labour Market Dynamics & Periodic Labour Force Surveys (PLFS)",
       "domain_name": "Official Statistical Methodologies & National Frameworks",
       "domain_color": "#2563eb",
-      "total_gap_points": 2394,
-      "officers_needing_training": 1839,
-      "officers_pct": 64.5
+      "total_gap_points": 102,
+      "officers_needing_training": 70,
+      "officers_pct": 70.0
     },
     {
-      "competency_id": "STAT-09",
-      "name": "Statistical Metadata & Microdata Dissemination (DDI/SDMX)",
-      "domain_name": "Official Statistical Methodologies & National Frameworks",
-      "domain_color": "#2563eb",
-      "total_gap_points": 2365,
-      "officers_needing_training": 1854,
-      "officers_pct": 65.1
-    },
-    {
-      "competency_id": "LEAD-02",
-      "name": "Field Survey Administration & Nationwide Operations Control",
-      "domain_name": "Statistical Leadership, Policy Advisory & Survey Operations",
-      "domain_color": "#d97706",
-      "total_gap_points": 2364,
-      "officers_needing_training": 1838,
-      "officers_pct": 64.5
-    },
-    {
-      "competency_id": "TECH-06",
-      "name": "Interactive Data Visualization & Visual Storytelling",
+      "competency_id": "TECH-08",
+      "name": "Cloud Data Architecture, APIs & Government Cloud (MeghRaj)",
       "domain_name": "Modern Data Science, AI & Statistical Computing",
       "domain_color": "#7c3aed",
-      "total_gap_points": 2363,
-      "officers_needing_training": 1880,
+      "total_gap_points": 101,
+      "officers_needing_training": 81,
+      "officers_pct": 81.0
+    },
+    {
+      "competency_id": "GOV-05",
+      "name": "Digital Office Systems & Paperless Administration (e-Office)",
+      "domain_name": "Digital Public Infrastructure, Security & Compliance",
+      "domain_color": "#059669",
+      "total_gap_points": 86,
+      "officers_needing_training": 65,
+      "officers_pct": 65.0
+    },
+    {
+      "competency_id": "STAT-01",
+      "name": "Survey Sampling & Multi-Stage Research Design",
+      "domain_name": "Official Statistical Methodologies & National Frameworks",
+      "domain_color": "#2563eb",
+      "total_gap_points": 85,
+      "officers_needing_training": 62,
+      "officers_pct": 62.0
+    },
+    {
+      "competency_id": "STAT-08",
+      "name": "National Quality Assurance Framework for Statistics (NQAF)",
+      "domain_name": "Official Statistical Methodologies & National Frameworks",
+      "domain_color": "#2563eb",
+      "total_gap_points": 84,
+      "officers_needing_training": 66,
       "officers_pct": 66.0
     },
     {
-      "competency_id": "STAT-10",
-      "name": "UN Fundamental Principles of Official Statistics & Ethics",
-      "domain_name": "Official Statistical Methodologies & National Frameworks",
-      "domain_color": "#2563eb",
-      "total_gap_points": 2354,
-      "officers_needing_training": 1839,
-      "officers_pct": 64.5
-    },
-    {
-      "competency_id": "STAT-02",
-      "name": "National Accounts & GDP/GVA Compilation (SNA 2008)",
-      "domain_name": "Official Statistical Methodologies & National Frameworks",
-      "domain_color": "#2563eb",
-      "total_gap_points": 2345,
-      "officers_needing_training": 1867,
-      "officers_pct": 65.5
+      "competency_id": "TECH-03",
+      "name": "SQL, Modern Data Warehouses & Automated ETL",
+      "domain_name": "Modern Data Science, AI & Statistical Computing",
+      "domain_color": "#7c3aed",
+      "total_gap_points": 84,
+      "officers_needing_training": 66,
+      "officers_pct": 66.0
     },
     {
       "competency_id": "LEAD-04",
       "name": "Project Portfolio Management & Monitoring Timelines",
       "domain_name": "Statistical Leadership, Policy Advisory & Survey Operations",
       "domain_color": "#d97706",
-      "total_gap_points": 2307,
-      "officers_needing_training": 1850,
-      "officers_pct": 64.9
+      "total_gap_points": 84,
+      "officers_needing_training": 69,
+      "officers_pct": 69.0
     },
     {
-      "competency_id": "TECH-05",
-      "name": "Geospatial Analytics & Spatial Statistics (GIS, Bhuvan, QGIS)",
-      "domain_name": "Modern Data Science, AI & Statistical Computing",
-      "domain_color": "#7c3aed",
-      "total_gap_points": 2291,
-      "officers_needing_training": 1829,
-      "officers_pct": 64.2
-    },
-    {
-      "competency_id": "GOV-03",
-      "name": "Digital Public Infrastructure (DPI) & Interoperability",
-      "domain_name": "Digital Public Infrastructure, Security & Compliance",
-      "domain_color": "#059669",
-      "total_gap_points": 2280,
-      "officers_needing_training": 1835,
-      "officers_pct": 64.4
-    },
-    {
-      "competency_id": "LEAD-05",
-      "name": "Inter-Ministerial Statistical Coordination & Data Harmonization",
-      "domain_name": "Statistical Leadership, Policy Advisory & Survey Operations",
-      "domain_color": "#d97706",
-      "total_gap_points": 2280,
-      "officers_needing_training": 1841,
-      "officers_pct": 64.6
+      "competency_id": "STAT-10",
+      "name": "UN Fundamental Principles of Official Statistics & Ethics",
+      "domain_name": "Official Statistical Methodologies & National Frameworks",
+      "domain_color": "#2563eb",
+      "total_gap_points": 83,
+      "officers_needing_training": 62,
+      "officers_pct": 62.0
     },
     {
       "competency_id": "LEAD-03",
       "name": "Statistical Communication, Media Briefing & Public Trust",
       "domain_name": "Statistical Leadership, Policy Advisory & Survey Operations",
       "domain_color": "#d97706",
-      "total_gap_points": 2274,
-      "officers_needing_training": 1847,
-      "officers_pct": 64.8
+      "total_gap_points": 83,
+      "officers_needing_training": 67,
+      "officers_pct": 67.0
+    },
+    {
+      "competency_id": "STAT-04",
+      "name": "Industrial Statistics & Annual Survey of Industries (ASI / IIP)",
+      "domain_name": "Official Statistical Methodologies & National Frameworks",
+      "domain_color": "#2563eb",
+      "total_gap_points": 82,
+      "officers_needing_training": 62,
+      "officers_pct": 62.0
+    },
+    {
+      "competency_id": "TECH-05",
+      "name": "Geospatial Analytics & Spatial Statistics (GIS, Bhuvan, QGIS)",
+      "domain_name": "Modern Data Science, AI & Statistical Computing",
+      "domain_color": "#7c3aed",
+      "total_gap_points": 82,
+      "officers_needing_training": 63,
+      "officers_pct": 63.0
     },
     {
       "competency_id": "GOV-04",
       "name": "Government Procurement & Asset Governance (GeM, GFR 2017)",
       "domain_name": "Digital Public Infrastructure, Security & Compliance",
       "domain_color": "#059669",
-      "total_gap_points": 2223,
-      "officers_needing_training": 1839,
-      "officers_pct": 64.5
+      "total_gap_points": 81,
+      "officers_needing_training": 65,
+      "officers_pct": 65.0
+    },
+    {
+      "competency_id": "STAT-09",
+      "name": "Statistical Metadata & Microdata Dissemination (DDI/SDMX)",
+      "domain_name": "Official Statistical Methodologies & National Frameworks",
+      "domain_color": "#2563eb",
+      "total_gap_points": 79,
+      "officers_needing_training": 61,
+      "officers_pct": 61.0
+    },
+    {
+      "competency_id": "GOV-01",
+      "name": "Cybersecurity & CERT-In Compliance for Statistical Enclaves",
+      "domain_name": "Digital Public Infrastructure, Security & Compliance",
+      "domain_color": "#059669",
+      "total_gap_points": 79,
+      "officers_needing_training": 63,
+      "officers_pct": 63.0
+    },
+    {
+      "competency_id": "STAT-02",
+      "name": "National Accounts & GDP/GVA Compilation (SNA 2008)",
+      "domain_name": "Official Statistical Methodologies & National Frameworks",
+      "domain_color": "#2563eb",
+      "total_gap_points": 77,
+      "officers_needing_training": 63,
+      "officers_pct": 63.0
+    },
+    {
+      "competency_id": "TECH-04",
+      "name": "Econometric Modeling & Survey Software (Stata, SPSS, CSPro)",
+      "domain_name": "Modern Data Science, AI & Statistical Computing",
+      "domain_color": "#7c3aed",
+      "total_gap_points": 76,
+      "officers_needing_training": 57,
+      "officers_pct": 57.0
+    },
+    {
+      "competency_id": "STAT-06",
+      "name": "Agricultural Statistics, Land-Use & Crop Forecasting",
+      "domain_name": "Official Statistical Methodologies & National Frameworks",
+      "domain_color": "#2563eb",
+      "total_gap_points": 75,
+      "officers_needing_training": 54,
+      "officers_pct": 54.0
+    },
+    {
+      "competency_id": "GOV-03",
+      "name": "Digital Public Infrastructure (DPI) & Interoperability",
+      "domain_name": "Digital Public Infrastructure, Security & Compliance",
+      "domain_color": "#059669",
+      "total_gap_points": 75,
+      "officers_needing_training": 57,
+      "officers_pct": 57.0
+    },
+    {
+      "competency_id": "LEAD-05",
+      "name": "Inter-Ministerial Statistical Coordination & Data Harmonization",
+      "domain_name": "Statistical Leadership, Policy Advisory & Survey Operations",
+      "domain_color": "#d97706",
+      "total_gap_points": 74,
+      "officers_needing_training": 62,
+      "officers_pct": 62.0
+    },
+    {
+      "competency_id": "LEAD-02",
+      "name": "Field Survey Administration & Nationwide Operations Control",
+      "domain_name": "Statistical Leadership, Policy Advisory & Survey Operations",
+      "domain_color": "#d97706",
+      "total_gap_points": 71,
+      "officers_needing_training": 55,
+      "officers_pct": 55.0
+    },
+    {
+      "competency_id": "TECH-06",
+      "name": "Interactive Data Visualization & Visual Storytelling",
+      "domain_name": "Modern Data Science, AI & Statistical Computing",
+      "domain_color": "#7c3aed",
+      "total_gap_points": 67,
+      "officers_needing_training": 56,
+      "officers_pct": 56.0
+    },
+    {
+      "competency_id": "STAT-03",
+      "name": "Price Statistics & Inflation Indices (CPI, WPI)",
+      "domain_name": "Official Statistical Methodologies & National Frameworks",
+      "domain_color": "#2563eb",
+      "total_gap_points": 66,
+      "officers_needing_training": 51,
+      "officers_pct": 51.0
     },
     {
       "competency_id": "LEAD-01",
       "name": "Strategic Statistical Leadership & Policy Advisory",
       "domain_name": "Statistical Leadership, Policy Advisory & Survey Operations",
       "domain_color": "#d97706",
-      "total_gap_points": 1850,
-      "officers_needing_training": 1587,
-      "officers_pct": 55.7
+      "total_gap_points": 50,
+      "officers_needing_training": 43,
+      "officers_pct": 43.0
     }
   ]
 }

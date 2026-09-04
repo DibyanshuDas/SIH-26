@@ -401,7 +401,7 @@ class CompetencyEngine:
                     }
         return {}
 
-    def generate_officer_profiles(self, n_officers: int = 2850) -> List[Dict[str, Any]]:
+    def generate_officer_profiles(self, n_officers: int = 100) -> List[Dict[str, Any]]:
         officers = []
         all_comp_ids = self.get_all_competency_ids()
         role_keys = list(CADRE_ROLE_REQUIREMENTS.keys())
@@ -776,5 +776,5 @@ class CompetencyEngine:
 
 if __name__ == "__main__":
     engine = CompetencyEngine()
-    engine.generate_officer_profiles(2850)
+    engine.generate_officer_profiles(100)
     engine.save_all_data()
