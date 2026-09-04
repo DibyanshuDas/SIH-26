@@ -111,7 +111,7 @@
           </div>
           <div class="stat-pill">
             <div class="stat-pill-val highlight-saffron" id="heroKarmaVal">1,840</div>
-            <div class="stat-pill-lbl">Karma Points</div>
+            <div class="stat-pill-lbl">Skill Points</div>
           </div>
         </div>
       </div>
@@ -287,6 +287,40 @@
             </div>
           </div>
 
+          <!-- File Upload Zone -->
+          <div class="file-upload-section" style="margin-bottom: 16px;">
+            <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 6px;">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Upload Training Material (PDF, DOCX, PPTX, TXT):
+            </label>
+            <div class="file-upload-zone" id="fileUploadZone" onclick="document.getElementById('fileUploadInput').click()">
+              <input type="file" id="fileUploadInput" accept=".pdf,.doc,.docx,.pptx,.txt" style="display: none;" onchange="handleFileUpload(event)">
+              <div class="upload-icon">
+                <i class="fa-solid fa-file-arrow-up"></i>
+              </div>
+              <div class="upload-text">
+                <span class="upload-main-text">Drag & drop files here or <span style="color: var(--gov-blue); cursor: pointer;">browse</span></span>
+                <span class="upload-sub-text">Supported: PDF, DOCX, PPTX, TXT (Max 10 MB)</span>
+              </div>
+            </div>
+            <div id="uploadedFileInfo" class="uploaded-file-info" style="display: none;">
+              <div class="uploaded-file-details">
+                <i class="fa-solid fa-file-lines" style="font-size: 18px; color: var(--gov-blue);"></i>
+                <div>
+                  <div id="uploadedFileName" style="font-size: 13px; font-weight: 600;"></div>
+                  <div id="uploadedFileSize" style="font-size: 11px; color: var(--text-secondary);"></div>
+                </div>
+              </div>
+              <div class="uploaded-file-actions">
+                <span id="uploadStatus" class="upload-status-badge">
+                  <i class="fa-solid fa-spinner fa-spin"></i> Processing...
+                </span>
+                <button onclick="clearUploadedFile()" class="btn-icon" title="Remove file" style="color: var(--gov-rose); background: rgba(225, 29, 72, 0.1); border: none; border-radius: 6px; padding: 6px 10px; cursor: pointer;">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div style="margin-bottom: 16px;">
             <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 6px;">
               Learning Material Text Content (Edit or paste any guideline/circular):
@@ -372,7 +406,7 @@
           </div>
           <div class="stat-pill" style="padding: 16px;">
             <div class="stat-pill-val highlight-saffron" id="resultKarmaVal">+120</div>
-            <div class="stat-pill-lbl">Karma Points Earned</div>
+            <div class="stat-pill-lbl">Skill Points Earned</div>
           </div>
         </div>
 
@@ -403,7 +437,7 @@
         </div>
         <div class="card" style="text-align: center;">
           <div class="stat-pill-val" style="color: var(--gov-purple);" id="adminTotalKarma">4.82M</div>
-          <div class="stat-pill-lbl">Karma Points Accrued</div>
+          <div class="stat-pill-lbl">Skill Points Accrued</div>
         </div>
       </div>
 

@@ -17,6 +17,8 @@ import os
 import urllib.parse
 import time
 import random
+import tempfile
+import io
 from datetime import datetime
 
 PORT = int(os.environ.get("PORT", 8050))
@@ -150,6 +152,13 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
         path = parsed_url.path
 
         content_length = int(self.headers.get("Content-Length", 0))
+        content_type = self.headers.get("Content-Type", "")
+
+        # Handle file upload (multipart/form-data)
+        if path == "/api/assessments/upload-material":
+            self.handle_file_upload(content_length, content_type)
+            return
+
         body_bytes = self.rfile.read(content_length) if content_length > 0 else b"{}"
         try:
             payload = json.loads(body_bytes.decode("utf-8"))
@@ -225,6 +234,127 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Cache-Control", "no-cache")
         self.end_headers()
         self.wfile.write(json.dumps(data).encode("utf-8"))
+
+    def handle_file_upload(self, content_length, content_type):
+        """Handle multipart file upload and extract text from PDF, DOCX, PPTX, TXT."""
+        try:
+            body_bytes = self.rfile.read(content_length) if content_length > 0 else b""
+
+            # Parse multipart boundary
+            if "boundary=" not in content_type:
+                self.send_json_response({"success": False, "error": "Invalid upload format"})
+                return
+
+            boundary = content_type.split("boundary=")[1].strip()
+            if boundary.startswith('"') and boundary.endswith('"'):
+                boundary = boundary[1:-1]
+
+            # Parse multipart parts
+            parts = body_bytes.split(("--" + boundary).encode())
+            file_data = None
+            filename = ""
+
+            for part in parts:
+                if b"filename=" in part:
+                    # Extract filename
+                    header_section = part.split(b"\r\n\r\n", 1)
+                    if len(header_section) < 2:
+                        continue
+                    headers_str = header_section[0].decode("utf-8", errors="ignore")
+                    file_content = header_section[1]
+                    # Remove trailing boundary markers
+                    if file_content.endswith(b"\r\n"):
+                        file_content = file_content[:-2]
+
+                    # Extract filename from Content-Disposition header
+                    for line in headers_str.split("\r\n"):
+                        if "filename=" in line:
+                            fname_part = line.split('filename="')[1] if 'filename="' in line else ""
+                            filename = fname_part.split('"')[0] if fname_part else "uploaded_file"
+                            break
+
+                    file_data = file_content
+                    break
+
+            if not file_data or not filename:
+                self.send_json_response({"success": False, "error": "No file found in upload"})
+                return
+
+            ext = "." + filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+            extracted_text = ""
+            page_info = ""
+
+            # Save to temp file for processing
+            with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as tmp:
+                tmp.write(file_data)
+                tmp_path = tmp.name
+
+            try:
+                if ext == ".txt":
+                    extracted_text = file_data.decode("utf-8", errors="ignore")
+
+                elif ext == ".pdf":
+                    try:
+                        import PyPDF2
+                        reader = PyPDF2.PdfReader(tmp_path)
+                        pages = []
+                        for page in reader.pages:
+                            text = page.extract_text()
+                            if text:
+                                pages.append(text)
+                        extracted_text = "\n\n".join(pages)
+                        page_info = f"({len(reader.pages)} pages extracted)"
+                    except ImportError:
+                        extracted_text = "[PDF extraction requires PyPDF2. Install: pip install PyPDF2]"
+
+                elif ext in [".docx", ".doc"]:
+                    try:
+                        import docx
+                        doc = docx.Document(tmp_path)
+                        paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
+                        extracted_text = "\n\n".join(paragraphs)
+                        page_info = f"({len(paragraphs)} paragraphs extracted)"
+                    except ImportError:
+                        extracted_text = "[DOCX extraction requires python-docx. Install: pip install python-docx]"
+
+                elif ext == ".pptx":
+                    try:
+                        from pptx import Presentation
+                        prs = Presentation(tmp_path)
+                        slides_text = []
+                        for slide_num, slide in enumerate(prs.slides, 1):
+                            slide_content = []
+                            for shape in slide.shapes:
+                                if hasattr(shape, "text") and shape.text.strip():
+                                    slide_content.append(shape.text)
+                            if slide_content:
+                                slides_text.append(f"--- Slide {slide_num} ---\n" + "\n".join(slide_content))
+                        extracted_text = "\n\n".join(slides_text)
+                        page_info = f"({len(prs.slides)} slides extracted)"
+                    except ImportError:
+                        extracted_text = "[PPTX extraction requires python-pptx. Install: pip install python-pptx]"
+                else:
+                    extracted_text = "[Unsupported file format]"
+
+            finally:
+                try:
+                    os.unlink(tmp_path)
+                except Exception:
+                    pass
+
+            if not extracted_text.strip():
+                extracted_text = "[No readable text could be extracted from this file.]"
+
+            self.send_json_response({
+                "success": True,
+                "extracted_text": extracted_text[:50000],  # Cap at 50k chars
+                "filename": filename,
+                "pages": page_info
+            })
+
+        except Exception as e:
+            print(f"File upload error: {e}")
+            self.send_json_response({"success": False, "error": str(e)})
 
     def do_OPTIONS(self):
         self.send_response(200)

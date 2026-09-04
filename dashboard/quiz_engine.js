@@ -180,7 +180,7 @@ function renderCurrentQuestion() {
     <div class="question-block">
       <div style="display: flex; gap: 8px; margin-bottom: 8px;">
         <span class="tag-pill" style="color: var(--gov-saffron);"><i class="fa-solid fa-tag"></i> ${q.question_type} Question</span>
-        <span class="tag-pill"><i class="fa-solid fa-award"></i> +${q.karma_reward || 25} Karma</span>
+        <span class="tag-pill"><i class="fa-solid fa-award"></i> +${q.karma_reward || 25} Skill Pts</span>
         <span class="tag-pill"><i class="fa-solid fa-signal"></i> ${q.difficulty || 'Intermediate'}</span>
       </div>
       <div class="question-text">${q.question_text}</div>
@@ -280,7 +280,7 @@ function renderQuizResults(result) {
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
         <span style="font-weight: 700; font-size: 14px;">Question ${idx + 1}: ${q.question_type}</span>
         <span class="${q.is_correct ? 'badge-gap-none' : 'badge-gap-high'}">
-          ${q.is_correct ? `<i class="fa-solid fa-check"></i> Correct (+${q.karma_earned} Karma)` : `<i class="fa-solid fa-xmark"></i> Incorrect`}
+          ${q.is_correct ? `<i class="fa-solid fa-check"></i> Correct (+${q.karma_earned} Skill Pts)` : `<i class="fa-solid fa-xmark"></i> Incorrect`}
         </span>
       </div>
       <p style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">${q.question_text}</p>
@@ -318,4 +318,146 @@ function resetQuiz() {
   document.getElementById("quizResultsCard").style.display = "none";
   document.getElementById("quizArenaContainer").style.display = "none";
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// -------------------------------------------------------------------------
+// 6. File Upload Handling (PDF, DOCX, PPTX, TXT)
+// -------------------------------------------------------------------------
+const ALLOWED_EXTENSIONS = [".pdf", ".doc", ".docx", ".pptx", ".txt"];
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+
+// Drag-and-drop support
+document.addEventListener("DOMContentLoaded", () => {
+  const dropZone = document.getElementById("fileUploadZone");
+  if (!dropZone) return;
+
+  ["dragenter", "dragover"].forEach(evt => {
+    dropZone.addEventListener(evt, e => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.add("drag-over");
+    });
+  });
+
+  ["dragleave", "drop"].forEach(evt => {
+    dropZone.addEventListener(evt, e => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.remove("drag-over");
+    });
+  });
+
+  dropZone.addEventListener("drop", e => {
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      processUploadedFile(files[0]);
+    }
+  });
+});
+
+function handleFileUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  processUploadedFile(file);
+}
+
+function processUploadedFile(file) {
+  const ext = "." + file.name.split(".").pop().toLowerCase();
+
+  if (!ALLOWED_EXTENSIONS.includes(ext)) {
+    showToast("⚠️ Unsupported file type. Please upload PDF, DOCX, PPTX, or TXT files.");
+    return;
+  }
+
+  if (file.size > MAX_FILE_SIZE) {
+    showToast("⚠️ File too large. Maximum size is 10 MB.");
+    return;
+  }
+
+  // Show uploaded file info
+  const fileInfo = document.getElementById("uploadedFileInfo");
+  const uploadZone = document.getElementById("fileUploadZone");
+  const fileNameEl = document.getElementById("uploadedFileName");
+  const fileSizeEl = document.getElementById("uploadedFileSize");
+  const statusEl = document.getElementById("uploadStatus");
+
+  if (uploadZone) uploadZone.style.display = "none";
+  if (fileInfo) fileInfo.style.display = "flex";
+  if (fileNameEl) fileNameEl.textContent = file.name;
+  if (fileSizeEl) fileSizeEl.textContent = formatFileSize(file.size);
+  if (statusEl) {
+    statusEl.className = "upload-status-badge processing";
+    statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+  }
+
+  // Handle TXT files locally
+  if (ext === ".txt") {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const textContent = e.target.result;
+      const textArea = document.getElementById("materialTextContent");
+      if (textArea) textArea.value = textContent;
+      if (statusEl) {
+        statusEl.className = "upload-status-badge success";
+        statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Ready';
+      }
+      showToast("✅ Text file loaded successfully. Content ready for AI assessment generation.");
+    };
+    reader.onerror = () => {
+      if (statusEl) {
+        statusEl.className = "upload-status-badge error";
+        statusEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Failed';
+      }
+      showToast("❌ Error reading text file.");
+    };
+    reader.readAsText(file);
+    return;
+  }
+
+  // Upload binary files (PDF, DOCX, PPTX) to server for extraction
+  const formData = new FormData();
+  formData.append("file", file);
+
+  fetch("/api/assessments/upload-material", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success && data.extracted_text) {
+      const textArea = document.getElementById("materialTextContent");
+      if (textArea) textArea.value = data.extracted_text;
+      if (statusEl) {
+        statusEl.className = "upload-status-badge success";
+        statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Ready';
+      }
+      showToast(`✅ ${file.name} processed successfully. ${data.pages || ""} Content extracted and ready for AI assessment.`);
+    } else {
+      throw new Error(data.error || "Failed to extract text");
+    }
+  })
+  .catch(err => {
+    console.error("File upload error:", err);
+    if (statusEl) {
+      statusEl.className = "upload-status-badge error";
+      statusEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Failed';
+    }
+    showToast(`❌ Error processing file: ${err.message}`);
+  });
+}
+
+function clearUploadedFile() {
+  const fileInfo = document.getElementById("uploadedFileInfo");
+  const uploadZone = document.getElementById("fileUploadZone");
+  const fileInput = document.getElementById("fileUploadInput");
+
+  if (fileInfo) fileInfo.style.display = "none";
+  if (uploadZone) uploadZone.style.display = "flex";
+  if (fileInput) fileInput.value = "";
+}
+
+function formatFileSize(bytes) {
+  if (bytes < 1024) return bytes + " B";
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+  return (bytes / (1024 * 1024)).toFixed(2) + " MB";
 }

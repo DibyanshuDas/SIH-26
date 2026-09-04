@@ -358,7 +358,7 @@ function renderCourseGrid(elementId, courses, extraClass = "") {
         <div class="course-tags">
           <span class="tag-pill"><i class="fa-solid fa-award"></i> ${c.level}</span>
           <span class="tag-pill"><i class="fa-solid fa-star" style="color: #fbbf24;"></i> ${c.rating}</span>
-          <span class="tag-pill"><i class="fa-solid fa-coins" style="color: var(--gov-saffron);"></i> +${c.karma_points} Karma</span>
+          <span class="tag-pill"><i class="fa-solid fa-coins" style="color: var(--gov-saffron);"></i> +${c.karma_points} Skill Pts</span>
         </div>
       </div>
       <div class="course-footer">
@@ -425,7 +425,7 @@ async function enrolInCourse(event, courseId, courseTitle) {
 
     const data = await res.json();
     if (data.success) {
-      showToast(`🎉 Certified: Successfully completed '${courseTitle}'! (+${data.karma_points_earned} Karma Points)`);
+      showToast(`🎉 Certified: Successfully completed '${courseTitle}'! (+${data.karma_points_earned} Skill Points)`);
       btn.innerHTML = `<i class="fa-solid fa-check"></i> Certified`;
       btn.style.background = "var(--gov-emerald)";
       btn.style.color = "#fff";
@@ -445,7 +445,7 @@ async function enrolInCourse(event, courseId, courseTitle) {
     btn.innerHTML = `<i class="fa-solid fa-check"></i> Certified`;
     btn.style.background = "var(--gov-emerald)";
     btn.style.color = "#fff";
-    showToast(`🎉 Certified: Successfully completed '${courseTitle}'! (+50 Karma Points)`);
+    showToast(`🎉 Certified: Successfully completed '${courseTitle}'! (+50 Skill Points)`);
   }
 }
 
