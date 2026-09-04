@@ -1,5 +1,5 @@
 /**
- * SKILL-STAT Dashboard Application Engine
+ * SkillStat-AI Dashboard Application Engine
  * Manages State, ECharts Visualizations, Role Switching, Competency Profiling,
  * and iGOT / NSSTA Recommendations.
  */
@@ -604,13 +604,23 @@ function initDeficitPieChart() {
 
   const option = {
     tooltip: { trigger: "item", formatter: "{b}<br/>Officers Needing Training: <b>{c}</b> ({d}%)" },
-    legend: { orient: "vertical", right: 0, top: "center", textStyle: { color: "#94a3b8", fontSize: 10 } },
+    legend: {
+      orient: "horizontal",
+      bottom: 0,
+      left: "center",
+      type: "scroll",
+      textStyle: { color: "#94a3b8", fontSize: 11 },
+      itemGap: 12,
+      itemWidth: 12,
+      itemHeight: 12
+    },
+    grid: { containLabel: true },
     series: [
       {
         name: "National Deficit",
         type: "pie",
-        radius: ["40%", "70%"],
-        center: ["40%", "50%"],
+        radius: ["35%", "65%"],
+        center: ["50%", "45%"],
         avoidLabelOverlap: false,
         itemStyle: { borderRadius: 6, borderColor: "#0b0f19", borderWidth: 2 },
         label: { show: false },

@@ -1,5 +1,5 @@
 /* =========================================================================
-   SKILL-STAT: AI-Enabled Official Statistical Learning & Competency Platform
+   SkillStat-AI: AI-Enabled Official Statistical Learning & Competency Platform
    Design System & Modern Glassmorphism Styling
    ========================================================================= */
 
@@ -536,6 +536,10 @@ h1, h2, h3, h4, h5, h6 {
 .chart-container {
   width: 100%;
   height: 340px;
+}
+
+#deficitPieChart {
+  height: 400px;
 }
 
 /* Competency Unit List & Gap Badges */
