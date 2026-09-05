@@ -445,6 +445,11 @@ class RecommendationEngine:
             score += gap_val * 40.0
             if gap_val >= 2:
                 score += 30.0  # High severity priority boost
+                
+            # Explicitly boost if this course's primary competency is in the officer's top priority gaps
+            top_gaps = officer_profile.get("top_priority_gaps", [])
+            if any(g.get("id") == primary_c for g in top_gaps):
+                score += 150.0 # Massive boost to ensure it surfaces in Stage 1
 
             # Secondary competency match
             for sec_c in course.get("competency_tags", []):

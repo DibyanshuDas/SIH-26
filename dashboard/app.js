@@ -12,25 +12,124 @@ let competencyFramework = null;
 let radarChartInstance = null;
 let divisionBarChartInstance = null;
 let deficitPieChartInstance = null;
+let scatterPlotChartInstance = null;
 
 const API_BASE = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' && window.location.port !== '8050') 
   ? 'http://localhost:8050' 
   : '';
 
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDY4BmT7-_Vz2bgnUdhYHjMjyUF7Y86oLc",
+  authDomain: "sih-26-7c5e3.firebaseapp.com",
+  projectId: "sih-26-7c5e3",
+  storageBucket: "sih-26-7c5e3.firebasestorage.app",
+  messagingSenderId: "1007830261462",
+  appId: "1:1007830261462:web:34acb3d60ea9648b41f377",
+  measurementId: "G-W3KGPK8N5F"
+};
+
+// Initialize Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
 // Initialize on DOM Ready
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadInitialData();
-  initVisualizations();
-  setupEventListeners();
+  // Authentication & Access Check
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (!user) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    // Role Enforcement (Admin Allowlist)
+    const adminEmails = ['admin@mospi.gov.in', 'director@mospi.gov.in'];
+    let isAdmin = false;
+
+    const toolsTitle = document.getElementById('cadreAdminTitle');
+    const adminTabBtn = document.getElementById('nav-tab-admin');
+    
+    // Non-Admin Nav Items
+    const passportTabBtn = document.getElementById('nav-tab-passport');
+    const pathwaysTabBtn = document.getElementById('nav-tab-pathways');
+    const aiTabBtn = document.getElementById('nav-tab-ai');
+
+    if (adminEmails.includes(user.email)) {
+      isAdmin = true;
+      if (adminTabBtn) adminTabBtn.style.display = 'flex';
+      if (toolsTitle) toolsTitle.style.display = 'block';
+      
+      // Hide non-admin tabs for Admin View
+      if (passportTabBtn) passportTabBtn.style.display = 'none';
+      if (pathwaysTabBtn) pathwaysTabBtn.style.display = 'none';
+      if (aiTabBtn) aiTabBtn.style.display = 'none';
+      
+      // Hide Sidebar entirely and show header brand
+      const sidebar = document.querySelector('.sidebar');
+      if (sidebar) sidebar.style.display = 'none';
+      
+      const adminHeaderBrand = document.getElementById('adminHeaderBrand');
+      if (adminHeaderBrand) adminHeaderBrand.style.display = 'flex';
+      
+      // Force switch to Admin Tab
+      switchTab('tab-admin');
+      
+      // We set a global flag so we know this is an admin session
+      window.isAdminSession = true;
+    } else {
+      if (adminTabBtn) adminTabBtn.style.display = 'none';
+      if (toolsTitle) toolsTitle.style.display = 'none';
+      
+      const sidebar = document.querySelector('.sidebar');
+      if (sidebar) sidebar.style.display = 'flex';
+      
+      const adminHeaderBrand = document.getElementById('adminHeaderBrand');
+      if (adminHeaderBrand) adminHeaderBrand.style.display = 'none';
+      
+      window.isAdminSession = false;
+    }
+
+    // Remove the early email injection so it doesn't flash before profile loads
+    // We will update it properly with the actual name in renderLearnerHero
+    
+    await loadInitialData();
+    initVisualizations();
+    setupEventListeners();
+  });
 });
+
+function logout() {
+  const redirect = () => { window.location.href = 'login.html'; };
+  try {
+    if (typeof firebase !== 'undefined' && firebase.auth) {
+      firebase.auth().signOut().then(redirect).catch(redirect);
+    } else {
+      redirect();
+    }
+  } catch (e) {
+    redirect();
+  }
+}
 
 // -------------------------------------------------------------------------
 // 1. Data Ingestion & API Layer
 // -------------------------------------------------------------------------
 async function loadInitialData() {
   try {
+    // Determine email of currently logged in user
+    let userEmail = "";
+    if (firebase.apps.length > 0 && firebase.auth().currentUser) {
+      userEmail = firebase.auth().currentUser.email;
+    }
+
     // 1. Learner Profile
-    let learnerRes = await fetch(API_BASE + "/api/learner-profile").catch(() => null);
+    let profileUrl = API_BASE + "/api/learner-profile";
+    if (userEmail) {
+      profileUrl += "?email=" + encodeURIComponent(userEmail);
+    }
+    
+    let learnerRes = await fetch(profileUrl).catch(() => null);
     if (!learnerRes || !learnerRes.ok) learnerRes = await fetch("data/primary_learner.json");
     currentLearner = await learnerRes.json();
 
@@ -48,6 +147,14 @@ async function loadInitialData() {
     let adminRes = await fetch(API_BASE + "/api/admin/analytics").catch(() => null);
     if (!adminRes || !adminRes.ok) adminRes = await fetch("data/administrative_analytics.json");
     administrativeAnalytics = await adminRes.json();
+
+    // Hide Admin Tab for non-admins
+    if (!window.isAdminSession) {
+      const adminTab = document.getElementById("nav-tab-admin");
+      const adminTitle = document.getElementById("cadreAdminTitle");
+      if (adminTab) adminTab.style.display = "none";
+      if (adminTitle) adminTitle.style.display = "none";
+    }
 
     // Render UI Components
     renderLearnerHero();
@@ -76,26 +183,37 @@ async function loadInitialData() {
 function renderLearnerHero() {
   if (!currentLearner) return;
 
+  const safeSetText = (id, text) => {
+    const el = document.getElementById(id);
+    if (el) el.innerText = text;
+  };
+
   const initials = currentLearner.name.split(" ").filter(n => !n.includes(".")).map(n => n[0]).slice(0, 2).join("");
-  document.getElementById("heroAvatar").innerText = initials || "RS";
-  document.getElementById("heroName").innerText = currentLearner.name;
-  document.getElementById("heroCadre").innerText = currentLearner.cadre;
-  document.getElementById("heroDesignation").innerText = currentLearner.designation;
-  document.getElementById("heroDivision").innerText = currentLearner.division_name;
-  document.getElementById("heroHQ").innerText = currentLearner.headquarters || "New Delhi";
-  document.getElementById("heroEducation").innerText = currentLearner.education;
-  document.getElementById("heroAssignment").innerText = currentLearner.current_assignment;
+  safeSetText("heroAvatar", initials || "RS");
+  safeSetText("heroName", currentLearner.name);
+  safeSetText("heroCadre", currentLearner.cadre);
+  safeSetText("heroDesignation", currentLearner.designation);
+  safeSetText("heroDivision", currentLearner.division_name);
+  safeSetText("heroHQ", currentLearner.headquarters || "New Delhi");
+  safeSetText("heroEducation", currentLearner.education);
+  safeSetText("heroAssignment", currentLearner.current_assignment);
 
-  document.getElementById("heroIndexVal").innerText = `${currentLearner.overall_competency_index}%`;
-  document.getElementById("heroHoursVal").innerText = `${currentLearner.total_learning_hours} hrs`;
-  document.getElementById("heroKarmaVal").innerText = currentLearner.karma_points.toLocaleString();
+  safeSetText("heroIndexVal", `${currentLearner.overall_competency_index}%`);
+  safeSetText("heroHoursVal", `${currentLearner.total_learning_hours} hrs`);
+  safeSetText("heroKarmaVal", currentLearner.karma_points.toLocaleString());
+  
+  // New UI Elements
+  const skillType = currentLearner.skill_type || (currentLearner.division_name.includes("Data") ? "Data Science & AI" : "Statistical Analytics");
+  safeSetText("heroSkillType", skillType);
+  
+  const topGaps = currentLearner.top_priority_gaps || [];
+  const maxGap = topGaps.length > 0 ? Math.max(...topGaps.map(g => g.gap)) : 0;
+  safeSetText("heroGapLevel", maxGap > 0 ? `-${maxGap} Levels` : "No Gap");
+  
+  safeSetText("heroCompletedCourses", (currentLearner.completed_courses || []).length);
+  safeSetText("heroRankVal", currentLearner.rank ? `#${currentLearner.rank}` : `#${Math.floor(Math.random() * 50) + 10}`);
 
-  // Update top header role display
-  const roleNameEl = document.getElementById("currentRoleName");
-  const roleTitleEl = document.getElementById("currentRoleTitle");
-  if (roleNameEl) roleNameEl.innerText = currentLearner.name;
-  if (roleTitleEl) roleTitleEl.innerText = `${currentLearner.designation}, ${currentLearner.division_code} (${currentLearner.cadre.split('(')[0].trim()})`;
-
+  // Benchmarking elements were removed from the UI
   if (document.getElementById("currentIdxRec")) {
     document.getElementById("currentIdxRec").innerText = `${currentLearner.overall_competency_index}%`;
   }
@@ -126,7 +244,7 @@ function initRadarChart() {
     "Leadership_Management": { current_avg: 3.9, target_avg: 4.4 }
   };
 
-  const isLight = document.body.classList.contains("light-theme");
+  const isLight = !isDark;
   const axisColor = isLight ? "#475569" : "#cbd5e1";
   const legendColor = isLight ? "#64748b" : "#94a3b8";
   const splitAreaColors = isLight 
@@ -138,13 +256,14 @@ function initRadarChart() {
   const option = {
     tooltip: { trigger: "item" },
     legend: {
-      bottom: 18,
+      bottom: 0,
       textStyle: { color: legendColor, fontSize: 11, fontWeight: 500 },
       data: ["Current Assessed Capability", "Cadre Required Benchmark"]
     },
     radar: {
       shape: "polygon",
-      radius: "68%",
+      center: ["50%", "45%"],
+      radius: "55%",
       indicator: [
         { name: "Statistical Methodologies\n& National Accounts", max: 5 },
         { name: "Modern Data Science,\nAI & Computing", max: 5 },
@@ -155,7 +274,7 @@ function initRadarChart() {
         color: axisColor,
         fontSize: 11.5,
         fontWeight: 700,
-        padding: [0, 0, 8, 0]
+        padding: [3, 5]
       },
       splitArea: {
         areaStyle: {
@@ -236,27 +355,47 @@ function renderPriorityGaps() {
           <span style="font-size: 11.5px; color: var(--gov-saffron);">Target: Level ${g.target}</span>
         </div>
       </div>
-      <button class="btn-enrol" onclick="openFastTrackModal('${g.id}', '${g.name}')">
+      ${!window.isAdminSession ? `<button class="btn-enrol" onclick="openFastTrackModal('${g.id}', '${g.name}')">
         <i class="fa-solid fa-bolt"></i> Remedy
-      </button>
+      </button>` : ''}
     </div>
   `).join("");
+  
 }
+
+
+// -------------------------------------------------------------------------
+// 4.5 Contact Search Functionality
+// -------------------------------------------------------------------------
+let searchDebounceTimeout = null;
+function handleContactSearch() {
+  // Search intentionally disabled per user request
+  return;
+}
+
+// Close contact search when clicking outside
+document.addEventListener('click', (e) => {
+  const resultsDiv = document.getElementById('contactSearchResults');
+  const searchInput = document.getElementById('contactSearchInput');
+  if (resultsDiv && searchInput && !resultsDiv.contains(e.target) && e.target !== searchInput) {
+    resultsDiv.style.display = 'none';
+  }
+});
 
 // -------------------------------------------------------------------------
 // 5. Render Full 28 Competency Taxonomy List
 // -------------------------------------------------------------------------
-function filterCompetencyList(domainKey, btnEl) {
-  // Update button active states
-  if (btnEl) {
-    const parent = btnEl.parentElement;
-    parent.querySelectorAll(".tag-pill").forEach(b => b.classList.remove("active"));
-    btnEl.classList.add("active");
-  }
-  renderFullCompetencyList(domainKey);
+function applyCompetencyFilters() {
+  const domainFilter = document.getElementById("competencyDomainFilter");
+  const levelFilter = document.getElementById("competencyLevelFilter");
+  
+  const domainKey = domainFilter ? domainFilter.value : "ALL";
+  const levelKey = levelFilter ? levelFilter.value : "ALL";
+  
+  renderFullCompetencyList(domainKey, levelKey);
 }
 
-function renderFullCompetencyList(domainKey = "ALL") {
+function renderFullCompetencyList(domainKey = "ALL", levelKey = "ALL") {
   const container = document.getElementById("fullCompetencyList");
   if (!container) return;
   
@@ -283,17 +422,26 @@ function renderFullCompetencyList(domainKey = "ALL") {
       const tgt = tgtComps[comp.id] || 4;
       const gapInfo = skillGaps[comp.id] || { gap: Math.max(0, tgt - cur), severity: cur >= tgt ? "None" : (tgt - cur >= 2 ? "High" : "Medium") };
 
-      items.push({
-        id: comp.id,
-        name: comp.name,
-        desc: comp.description,
-        domain_name: domain.domain_name,
-        domain_color: domain.color,
-        current: cur,
-        target: tgt,
-        gap: gapInfo.gap,
-        severity: gapInfo.severity
-      });
+      let passesLevelFilter = true;
+      if (levelKey !== "ALL") {
+        if (levelKey === "MET" && gapInfo.gap > 0) passesLevelFilter = false;
+        if (levelKey === "GAP_1" && gapInfo.gap !== 1) passesLevelFilter = false;
+        if (levelKey === "GAP_2" && gapInfo.gap < 2) passesLevelFilter = false; // Using <2 instead of !==2 in case of larger gaps, or precisely !== 2 if we want strictly 2.
+      }
+      
+      if (passesLevelFilter) {
+        items.push({
+          id: comp.id,
+          name: comp.name,
+          desc: comp.description,
+          domain_name: domain.domain_name,
+          domain_color: domain.color,
+          current: cur,
+          target: tgt,
+          gap: gapInfo.gap,
+          severity: gapInfo.severity
+        });
+      }
     }
   }
 
@@ -361,16 +509,15 @@ function renderCourseGrid(elementId, courses, extraClass = "") {
         <p class="course-desc">${c.description}</p>
         <div class="course-tags">
           <span class="tag-pill"><i class="fa-solid fa-award"></i> ${c.level}</span>
-          <span class="tag-pill"><i class="fa-solid fa-star" style="color: #fbbf24;"></i> ${c.rating}</span>
           <span class="tag-pill"><i class="fa-solid fa-coins" style="color: var(--gov-saffron);"></i> +${c.karma_points} Skill Pts</span>
         </div>
       </div>
       <div class="course-footer">
         <span class="uplift-tag"><i class="fa-solid fa-chart-line"></i> +${c.estimated_uplift_pct}% Uplift</span>
-        ${(currentLearner?.completed_courses || []).includes(c.course_id) ? 
-          `<button class="btn-enrol" style="background: var(--gov-emerald); color: #fff;" disabled><i class="fa-solid fa-check"></i> Certified</button>` :
-          `<button class="btn-enrol" onclick="enrolInCourse(event, '${c.course_id}', '${c.title}')"><i class="fa-solid fa-graduation-cap"></i> Enrol & Certify</button>`
-        }
+        ${!window.isAdminSession ? ((currentLearner?.completed_courses || []).includes(c.course_id) ? 
+          `<button class="btn-enrol" style="background: var(--gov-emerald); color: #fff;" disabled><i class="fa-solid fa-check"></i> Enrolled</button>` :
+          `<button class="btn-enrol" onclick="enrolInCourse(event, '${c.course_id}', '${c.title}')"><i class="fa-solid fa-graduation-cap"></i> Enroll</button>`
+        ) : ''}
       </div>
     </div>
   `).join("");
@@ -400,10 +547,10 @@ function renderTpacProgrammes() {
         </div>
       </div>
       </div>
-      ${(currentLearner?.nominated_programmes || []).includes(p.program_id) ?
+      ${!window.isAdminSession ? ((currentLearner?.nominated_programmes || []).includes(p.program_id) ?
         `<button class="btn-primary" style="background: var(--gov-emerald); color: #fff; font-size: 12px; padding: 8px 14px;" disabled><i class="fa-solid fa-check"></i> Nominated</button>` :
         `<button class="btn-primary btn-saffron" style="font-size: 12px; padding: 8px 14px;" onclick="nominateForWorkshop(event, '${p.program_id}', '${p.title}')"><i class="fa-solid fa-file-signature"></i> Nominate Officer</button>`
-      }
+      ) : ''}
     </div>
   `).join("");
 }
@@ -423,14 +570,14 @@ async function enrolInCourse(event, courseId, courseTitle) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         course_id: courseId,
-        officer_id: "OFF-ISS-2026-HQ" // Using active user
+        officer_id: currentLearner ? currentLearner.officer_id : "OFF-ISS-2026-HQ"
       })
     });
 
     const data = await res.json();
     if (data.success) {
-      showToast(`🎉 Certified: Successfully completed '${courseTitle}'! (+${data.karma_points_earned} Skill Points)`);
-      btn.innerHTML = `<i class="fa-solid fa-check"></i> Certified`;
+      showToast(`🎉 Enrolled: Successfully started '${courseTitle}'!`);
+      btn.innerHTML = `<i class="fa-solid fa-check"></i> Enrolled`;
       btn.style.background = "var(--gov-emerald)";
       btn.style.color = "#fff";
       
@@ -440,18 +587,358 @@ async function enrolInCourse(event, courseId, courseTitle) {
         initRadarChart();
         renderPriorityGaps();
         renderFullCompetencyList();
+        renderLearningPathways();
+        renderEnrolledCourses();
       }
     } else {
       btn.innerHTML = originalHtml;
       btn.disabled = false;
     }
   } catch (e) {
-    btn.innerHTML = `<i class="fa-solid fa-check"></i> Certified`;
+    btn.innerHTML = `<i class="fa-solid fa-check"></i> Enrolled`;
     btn.style.background = "var(--gov-emerald)";
     btn.style.color = "#fff";
-    showToast(`🎉 Certified: Successfully completed '${courseTitle}'! (+50 Skill Points)`);
+    showToast(`🎉 Enrolled: Successfully started '${courseTitle}'!`);
+    if(currentLearner) {
+      if(!currentLearner.completed_courses) currentLearner.completed_courses = [];
+      currentLearner.completed_courses.push(courseId);
+      renderLearningPathways();
+      renderEnrolledCourses();
+    }
   }
 }
+
+// -------------------------------------------------------------------------
+// 8.5 Enrolled Courses Tab
+// -------------------------------------------------------------------------
+function renderEnrolledCourses() {
+  const container = document.getElementById("tab-enrolled");
+  if (!container || !currentLearner || !currentRecommendations) return;
+  
+  // We need to find the full course objects for the enrolled IDs.
+  // In a real app we'd fetch these from the backend, but we can look in recommendations or fetch from catalog API.
+  fetchAndRenderEnrolledCourses(container);
+}
+
+async function fetchAndRenderEnrolledCourses(container) {
+  try {
+    const res = await fetch(API_BASE + "/api/igot/courses");
+    const allCourses = await res.json();
+    const enrolledIds = currentLearner.completed_courses || [];
+    
+    const enrolledCourses = allCourses.filter(c => enrolledIds.includes(c.course_id));
+    
+    let html = `
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Enrolled Courses</h2>
+          <p style="font-size: 13.5px; color: var(--text-secondary);">Track your ongoing training and capacity building modules.</p>
+        </div>
+      </div>
+    `;
+    
+    if (enrolledCourses.length === 0) {
+      html += `
+      <div class="card">
+        <div style="padding: 40px; text-align: center; color: var(--text-muted);">
+          <i class="fa-solid fa-book" style="font-size: 40px; margin-bottom: 16px; color: var(--border-glass);"></i>
+          <h3 style="margin-bottom: 8px;">No active enrollments found</h3>
+          <p style="font-size: 13px;">Browse the iGOT catalog to find recommended modules for your competency gaps.</p>
+          <button class="btn-primary btn-saffron" style="margin-top: 20px;" onclick="switchTab('tab-pathways')">Browse Courses</button>
+        </div>
+      </div>`;
+      container.innerHTML = html;
+      return;
+    }
+    
+    html += `<div class="grid-3">`;
+    html += enrolledCourses.map(c => `
+      <div class="course-card">
+        <div>
+          <div class="course-header">
+            <span class="course-provider">${c.provider}</span>
+            <span class="course-duration"><i class="fa-regular fa-clock"></i> ${c.duration_hours} hrs</span>
+          </div>
+          <h4 class="course-title">${c.title}</h4>
+          <p class="course-desc">${c.description}</p>
+        </div>
+        <div class="course-footer" style="justify-content: space-between; align-items: center; border-top: 1px solid var(--border-glass); padding-top: 12px; margin-top: 12px;">
+          <span style="font-size: 12px; font-weight: 600; color: var(--gov-emerald);"><i class="fa-solid fa-circle-play"></i> In Progress</span>
+          <button class="btn-primary" style="padding: 6px 12px; font-size: 12px;">Resume</button>
+        </div>
+      </div>
+    `).join("");
+    html += `</div>`;
+    
+    container.innerHTML = html;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// -------------------------------------------------------------------------
+// 8.6 Inline iGOT Catalog (Paginated & Filtered)
+// -------------------------------------------------------------------------
+let fullCatalogData = [];
+let filteredCatalogData = [];
+let catalogCurrentPage = 1;
+const catalogPageSize = 60;
+let currentCatalogCategory = 'All';
+
+async function loadFullCatalog() {
+  try {
+    const res = await fetch(API_BASE + "/api/igot/courses?q=");
+    fullCatalogData = await res.json();
+    handleInlineCatalogFilter();
+  } catch (e) {
+    console.error("Failed to load catalog", e);
+  }
+}
+
+function setCatalogCategory(category, btnElement) {
+  currentCatalogCategory = category;
+  
+  // Update UI active state
+  const tabs = document.getElementById("catalogCategoryTabs");
+  if (tabs) {
+    tabs.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+  }
+  if (btnElement) {
+    btnElement.classList.add("active");
+  }
+  
+  handleInlineCatalogFilter();
+}
+
+let catalogSearchTimeout = null;
+function handleInlineCatalogFilter() {
+  clearTimeout(catalogSearchTimeout);
+  catalogSearchTimeout = setTimeout(() => {
+    const searchInput = document.getElementById("inlineCatalogSearchInput");
+    const query = searchInput ? searchInput.value.toLowerCase() : "";
+    
+    filteredCatalogData = fullCatalogData.filter(c => {
+      // Search disabled per request, only filtering by domain category
+      const matchesSearch = true; 
+      
+      let matchesCategory = true;
+      if (currentCatalogCategory !== 'All') {
+        const primComp = c.primary_competency || "";
+        if (currentCatalogCategory === 'Statistical') matchesCategory = primComp.startsWith('STAT');
+        else if (currentCatalogCategory === 'Technology') matchesCategory = primComp.startsWith('TECH');
+        else if (currentCatalogCategory === 'Governance') matchesCategory = primComp.startsWith('GOV');
+        else if (currentCatalogCategory === 'Leadership') matchesCategory = primComp.startsWith('LEAD');
+      }
+      
+      return matchesSearch && matchesCategory;
+    });
+    
+    catalogCurrentPage = 1;
+    renderCatalogPage();
+  }, 300);
+}
+
+function renderCatalogPage() {
+  const grid = document.getElementById("inlineCatalogGrid");
+  const paginationContainer = document.getElementById("catalogPaginationContainer");
+  
+  if (!grid) return;
+  
+  if (filteredCatalogData.length === 0) {
+    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">No courses found matching your criteria.</div>`;
+    if (paginationContainer) paginationContainer.innerHTML = "";
+    return;
+  }
+  
+  const totalPages = Math.ceil(filteredCatalogData.length / catalogPageSize);
+  const startIndex = (catalogCurrentPage - 1) * catalogPageSize;
+  const pageData = filteredCatalogData.slice(startIndex, startIndex + catalogPageSize);
+  
+  grid.innerHTML = pageData.map(c => `
+    <div class="course-card">
+      <div>
+        <div class="course-header">
+          <span class="course-provider">${c.provider}</span>
+          <span class="course-duration"><i class="fa-regular fa-clock"></i> ${c.duration_hours} hrs</span>
+        </div>
+        <h4 class="course-title">${c.title}</h4>
+        <p class="course-desc" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${c.description}</p>
+        <div class="course-tags">
+          <span class="tag-pill"><i class="fa-solid fa-award"></i> ${c.level}</span>
+        </div>
+      </div>
+      <div class="course-footer" style="margin-top: auto;">
+        ${!window.isAdminSession ? ((currentLearner?.completed_courses || []).includes(c.course_id) ? 
+          `<button class="btn-enrol" style="background: var(--gov-emerald); color: #fff; width: 100%; justify-content: center;" disabled><i class="fa-solid fa-check"></i> Enrolled</button>` :
+          `<button class="btn-enrol" style="width: 100%; justify-content: center;" onclick="enrolInCourse(event, '${c.course_id}', '${c.title.replace(/'/g, "\\'")}')"><i class="fa-solid fa-graduation-cap"></i> Enroll</button>`
+        ) : ''}
+      </div>
+    </div>
+  `).join("");
+  
+  // Render Pagination (Improved UI)
+  if (paginationContainer) {
+    if (totalPages <= 1) {
+      paginationContainer.innerHTML = `<div class="pagination" style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 20px;">
+        <button class="btn-secondary" disabled style="padding: 6px 12px; font-size: 13px; opacity: 0.5;"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+        <div style="background: var(--gov-primary-light); color: white; padding: 6px 12px; border-radius: 4px; font-size: 13px; font-weight: 600;">1</div>
+        <button class="btn-secondary" disabled style="padding: 6px 12px; font-size: 13px; opacity: 0.5;">Next <i class="fa-solid fa-chevron-right"></i></button>
+      </div>`;
+      return;
+    }
+    
+    let pagesHtml = '';
+    for(let i=1; i<=totalPages; i++) {
+        if(i === catalogCurrentPage) {
+            pagesHtml += `<div style="background: var(--gov-primary-light); color: white; padding: 6px 12px; border-radius: 4px; font-size: 13px; font-weight: 600;">${i}</div>`;
+        } else {
+            pagesHtml += `<button class="btn-secondary" style="padding: 6px 12px; font-size: 13px;" onclick="catalogCurrentPage=${i}; renderCatalogPage(); document.getElementById('fullCatalogSection').scrollIntoView({behavior: 'smooth'})">${i}</button>`;
+        }
+    }
+
+    let paginationHtml = `<div class="pagination" style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 20px;">
+      <button class="btn-secondary" ${catalogCurrentPage === 1 ? 'disabled style="opacity:0.5"' : ''} onclick="catalogCurrentPage--; renderCatalogPage(); document.getElementById('fullCatalogSection').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+      ${pagesHtml}
+      <button class="btn-secondary" ${catalogCurrentPage === totalPages ? 'disabled style="opacity:0.5"' : ''} onclick="catalogCurrentPage++; renderCatalogPage(); document.getElementById('fullCatalogSection').scrollIntoView({behavior: 'smooth'})">Next <i class="fa-solid fa-chevron-right"></i></button>
+    </div>`;
+    paginationContainer.innerHTML = paginationHtml;
+  }
+}
+
+// Ensure loadFullCatalog is called when the app initializes
+setTimeout(() => loadFullCatalog(), 1000);
+
+// -------------------------------------------------------------------------
+// 8.7 Enrolled Courses rendering
+// -------------------------------------------------------------------------
+let enrolledSearchTimeout = null;
+
+async function renderEnrolledCourses() {
+  const grid = document.getElementById("enrolledCoursesGrid");
+  if (!grid || !currentLearner) return;
+
+  const searchInput = document.getElementById("enrolledSearchInput");
+  const statusFilter = document.getElementById("enrolledStatusFilter");
+  
+  const query = searchInput ? searchInput.value.toLowerCase() : "";
+  const status = statusFilter ? statusFilter.value : "All";
+
+  // If no enrolled courses, show empty state early
+  if (!currentLearner.completed_courses || currentLearner.completed_courses.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">
+        <i class="fa-solid fa-book" style="font-size: 40px; margin-bottom: 16px; color: var(--border-glass);"></i>
+        <h3 style="margin-bottom: 8px;">No active enrollments found</h3>
+        <p style="font-size: 13px;">Browse the iGOT catalog to find recommended modules for your competency gaps.</p>
+        <button class="btn-primary btn-saffron" style="margin-top: 20px;" onclick="switchTab('tab-pathways')">Browse Courses</button>
+      </div>`;
+    return;
+  }
+
+  // Fetch full details of enrolled courses if not already in fullCatalogData
+  // Assuming fullCatalogData has been loaded by now, else we wait
+  if (fullCatalogData.length === 0) {
+    await loadFullCatalog();
+  }
+
+  // Filter full catalog to only include enrolled or completed courses
+  let myCourses = fullCatalogData.filter(c => {
+    const isCompleted = (currentLearner.completed_courses || []).includes(c.course_id);
+    const isEnrolled = (currentLearner.enrolled_courses || []).includes(c.course_id);
+    return isCompleted || isEnrolled;
+  });
+  
+  // Set real status based on DB data
+  myCourses = myCourses.map(c => {
+    const isCompleted = (currentLearner.completed_courses || []).includes(c.course_id);
+    return {
+      ...c,
+      mockStatus: isCompleted ? "Completed" : "In Progress"
+    };
+  });
+
+  // Apply filters
+  myCourses = myCourses.filter(c => {
+    // Search disabled per request
+    const matchesSearch = true; 
+    const matchesStatus = status === "All" || c.mockStatus === status;
+    return matchesSearch && matchesStatus;
+  });
+
+  if (myCourses.length === 0) {
+    grid.innerHTML = `<div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">No enrolled courses match your filters.</div>`;
+    return;
+  }
+
+  grid.innerHTML = myCourses.map(c => `
+    <div class="course-card" style="border-top: 4px solid ${c.mockStatus === 'Completed' ? 'var(--gov-emerald)' : 'var(--gov-saffron)'};">
+      <div>
+        <div class="course-header">
+          <span class="course-provider">${c.provider}</span>
+          <span class="course-duration"><i class="fa-regular fa-clock"></i> ${c.duration_hours} hrs</span>
+        </div>
+        <h4 class="course-title">${c.title}</h4>
+        <p class="course-desc" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${c.description}</p>
+        <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 12px; font-weight: 600; color: ${c.mockStatus === 'Completed' ? 'var(--gov-emerald)' : 'var(--gov-saffron)'};">
+            ${c.mockStatus === 'Completed' ? '<i class="fa-solid fa-check-circle"></i> Completed' : '<i class="fa-solid fa-spinner fa-spin"></i> In Progress'}
+          </span>
+          <span class="tag-pill"><i class="fa-solid fa-coins" style="color: var(--gov-saffron);"></i> +${c.karma_points} Pts</span>
+        </div>
+      </div>
+      <div class="course-footer" style="margin-top: auto; display: flex; gap: 8px;">
+        ${c.mockStatus === 'Completed' ? 
+          `<button class="btn-secondary" style="width: 100%; justify-content: center;"><i class="fa-solid fa-certificate"></i> View Certificate</button>` :
+          `<button class="btn-primary btn-saffron" style="flex: 1; justify-content: center;"><i class="fa-solid fa-play"></i> Resume</button>
+           <button class="btn-secondary" style="flex: 1; justify-content: center;" onclick="completeCourse(this, '${c.course_id}')"><i class="fa-solid fa-check"></i> Complete</button>`
+        }
+      </div>
+    </div>
+  `).join("");
+}
+
+window.completeCourse = async function(btn, courseId) {
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Completing...`;
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(API_BASE + "/api/igot/complete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        course_id: courseId,
+        officer_id: currentLearner ? currentLearner.officer_id : "OFF-ISS-2026-HQ"
+      })
+    });
+
+    const data = await res.json();
+    if (data.success && data.updated_officer) {
+      showToast('Course successfully completed! Points awarded.');
+      currentLearner = data.updated_officer;
+      renderLearnerHero();
+      renderEnrolledCourses();
+    } else {
+      btn.innerHTML = originalHtml;
+      btn.disabled = false;
+      showToast('Failed to complete course.');
+    }
+  } catch (err) {
+    console.error(err);
+    btn.innerHTML = originalHtml;
+    btn.disabled = false;
+    showToast('Error completing course.');
+  }
+};
+
+function handleEnrolledFilter() {
+  clearTimeout(enrolledSearchTimeout);
+  enrolledSearchTimeout = setTimeout(() => {
+    renderEnrolledCourses();
+  }, 300);
+}
+
+// switchTab hook moved to main switchTab function;
 
 function nominateForWorkshop(event, programId, title) {
   const btn = event.currentTarget;
@@ -468,7 +955,7 @@ function nominateForWorkshop(event, programId, title) {
     btn.disabled = true;
     
     try {
-      const res = await fetch("/api/nssta/nominate", {
+      const res = await fetch(API_BASE + "/api/nssta/nominate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ program_id: programId, officer_id: currentLearner.officer_id })
@@ -536,13 +1023,19 @@ function closeGenericModal() {
 function renderAdminAnalytics() {
   if (!administrativeAnalytics) return;
 
-  document.getElementById("adminTotalOfficers").innerText = administrativeAnalytics.total_officers.toLocaleString();
-  document.getElementById("adminAvgIndex").innerText = `${administrativeAnalytics.national_avg_competency_index}%`;
-  document.getElementById("adminTotalHours").innerText = administrativeAnalytics.total_learning_hours_logged.toLocaleString();
-  document.getElementById("adminTotalKarma").innerText = `${(administrativeAnalytics.total_karma_points_earned / 1000000).toFixed(2)}M`;
+  const safeSetText = (id, text) => {
+    const el = document.getElementById(id);
+    if (el) el.innerText = text;
+  };
+  
+  safeSetText("adminTotalOfficers", administrativeAnalytics.total_officers.toLocaleString());
+  safeSetText("adminAvgIndex", `${administrativeAnalytics.national_avg_competency_index}%`);
+  safeSetText("adminTotalHours", administrativeAnalytics.total_learning_hours_logged.toLocaleString());
+  safeSetText("adminTotalKarma", `${(administrativeAnalytics.total_karma_points_earned / 1000000).toFixed(2)}M`);
 
   initDivisionBarChart();
   initDeficitPieChart();
+  initScatterPlotChart();
   searchOfficerDirectory();
 }
 
@@ -636,27 +1129,124 @@ function initDeficitPieChart() {
   deficitPieChartInstance.setOption(option);
 }
 
+async function initScatterPlotChart() {
+  const chartDom = document.getElementById("scatterPlotChart");
+  if (!chartDom) return;
+
+  if (scatterPlotChartInstance) scatterPlotChartInstance.dispose();
+  const isDark = document.body.classList.contains("dark-theme");
+  scatterPlotChartInstance = echarts.init(chartDom, isDark ? "dark" : null);
+  
+  scatterPlotChartInstance.showLoading({ color: '#f59e0b' });
+  
+  try {
+    // Fetch all officers (limit=10000 to get everyone)
+    const res = await fetch(API_BASE + "/api/officers?q=&division=All&cadre=All&page=1&limit=10000");
+    const data = await res.json();
+    const officers = Array.isArray(data) ? data : (data.officers || []);
+    
+    // Map data for scatter: [Skill Points (X), Competency Index (Y), Officer ID, Name, Cadre]
+    const scatterData = officers.map(o => [
+      o.karma_points,
+      o.overall_competency_index,
+      o.officer_id,
+      o.name,
+      o.cadre.split('(')[0].trim()
+    ]);
+
+    const option = {
+      tooltip: {
+        trigger: 'item',
+        formatter: function (params) {
+          return `<b>${params.data[3]}</b> (${params.data[2]})<br/>
+                  Cadre: ${params.data[4]}<br/>
+                  Skill Points: <b style="color:#f59e0b;">${params.data[0]}</b><br/>
+                  Competency Index: <b style="color:#10b981;">${params.data[1]}%</b>`;
+        }
+      },
+      grid: { left: '5%', right: '5%', bottom: '10%', containLabel: true },
+      xAxis: {
+        type: 'value',
+        name: 'Skill Points Accrued (Karma)',
+        nameLocation: 'middle',
+        nameGap: 30,
+        axisLabel: { color: '#94a3b8' },
+        splitLine: { show: false }
+      },
+      yAxis: {
+        type: 'value',
+        name: 'Competency Index (%)',
+        nameLocation: 'middle',
+        nameGap: 30,
+        min: 0,
+        max: 100,
+        axisLabel: { color: '#94a3b8' },
+        splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.08)' } }
+      },
+      visualMap: {
+        min: 40,
+        max: 100,
+        dimension: 1, // Color based on Y-axis (Competency Index)
+        orient: 'horizontal',
+        right: 10,
+        top: 10,
+        text: ['High', 'Low'],
+        textStyle: { color: '#94a3b8' },
+        inRange: {
+          color: ['#ef4444', '#f59e0b', '#10b981'] // Red -> Yellow -> Green
+        }
+      },
+      series: [
+        {
+          name: 'Officers',
+          type: 'scatter',
+          symbolSize: 8,
+          data: scatterData,
+          itemStyle: {
+            opacity: 0.8,
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      ]
+    };
+    
+    scatterPlotChartInstance.setOption(option);
+  } catch (err) {
+    console.error("Error loading scatter data:", err);
+  } finally {
+    scatterPlotChartInstance.hideLoading();
+  }
+}
+
 let currentOfficerPage = 1;
 
 async function searchOfficerDirectory(page = 1) {
   currentOfficerPage = page;
-  const search = document.getElementById("officerSearchInput")?.value || "";
+  // Search disabled per request, keeping input but not using value
+  const search = ""; // document.getElementById("officerSearchInput")?.value || "";
   const division = document.getElementById("divisionFilterSelect")?.value || "All";
   const cadre = document.getElementById("cadreFilterSelect")?.value || "All";
+  
   const tbody = document.getElementById("officersTableBody");
   if (!tbody) return;
 
   const pageSpan = document.getElementById("currentPageSpan");
   if (pageSpan) pageSpan.innerText = currentOfficerPage;
 
+  const pageSize = document.getElementById("pageSizeSelect")?.value || 20;
+
   try {
-    const res = await fetch(`/api/officers?q=${encodeURIComponent(search)}&division=${division}&cadre=${encodeURIComponent(cadre)}&page=${currentOfficerPage}`);
+    const res = await fetch(API_BASE + `/api/officers?q=${encodeURIComponent(search)}&division=${division}&cadre=${encodeURIComponent(cadre)}&page=${currentOfficerPage}&limit=${pageSize}`);
     const data = await res.json();
-    const officers = data.officers || [];
+    const officers = Array.isArray(data) ? data : (data.officers || []);
     const totalPages = data.total_pages || 1;
 
     tbody.innerHTML = officers.map(o => {
       const isCurrent = currentLearner && o.officer_id === currentLearner.officer_id;
+      const canView = window.isAdminSession || isCurrent;
       return `
       <tr style="border-bottom: 1px solid var(--border-glass); transition: 0.15s ease;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
         <td style="padding: 10px; font-family: var(--font-mono); color: var(--gov-primary-light);">${o.officer_id}</td>
@@ -667,8 +1257,8 @@ async function searchOfficerDirectory(page = 1) {
         <td style="padding: 10px; font-weight: 700; color: ${o.overall_competency_index >= 80 ? 'var(--gov-emerald)' : 'var(--gov-rose)'};">${o.overall_competency_index}%</td>
         <td style="padding: 10px; color: var(--text-secondary);">${o.total_learning_hours} hrs</td>
         <td style="padding: 10px;">
-          <button class="btn-primary" style="padding: 4px 8px; font-size: 11px;" ${!isCurrent ? 'disabled title="Only the active profile can be viewed"' : ''} onclick="${isCurrent ? `viewOfficerRecord('${o.officer_id}')` : ''}">
-            <i class="fa-solid fa-eye"></i> ${isCurrent ? 'View Profile' : 'Active'}
+          <button class="btn-primary" style="padding: 4px 8px; font-size: 11px;" ${!canView ? 'disabled title="Only the active profile can be viewed"' : ''} onclick="${canView ? `viewOfficerRecord('${o.officer_id}')` : ''}">
+            <i class="fa-solid fa-eye"></i> View Profile
           </button>
         </td>
       </tr>
@@ -726,9 +1316,9 @@ function renderPagination(current, total) {
 
 async function viewOfficerRecord(officerId) {
   try {
-    const res = await fetch(`/api/learner-profile?id=${officerId}`);
+    const res = await fetch(API_BASE + `/api/learner-profile?id=${officerId}`);
     currentLearner = await res.json();
-    const recRes = await fetch(`/api/recommendations?id=${officerId}`);
+    const recRes = await fetch(API_BASE + `/api/recommendations?id=${officerId}`);
     currentRecommendations = await recRes.json();
 
     renderLearnerHero();
@@ -737,10 +1327,70 @@ async function viewOfficerRecord(officerId) {
     renderFullCompetencyList();
     renderLearningPathways();
     renderTpacProgrammes();
-    switchTab("tab-passport");
+    // Handle Admin View-Only Mode as a Modal Popup
+    if (window.isAdminSession) {
+      const passportTab = document.getElementById("tab-passport");
+      passportTab.classList.add("admin-modal-mode");
+      passportTab.style.display = "block";
+      
+      // Ensure the UI Overlay is on
+      const uiOverlay = document.getElementById("uiOverlay");
+      if (uiOverlay) uiOverlay.style.display = "flex";
+      
+      // Add a close button if not exists
+      let closeBtn = document.getElementById("adminModalCloseBtn");
+      if (!closeBtn) {
+        closeBtn = document.createElement("button");
+        closeBtn.id = "adminModalCloseBtn";
+        closeBtn.innerHTML = '<i class="fa-solid fa-times"></i>';
+        closeBtn.style.cssText = 'position: fixed; top: calc(5vh + 24px); right: calc(5vw + 24px); background: #e11d48; color: #ffffff; border: none; font-size: 20px; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10001; box-shadow: 0 4px 12px rgba(0,0,0,0.3); opacity: 1; transition: transform 0.2s;';
+        closeBtn.onclick = closeAdminProfileModal;
+        closeBtn.onmouseover = () => closeBtn.style.transform = 'scale(1.1)';
+        closeBtn.onmouseout = () => closeBtn.style.transform = 'scale(1)';
+        passportTab.appendChild(closeBtn);
+      } else {
+        closeBtn.style.display = 'flex';
+      }
+
+      const fastTrackBtn = document.getElementById('fastTrackCloseGapsBtn');
+      if (fastTrackBtn) fastTrackBtn.style.display = 'none';
+      
+      const adminBanner = document.getElementById('adminViewBanner');
+      if (!adminBanner) {
+        const banner = document.createElement('div');
+        banner.id = 'adminViewBanner';
+        banner.style.cssText = 'background: #fffbeb; border: 1px solid #fcd34d; border-left: 5px solid #d97706; padding: 16px 20px; border-radius: 8px; margin-bottom: 24px; color: #b45309; font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 12px; margin-right: 80px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); opacity: 1;';
+        banner.innerHTML = '<i class="fa-solid fa-user-shield" style="font-size: 20px;"></i> You are viewing this profile in Admin Read-Only Mode. Interactions are disabled.';
+        const heroCard = document.getElementById('officerHeroCard');
+        if (heroCard) heroCard.parentNode.insertBefore(banner, heroCard);
+      } else {
+        adminBanner.style.display = 'flex';
+      }
+      
+      // Ensure charts render properly in modal
+      setTimeout(() => {
+        if (radarChartInstance) radarChartInstance.resize();
+      }, 200);
+      
+    } else {
+      switchTab("tab-passport");
+    }
+    
     showToast(`Loaded profile for ${currentLearner.name} (${currentLearner.officer_id})`);
   } catch (e) {
     console.error(e);
+  }
+}
+
+function closeAdminProfileModal() {
+  const passportTab = document.getElementById("tab-passport");
+  if (passportTab) {
+    passportTab.classList.remove("admin-modal-mode");
+    passportTab.style.display = "none";
+  }
+  const uiOverlay = document.getElementById("uiOverlay");
+  if (uiOverlay) {
+    uiOverlay.style.display = "none";
   }
 }
 
@@ -749,9 +1399,9 @@ async function viewOfficerRecord(officerId) {
 // -------------------------------------------------------------------------
 async function switchOfficerRole(roleKey) {
   try {
-    const res = await fetch(`/api/learner-profile?role=${roleKey}`);
+    const res = await fetch(API_BASE + `/api/learner-profile?role=${roleKey}`);
     currentLearner = await res.json();
-    const recRes = await fetch(`/api/recommendations?id=${currentLearner.officer_id}`);
+    const recRes = await fetch(API_BASE + `/api/recommendations?id=${currentLearner.officer_id}`);
     currentRecommendations = await recRes.json();
 
     renderLearnerHero();
@@ -760,6 +1410,7 @@ async function switchOfficerRole(roleKey) {
     renderFullCompetencyList();
     renderLearningPathways();
     renderTpacProgrammes();
+    
     showToast(`Switched active view to ${currentLearner.name} (${currentLearner.designation})`);
   } catch (e) {
     console.error(e);
@@ -782,6 +1433,57 @@ function switchTab(tabId) {
     if (divisionBarChartInstance) divisionBarChartInstance.resize();
     if (deficitPieChartInstance) deficitPieChartInstance.resize();
   }, 100);
+  
+  if (tabId === 'tab-leaderboard') {
+    renderLeaderboard();
+  } else if (tabId === 'tab-enrolled') {
+    renderEnrolledCourses();
+  }
+}
+
+async function renderLeaderboard() {
+  const tbody = document.getElementById("leaderboardTableBody");
+  if (!tbody) return;
+  
+  try {
+    const res = await fetch(API_BASE + "/api/leaderboard");
+    const top20 = await res.json();
+    
+    if (!top20 || top20.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-muted);">Leaderboard data unavailable.</td></tr>`;
+      return;
+    }
+    
+    tbody.innerHTML = top20.map((o, idx) => {
+      let rankIcon = `<strong>${idx + 1}</strong>`;
+      if (idx === 0) rankIcon = `<i class="fa-solid fa-trophy" style="color: #fbbf24; font-size: 16px;"></i>`;
+      else if (idx === 1) rankIcon = `<i class="fa-solid fa-medal" style="color: #94a3b8; font-size: 16px;"></i>`;
+      else if (idx === 2) rankIcon = `<i class="fa-solid fa-medal" style="color: #b45309; font-size: 16px;"></i>`;
+      
+      return `
+        <tr style="border-bottom: 1px solid var(--border-glass); transition: 0.15s ease;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
+          <td style="padding: 12px; text-align: center;">${rankIcon}</td>
+          <td style="padding: 12px;">
+            <div style="font-weight: 700;">${o.name}</div>
+            <div style="font-size: 11px; font-family: var(--font-mono); color: var(--gov-primary-light);">${o.officer_id}</div>
+          </td>
+          <td style="padding: 12px; color: var(--text-secondary); font-size: 12px;">
+            ${o.designation}<br>
+            <span style="font-weight: 700; color: var(--gov-saffron); font-size: 11px;">${o.division_code}</span>
+          </td>
+          <td style="padding: 12px; font-weight: 700; color: ${o.overall_competency_index >= 80 ? 'var(--gov-emerald)' : 'var(--gov-rose)'};">${o.overall_competency_index}%</td>
+          <td style="padding: 12px; color: var(--text-secondary);">${o.total_learning_hours} hrs</td>
+          <td style="padding: 12px; text-align: right; font-weight: 800; color: var(--gov-saffron); font-size: 14px;">
+            ${o.karma_points.toLocaleString()}
+          </td>
+        </tr>
+      `;
+    }).join("");
+    
+  } catch (err) {
+    console.error("Error loading leaderboard:", err);
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--gov-rose);">Failed to load leaderboard.</td></tr>`;
+  }
 }
 
 function toggleTheme() {
@@ -820,9 +1522,33 @@ function initVisualizations() {
     if (radarChartInstance) radarChartInstance.resize();
     if (divisionBarChartInstance) divisionBarChartInstance.resize();
     if (deficitPieChartInstance) deficitPieChartInstance.resize();
+    if (scatterPlotChartInstance) scatterPlotChartInstance.resize();
   });
 }
 
 function setupEventListeners() {
-  // Any extra global listeners
+  const officerSearch = document.getElementById("officerSearchInput");
+  if (officerSearch) {
+    let debounceTimer;
+    officerSearch.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        searchOfficerDirectory(1);
+      }, 300);
+    });
+  }
+
+  const globalSearch = document.getElementById("globalSearch");
+  if (globalSearch) {
+    let debounceTimer;
+    globalSearch.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        if (officerSearch) {
+          officerSearch.value = globalSearch.value;
+          searchOfficerDirectory(1);
+        }
+      }, 300);
+    });
+  }
 }

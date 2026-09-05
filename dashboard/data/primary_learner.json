@@ -11,14 +11,14 @@
   "years_of_experience": 15,
   "education": "M.Stat (ISI Kolkata)",
   "current_assignment": "Base Year Revision of CPI & System of National Accounts (SNA 2025 Benchmarking)",
-  "overall_competency_index": 78.4,
-  "total_learning_hours": 64,
-  "karma_points": 1840,
-  "completed_courses_count": 7,
+  "overall_competency_index": 91.2,
+  "total_learning_hours": 118,
+  "karma_points": 2650,
+  "completed_courses_count": 11,
   "current_competencies": {
-    "STAT-01": 4,
+    "STAT-01": 5,
     "STAT-02": 4,
-    "STAT-03": 4,
+    "STAT-03": 5,
     "STAT-04": 4,
     "STAT-05": 4,
     "STAT-06": 4,
@@ -27,12 +27,12 @@
     "STAT-09": 4,
     "STAT-10": 4,
     "TECH-01": 3,
-    "TECH-02": 3,
+    "TECH-02": 4,
     "TECH-03": 4,
     "TECH-04": 4,
     "TECH-05": 4,
     "TECH-06": 4,
-    "TECH-07": 3,
+    "TECH-07": 4,
     "TECH-08": 3,
     "GOV-01": 4,
     "GOV-02": 3,
@@ -77,10 +77,10 @@
   },
   "skill_gaps": {
     "STAT-01": {
-      "current": 4,
+      "current": 5,
       "target": 5,
-      "gap": 1,
-      "severity": "Medium",
+      "gap": 0,
+      "severity": "None",
       "name": "Survey Sampling & Multi-Stage Research Design",
       "domain": "Official Statistical Methodologies & National Frameworks"
     },
@@ -93,10 +93,10 @@
       "domain": "Official Statistical Methodologies & National Frameworks"
     },
     "STAT-03": {
-      "current": 4,
+      "current": 5,
       "target": 5,
-      "gap": 1,
-      "severity": "Medium",
+      "gap": 0,
+      "severity": "None",
       "name": "Price Statistics & Inflation Indices (CPI, WPI)",
       "domain": "Official Statistical Methodologies & National Frameworks"
     },
@@ -165,10 +165,10 @@
       "domain": "Modern Data Science, AI & Statistical Computing"
     },
     "TECH-02": {
-      "current": 3,
+      "current": 4,
       "target": 4,
-      "gap": 1,
-      "severity": "Medium",
+      "gap": 0,
+      "severity": "None",
       "name": "R for Advanced Statistical Modeling & Microdata Analysis",
       "domain": "Modern Data Science, AI & Statistical Computing"
     },
@@ -205,10 +205,10 @@
       "domain": "Modern Data Science, AI & Statistical Computing"
     },
     "TECH-07": {
-      "current": 3,
+      "current": 4,
       "target": 4,
-      "gap": 1,
-      "severity": "Medium",
+      "gap": 0,
+      "severity": "None",
       "name": "Machine Learning, Nowcasting & Anomaly Detection in Surveys",
       "domain": "Modern Data Science, AI & Statistical Computing"
     },
@@ -380,6 +380,11 @@
   },
   "status": "Active Learner",
   "last_active": "Today",
-  "completed_courses": [],
+  "completed_courses": [
+    "IGOT-TECH-207",
+    "IGOT-TECH-202",
+    "IGOT-STAT-103",
+    "IGOT-STAT-101"
+  ],
   "nominated_programmes": []
 }

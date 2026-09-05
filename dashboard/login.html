@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | SkillStat-AI</title>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Firebase SDK (Compat Version) -->
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-main);
+      height: 100vh;
+    }
+    .login-container {
+      background: var(--bg-card);
+      border: var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--shadow-lg);
+    }
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .login-header .national-emblem {
+      margin: 0 auto 15px;
+      width: 48px;
+      height: 48px;
+      font-size: 20px;
+    }
+    .login-title {
+      font-size: 24px;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+    }
+    .login-subtitle {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    .role-tabs {
+      display: flex;
+      background: var(--bg-main);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+    .role-tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: var(--transition-fast);
+    }
+    .role-tab.active {
+      background: var(--bg-card);
+      color: var(--gov-primary);
+      box-shadow: var(--shadow-sm);
+    }
+    .input-group {
+      margin-bottom: 16px;
+    }
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      border: var(--border-soft);
+      background: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      outline: none;
+      transition: var(--transition-fast);
+    }
+    .input-group input:focus {
+      border-color: var(--gov-primary-light);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--gov-primary);
+      color: var(--saas-white);
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: var(--transition-normal);
+      margin-top: 10px;
+    }
+    .login-btn:hover {
+      background: var(--gov-primary-light);
+    }
+    .error-msg {
+      color: var(--gov-rose);
+      font-size: 13px;
+      margin-top: 15px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-header">
+      <div class="national-emblem">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <h1 class="login-title">SkillStat-AI</h1>
+      <p class="login-subtitle">Sign in to your account</p>
+    </div>
+
+    <div class="role-tabs">
+      <div class="role-tab active" id="tab-user" onclick="setRole('user')">Officer Sign In</div>
+      <div class="role-tab" id="tab-admin" onclick="setRole('admin')">Cadre Admin</div>
+    </div>
+
+    <form id="login-form">
+      <div class="input-group">
+        <label for="email">Official Email</label>
+        <input type="email" id="email" placeholder="officer@mospi.gov.in" required>
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="login-btn" id="login-btn">Sign In</button>
+      <div class="error-msg" id="error-msg"></div>
+    </form>
+  </div>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDY4BmT7-_Vz2bgnUdhYHjMjyUF7Y86oLc",
+      authDomain: "sih-26-7c5e3.firebaseapp.com",
+      projectId: "sih-26-7c5e3",
+      storageBucket: "sih-26-7c5e3.firebasestorage.app",
+      messagingSenderId: "1007830261462",
+      appId: "1:1007830261462:web:34acb3d60ea9648b41f377",
+      measurementId: "G-W3KGPK8N5F"
+    };
+
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    
+    // Check if user is already logged in
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        window.location.href = 'index.html';
+      }
+    });
+
+    let currentRole = 'user';
+
+    function setRole(role) {
+      currentRole = role;
+      document.getElementById('tab-user').classList.remove('active');
+      document.getElementById('tab-admin').classList.remove('active');
+      document.getElementById(`tab-${role}`).classList.add('active');
+    }
+
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const btn = document.getElementById('login-btn');
+      const errorMsg = document.getElementById('error-msg');
+      
+      btn.innerText = "Authenticating...";
+      errorMsg.style.display = 'none';
+
+      // Use real Firebase Authentication
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Store selected role - real enforcement is done via email check in app.js
+          localStorage.setItem('skillstat_user_role', currentRole);
+          window.location.href = 'index.html';
+        })
+        .catch((error) => {
+          console.error("Auth error:", error);
+          errorMsg.innerText = error.message;
+          errorMsg.style.display = 'block';
+          btn.innerText = "Sign In";
+        });
+    });
+  </script>
+</body>
+</html>

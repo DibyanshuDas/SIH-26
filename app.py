@@ -115,6 +115,18 @@ def get_officers():
         "total_results": len(docs)
     })
 
+@app.route('/api/leaderboard', methods=['GET'])
+def get_leaderboard():
+    docs = []
+    try:
+        docs = [d.to_dict() for d in db.collection('official_profiles').stream()]
+    except Exception as e:
+        print(f"Firestore error in get_leaderboard: {e}")
+        pass
+    
+    docs.sort(key=lambda x: x.get('karma_points', 0), reverse=True)
+    return jsonify(docs[:20])
+
 @app.route('/api/recommendations', methods=['GET'])
 def get_recommendations():
     officer_id = request.args.get('id', 'OFF-ISS-2026-HQ')
@@ -238,15 +250,12 @@ def enrol_course():
         if officer_doc.exists:
             officer = officer_doc.to_dict()
             
-            # Track completed courses
-            completed = officer.get('completed_courses', [])
-            if course_id not in completed:
-                completed.append(course_id)
-            officer['completed_courses'] = completed
+            # Track enrolled courses
+            enrolled = officer.get('enrolled_courses', [])
+            if course_id not in enrolled:
+                enrolled.append(course_id)
+            officer['enrolled_courses'] = enrolled
             
-            # Simple simulated uplift logic
-            officer['karma_points'] = officer.get('karma_points', 0) + 50
-            officer['total_learning_hours'] = officer.get('total_learning_hours', 0) + 2
             officer_ref.set(officer)
     except Exception as e:
         print(f"Firestore error in enrol_course: {e}")
@@ -254,12 +263,57 @@ def enrol_course():
         officer = {
             "overall_competency_index": 70,
             "karma_points": 50,
-            "completed_courses": [course_id]
+            "enrolled_courses": [course_id],
+            "completed_courses": officer.get('completed_courses', [])
         }
     
     return jsonify({
         "success": True,
-        "message": f"Successfully enrolled & completed certification!",
+        "message": "Successfully enrolled in course!",
+        "updated_officer": officer
+    })
+
+@app.route('/api/igot/complete', methods=['POST'])
+def complete_course():
+    data = request.json
+    course_id = data.get('course_id')
+    officer_id = data.get('officer_id', 'OFF-ISS-2026-HQ')
+    
+    officer = {}
+    try:
+        officer_ref = db.collection('official_profiles').document(officer_id)
+        officer_doc = officer_ref.get()
+        if officer_doc.exists:
+            officer = officer_doc.to_dict()
+            
+            # Remove from enrolled if exists
+            enrolled = officer.get('enrolled_courses', [])
+            if course_id in enrolled:
+                enrolled.remove(course_id)
+            officer['enrolled_courses'] = enrolled
+            
+            # Add to completed
+            completed = officer.get('completed_courses', [])
+            if course_id not in completed:
+                completed.append(course_id)
+            officer['completed_courses'] = completed
+            
+            # Reward points
+            officer['karma_points'] = officer.get('karma_points', 0) + 50
+            officer['total_learning_hours'] = officer.get('total_learning_hours', 0) + 2
+            officer_ref.set(officer)
+    except Exception as e:
+        print(f"Firestore error in complete_course: {e}")
+        officer = {
+            "overall_competency_index": 70,
+            "karma_points": 100,
+            "completed_courses": [course_id],
+            "enrolled_courses": []
+        }
+    
+    return jsonify({
+        "success": True,
+        "message": "Successfully completed course!",
         "new_competency_index": officer.get('overall_competency_index', 0),
         "karma_points_earned": 50,
         "updated_officer": officer

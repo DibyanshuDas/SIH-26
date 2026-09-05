@@ -36,12 +36,25 @@ competency_engine = CompetencyEngine()
 recommendation_engine = RecommendationEngine()
 assessment_engine = AssessmentEngine()
 
+# Cache for official profiles
+CACHED_PROFILES = []
+
 # Initialize data if not already existing
 if not os.path.exists(os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")):
     competency_engine.generate_officer_profiles(100)
     competency_engine.save_all_data()
     recommendation_engine.save_all_catalogs()
     assessment_engine.save_all_data()
+
+# Load profiles into memory cache
+def load_profiles_cache():
+    global CACHED_PROFILES
+    profiles_file = os.path.join(DATA_DIR, "official_profiles.json")
+    if os.path.exists(profiles_file):
+        with open(profiles_file, "r") as f:
+            CACHED_PROFILES = json.load(f)
+
+load_profiles_cache()
 
 class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -61,8 +74,9 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
         elif path == "/api/learner-profile":
             officer_id = query_params.get("id", [None])[0]
             role_filter = query_params.get("role", [None])[0]
+            email = query_params.get("email", [None])[0]
             
-            profile = self.get_officer_profile(officer_id, role_filter)
+            profile = self.get_officer_profile(officer_id, role_filter, email)
             self.send_json_response(profile)
             return
 
@@ -72,7 +86,31 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
             cadre = query_params.get("cadre", [None])[0]
             search = query_params.get("q", [None])[0]
             limit = int(query_params.get("limit", [50])[0])
-            self.send_json_response(self.search_officers(division, cadre, search, limit))
+            page = int(query_params.get("page", [1])[0])
+            self.send_json_response(self.search_officers(division, cadre, search, limit, page))
+            return
+
+        # 3.5 API: Leaderboard
+        elif path == "/api/leaderboard":
+            profiles = CACHED_PROFILES
+            if not profiles:
+                self.send_json_response([])
+                return
+            
+            # Sort by karma points descending
+            sorted_profiles = sorted(profiles, key=lambda x: x.get("karma_points", 0), reverse=True)
+            top_20 = []
+            for p in sorted_profiles[:20]:
+                top_20.append({
+                    "officer_id": p["officer_id"],
+                    "name": p["name"],
+                    "designation": p["designation"],
+                    "division_code": p["division_code"],
+                    "karma_points": p["karma_points"],
+                    "total_learning_hours": p["total_learning_hours"],
+                    "overall_competency_index": p["overall_competency_index"]
+                })
+            self.send_json_response(top_20)
             return
 
         # 4. API: Skill Gaps
@@ -364,17 +402,16 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "*")
         self.end_headers()
 
-    def get_officer_profile(self, officer_id=None, role_filter=None):
+    def get_officer_profile(self, officer_id=None, role_filter=None, email=None):
         primary_file = os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")
-        if not officer_id and not role_filter and os.path.exists(primary_file):
-            with open(primary_file, "r") as f:
-                return json.load(f)
-
-        profiles_file = os.path.join(DATA_DIR, "official_profiles.json")
-        if os.path.exists(profiles_file):
-            with open(profiles_file, "r") as f:
-                profiles = json.load(f)
-                
+        
+        profiles = CACHED_PROFILES
+        if profiles:
+            if email:
+                for p in profiles:
+                    if p.get("email") == email:
+                        return p
+                        
             if officer_id:
                 for p in profiles:
                     if p["officer_id"] == officer_id:
@@ -384,18 +421,20 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
                 for p in profiles:
                     if p.get("role_key") == role_filter:
                         return p
-                        
-            return profiles[0]
+            
+            # Fallback
+            if not officer_id and not role_filter and not email and os.path.exists(primary_file):
+                with open(primary_file, "r") as f:
+                    return json.load(f)
+            
+            return profiles[0] if profiles else {}
             
         return {}
 
-    def search_officers(self, division=None, cadre=None, search=None, limit=50):
-        profiles_file = os.path.join(DATA_DIR, "official_profiles.json")
-        if not os.path.exists(profiles_file):
+    def search_officers(self, division=None, cadre=None, search=None, limit=50, page=1):
+        profiles = CACHED_PROFILES
+        if not profiles:
             return []
-
-        with open(profiles_file, "r") as f:
-            profiles = json.load(f)
 
         filtered = []
         for p in profiles:
@@ -418,17 +457,36 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
                 "karma_points": p["karma_points"],
                 "current_assignment": p["current_assignment"]
             })
-            if len(filtered) >= limit:
-                break
-        return filtered
+            
+        import math
+        total_count = len(filtered)
+        total_pages = math.ceil(total_count / limit) if limit > 0 else 1
+        
+        start_idx = (page - 1) * limit
+        end_idx = start_idx + limit
+        paginated = filtered[start_idx:end_idx]
+        
+        return {
+            "officers": paginated,
+            "total_pages": total_pages,
+            "total_count": total_count,
+            "current_page": page
+        }
 
     def handle_course_enrolment(self, officer_id, course_id):
-        primary_file = os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")
-        if os.path.exists(primary_file):
-            with open(primary_file, "r") as f:
-                officer = json.load(f)
-        else:
-            return {"error": "Learner profile not found"}
+        officer = None
+        for p in CACHED_PROFILES:
+            if p["officer_id"] == officer_id:
+                officer = p
+                break
+                
+        if not officer:
+            primary_file = os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")
+            if os.path.exists(primary_file):
+                with open(primary_file, "r") as f:
+                    officer = json.load(f)
+            else:
+                return {"error": "Learner profile not found"}
 
         # Find course
         course = next((c for c in recommendation_engine.igot_courses if c["course_id"] == course_id), None)
@@ -436,15 +494,18 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
             return {"error": "Course not found"}
 
         primary_comp = course["primary_competency"]
-        cur_level = officer["current_competencies"].get(primary_comp, 2)
-        tgt_level = officer["target_competencies"].get(primary_comp, 4)
+        cur_level = officer.get("current_competencies", {}).get(primary_comp, 2)
+        tgt_level = officer.get("target_competencies", {}).get(primary_comp, 4)
         
         # Uplift level
         new_level = min(tgt_level, cur_level + 1)
+        if "current_competencies" not in officer:
+            officer["current_competencies"] = {}
         officer["current_competencies"][primary_comp] = new_level
-        officer["total_learning_hours"] += course["duration_hours"]
-        officer["karma_points"] += course["karma_points"]
-        officer["completed_courses_count"] += 1
+        
+        officer["total_learning_hours"] = officer.get("total_learning_hours", 0) + course["duration_hours"]
+        officer["karma_points"] = officer.get("karma_points", 0) + course["karma_points"]
+        officer["completed_courses_count"] = officer.get("completed_courses_count", 0) + 1
         
         # Ensure completed_courses array exists
         completed = officer.get("completed_courses", [])
@@ -453,17 +514,35 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
         officer["completed_courses"] = completed
         
         # Recalculate gaps
-        if primary_comp in officer["skill_gaps"]:
+        if "skill_gaps" in officer and primary_comp in officer["skill_gaps"]:
             officer["skill_gaps"][primary_comp]["current"] = new_level
             officer["skill_gaps"][primary_comp]["gap"] = max(0, tgt_level - new_level)
             officer["skill_gaps"][primary_comp]["severity"] = "High" if officer["skill_gaps"][primary_comp]["gap"] >= 2 else ("Medium" if officer["skill_gaps"][primary_comp]["gap"] == 1 else "None")
 
         # Uplift overall index
-        officer["overall_competency_index"] = min(100.0, round(officer["overall_competency_index"] + 3.2, 1))
+        officer["overall_competency_index"] = min(100.0, round(officer.get("overall_competency_index", 0) + 3.2, 1))
 
-        # Save back
-        with open(primary_file, "w") as f:
-            json.dump(officer, f, indent=2)
+        # Save back to database
+        if officer in CACHED_PROFILES:
+            profiles_file = os.path.join(DATA_DIR, "official_profiles.json")
+            with open(profiles_file, "w") as f:
+                json.dump(CACHED_PROFILES, f, indent=2)
+                
+            # Keep primary_learner.json in sync if it's the same officer
+            primary_file = os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")
+            if os.path.exists(primary_file):
+                try:
+                    with open(primary_file, "r") as f:
+                        primary_officer = json.load(f)
+                    if primary_officer.get("officer_id") == officer_id:
+                        with open(primary_file, "w") as f:
+                            json.dump(officer, f, indent=2)
+                except Exception:
+                    pass
+        else:
+            primary_file = os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")
+            with open(primary_file, "w") as f:
+                json.dump(officer, f, indent=2)
 
         return {
             "success": True,

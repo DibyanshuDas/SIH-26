@@ -12,6 +12,10 @@
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="styles.css">
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
 </head>
 <body>
 
@@ -31,17 +35,23 @@
       <div class="sidebar-nav-title">MAIN</div>
       <nav class="sidebar-nav">
         <button class="nav-tab active" onclick="switchTab('tab-passport')">
-          <i class="fa-solid fa-id-card-clip"></i> <span>Digital Passport</span>
+          <i class="fa-solid fa-home"></i> <span>Home Page</span>
         </button>
         <button class="nav-tab" onclick="switchTab('tab-pathways')">
-          <i class="fa-solid fa-route"></i> <span>Pathways & Catalog</span>
+          <i class="fa-solid fa-magnifying-glass"></i> <span>Browse Course</span>
+        </button>
+        <button class="nav-tab" onclick="switchTab('tab-enrolled')">
+          <i class="fa-solid fa-book-open-reader"></i> <span>Enrolled Course</span>
         </button>
         <button class="nav-tab" onclick="switchTab('tab-assessment')">
           <i class="fa-solid fa-brain"></i> <span>AI Assessment</span>
         </button>
+        <button class="nav-tab" onclick="switchTab('tab-leaderboard')">
+          <i class="fa-solid fa-trophy"></i> <span>Leader Board</span>
+        </button>
         
-        <div class="sidebar-nav-title" style="margin-top: 24px;">TOOLS</div>
-        <button class="nav-tab" onclick="switchTab('tab-admin')">
+        <div class="sidebar-nav-title" id="cadreAdminTitle" style="margin-top: 24px;">TOOLS</div>
+        <button class="nav-tab" id="nav-tab-admin" onclick="switchTab('tab-admin')">
           <i class="fa-solid fa-chart-pie"></i> <span>Cadre Admin</span>
         </button>
       </nav>
@@ -51,24 +61,30 @@
     <div class="main-content">
       <!-- Top Utility Header -->
       <header class="top-utility-header">
-        <div class="header-left">
-          <div class="header-search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search resources or officers... (Press '/' to focus)" id="globalSearch">
+        <div class="header-left" style="display: flex; align-items: center; gap: 24px;">
+          <div class="sidebar-brand" id="adminHeaderBrand" style="display: none; height: auto; border: none; padding: 0;">
+            <div class="national-emblem">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">SkillStat-AI</div>
+              <div class="badge-igot">iGOT ENABLED</div>
+            </div>
           </div>
+
         </div>
 
         <div class="header-controls">
-          <div class="role-switcher-container">
-            <span id="currentRoleDisplay" style="font-size: 13px; font-weight: 600; color: var(--gov-primary-light); background: rgba(59, 130, 246, 0.1); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(59, 130, 246, 0.2);">
-              <i class="fa-solid fa-user-circle"></i> <span id="currentRoleName">Dr. Rajeshwar Sharma</span> — <span id="currentRoleTitle">Director, NAD (ISS)</span>
-            </span>
+          <!-- Contact Search Functionality -->
+          <div class="header-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="contactSearchInput" placeholder="Find an expert or contact..." oninput="handleContactSearch()">
+            <div id="contactSearchResults" class="search-results-dropdown" style="display: none; position: absolute; top: 60px; right: 80px; width: 320px; background: var(--bg-card); border: var(--border-soft); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); z-index: 1000; max-height: 400px; overflow-y: auto;">
+              <!-- Rendered by JS -->
+            </div>
           </div>
-
-
-
-          <button id="themeToggleBtn" class="btn-icon" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-            <i class="fa-solid fa-moon"></i>
+          <button id="headerLogoutBtn" class="btn-icon" onclick="logout()" title="Logout" style="margin-left: 8px; color: var(--gov-rose);">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
           </button>
         </div>
       </header>
@@ -84,15 +100,19 @@
       <div class="officer-hero-card" id="officerHeroCard">
         <div class="officer-avatar" id="heroAvatar">RS</div>
         <div class="officer-meta">
-          <h2>
-            <span id="heroName">Dr. Rajeshwar Sharma</span>
-            <span class="cadre-badge" id="heroCadre">Indian Statistical Service (ISS)</span>
-          </h2>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <h2>
+              <span id="heroName">Dr. Rajeshwar Sharma</span>
+              <span class="cadre-badge" id="heroCadre">Indian Statistical Service (ISS)</span>
+            </h2>
+          </div>
           <div class="officer-tags">
             <span><i class="fa-solid fa-briefcase"></i> <strong id="heroDesignation">Director (NAD)</strong></span>
             <span><i class="fa-solid fa-building-columns"></i> <span id="heroDivision">National Accounts Division (NAD)</span></span>
             <span><i class="fa-solid fa-location-dot"></i> <span id="heroHQ">New Delhi</span></span>
             <span><i class="fa-solid fa-graduation-cap"></i> <span id="heroEducation">M.Stat (ISI Kolkata)</span></span>
+            <span style="color: var(--gov-purple);"><i class="fa-solid fa-star"></i> <strong>Skill Type:</strong> <span id="heroSkillType">Statistical Analytics</span></span>
+            <span style="color: var(--gov-rose);"><i class="fa-solid fa-triangle-exclamation"></i> <strong>Primary Gap Level:</strong> <span id="heroGapLevel">-2 Levels</span></span>
           </div>
           <div style="margin-top: 10px; font-size: 12.5px; color: var(--text-secondary);">
             <strong style="color: var(--gov-saffron);"><i class="fa-solid fa-diagram-project"></i> Current Assignment:</strong> 
@@ -100,18 +120,26 @@
           </div>
         </div>
 
-        <div class="officer-stats-pills">
+        <div class="officer-stats-pills" style="flex-wrap: wrap;">
           <div class="stat-pill">
             <div class="stat-pill-val highlight-green" id="heroIndexVal">78.4%</div>
             <div class="stat-pill-lbl">Competency Index</div>
           </div>
           <div class="stat-pill">
-            <div class="stat-pill-val highlight-blue" id="heroHoursVal">64 hrs</div>
-            <div class="stat-pill-lbl">iGOT Learning</div>
-          </div>
-          <div class="stat-pill">
             <div class="stat-pill-val highlight-saffron" id="heroKarmaVal">1,840</div>
             <div class="stat-pill-lbl">Skill Points</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-pill-val highlight-blue" id="heroHoursVal">64 hrs</div>
+            <div class="stat-pill-lbl">Learning Hours</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-pill-val" style="color: var(--gov-purple);" id="heroCompletedCourses">12</div>
+            <div class="stat-pill-lbl">Completed Courses</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-pill-val" style="color: var(--text-primary);" id="heroRankVal">#42</div>
+            <div class="stat-pill-lbl">India-wide Rank</div>
           </div>
         </div>
       </div>
@@ -129,23 +157,27 @@
           <div id="radarChart" class="chart-container"></div>
         </div>
 
-        <!-- Priority Skill Gap Diagnosis -->
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title"><i class="fa-solid fa-triangle-exclamation" style="color: #fb7185;"></i> Identified Priority Skill Gaps</div>
-              <div class="card-subtitle">Urgent competency deltas requiring iGOT / NSSTA intervention</div>
+        <!-- Priority Skill Gap Diagnosis & Skill Bank -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <!-- Priority Skill Gap Diagnosis -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title"><i class="fa-solid fa-triangle-exclamation" style="color: #fb7185;"></i> Identified Priority Skill Gaps</div>
+                <div class="card-subtitle">Urgent competency deltas requiring iGOT / NSSTA intervention</div>
+              </div>
+              <button id="fastTrackCloseGapsBtn" class="btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="switchTab('tab-pathways')">
+                <i class="fa-solid fa-bolt"></i> Fast-Track Close Gaps
+              </button>
             </div>
-            <button class="btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="switchTab('tab-pathways')">
-              <i class="fa-solid fa-bolt"></i> Fast-Track Close Gaps
-            </button>
-          </div>
-          <div id="priorityGapsList" style="display: flex; flex-direction: column; gap: 10px;">
-            <!-- Rendered by JS -->
+            <div id="priorityGapsList" style="display: flex; flex-direction: column; gap: 10px;">
+              <!-- Rendered by JS -->
+            </div>
           </div>
         </div>
-      </div>
 
+
+      </div>
       <!-- Full 28 Competency Units Breakdown -->
       <div class="card">
         <div class="card-header">
@@ -153,13 +185,21 @@
             <div class="card-title"><i class="fa-solid fa-list-check"></i> Comprehensive Official Statistical Competency Taxonomy (28 Units)</div>
             <div class="card-subtitle">Filter by domain to inspect target proficiency, current assessment, and status</div>
           </div>
-          <!-- Filter Chips -->
-          <div style="display: flex; gap: 8px;">
-            <button class="tag-pill active" style="cursor: pointer;" onclick="filterCompetencyList('ALL', this)">All (28)</button>
-            <button class="tag-pill" style="cursor: pointer;" onclick="filterCompetencyList('STAT', this)">Statistical (10)</button>
-            <button class="tag-pill" style="cursor: pointer;" onclick="filterCompetencyList('TECH', this)">Tech & Data Science (8)</button>
-            <button class="tag-pill" style="cursor: pointer;" onclick="filterCompetencyList('GOV', this)">Digital Governance (5)</button>
-            <button class="tag-pill" style="cursor: pointer;" onclick="filterCompetencyList('LEAD', this)">Leadership (5)</button>
+          <!-- Filter Dropdowns -->
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <select id="competencyDomainFilter" onchange="applyCompetencyFilters()" style="padding: 6px 12px; border: 1px solid var(--border-soft); border-radius: 6px; font-size: 13px; background: var(--bg-card); color: var(--text-primary); cursor: pointer;">
+              <option value="ALL">All Domains</option>
+              <option value="STAT">Statistical</option>
+              <option value="TECH">Tech & Data Science</option>
+              <option value="GOV">Digital Governance</option>
+              <option value="LEAD">Leadership</option>
+            </select>
+            <select id="competencyLevelFilter" onchange="applyCompetencyFilters()" style="padding: 6px 12px; border: 1px solid var(--border-soft); border-radius: 6px; font-size: 13px; background: var(--bg-card); color: var(--text-primary); cursor: pointer;">
+              <option value="ALL">All Levels</option>
+              <option value="MET">Benchmark Met</option>
+              <option value="GAP_1">1 Level Gap</option>
+              <option value="GAP_2">2 Level Gap</option>
+            </select>
           </div>
         </div>
 
@@ -178,9 +218,6 @@
           <h2 style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Recommended iGOT Learning Pathways</h2>
           <p style="font-size: 13.5px; color: var(--text-secondary);">Custom micro-modules dynamically compiled by AI to bridge your high-priority skill gaps.</p>
         </div>
-        <button class="btn-primary btn-saffron" onclick="openIgotCatalogModal()">
-          <i class="fa-solid fa-book-open"></i> Browse Full iGOT Catalog
-        </button>
       </div>
       <!-- Summary Uplift Banner -->
       <div class="card" style="margin-bottom: 24px;">
@@ -195,7 +232,7 @@
               <strong style="color: var(--gov-emerald);" id="projectedIdxRec">86.8% (+8.4% Uplift)</strong>.
             </p>
           </div>
-          <button class="btn-primary btn-saffron" onclick="openIgotCatalogModal()">
+          <button class="btn-primary btn-saffron" onclick="document.getElementById('fullCatalogSection').scrollIntoView({behavior: 'smooth'})">
             <i class="fa-solid fa-magnifying-glass"></i> Browse Full iGOT Catalog (60+ Courses)
           </button>
         </div>
@@ -232,7 +269,7 @@
       </div>
 
       <!-- NSSTA TPAC Flagship In-Service Workshops -->
-      <div class="card">
+      <div class="card" style="margin-bottom: 32px;">
         <div class="card-header">
           <div>
             <div class="card-title"><i class="fa-solid fa-landmark-dome" style="color: var(--gov-saffron);"></i> NSSTA TPAC In-Service Recommended Training Programmes</div>
@@ -243,10 +280,119 @@
           <!-- Rendered by JS -->
         </div>
       </div>
+
+      <!-- NEW: Full iGOT Catalog Inline Section -->
+      <div id="fullCatalogSection" class="card">
+        <div class="card-header" style="flex-direction: column; align-items: flex-start; gap: 16px;">
+          <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <div class="card-title"><i class="fa-solid fa-book-open" style="color: var(--gov-primary-light);"></i> Browse Full iGOT Catalog</div>
+              <div class="card-subtitle">Search and filter through the complete repository of capacity building modules</div>
+            </div>
+            <!-- Search Bar -->
+            <div style="position: relative; width: 300px;">
+              <i class="fa-solid fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;"></i>
+              <input type="text" id="inlineCatalogSearchInput" placeholder="Search courses..." class="search-field" style="width: 100%; padding: 10px 10px 10px 36px; border: 1px solid var(--border-glass); border-radius: 8px; font-size: 13.5px; background: var(--bg-main);" oninput="handleInlineCatalogFilter()">
+            </div>
+          </div>
+          
+          <!-- Category Tabs -->
+          <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; width: 100%;" id="catalogCategoryTabs">
+            <button class="tag-pill active" style="cursor: pointer;" onclick="setCatalogCategory('All', this)">All Courses</button>
+            <button class="tag-pill" style="cursor: pointer;" onclick="setCatalogCategory('Statistical', this)">Statistical Methods</button>
+            <button class="tag-pill" style="cursor: pointer;" onclick="setCatalogCategory('Technology', this)">Tech & AI</button>
+            <button class="tag-pill" style="cursor: pointer;" onclick="setCatalogCategory('Governance', this)">Digital Governance</button>
+            <button class="tag-pill" style="cursor: pointer;" onclick="setCatalogCategory('Leadership', this)">Leadership</button>
+          </div>
+        </div>
+        
+        <div id="inlineCatalogGrid" class="grid-3" style="min-height: 200px;">
+          <!-- Rendered by JS -->
+        </div>
+        
+        <!-- Pagination -->
+        <div id="catalogPaginationContainer" class="pagination-container" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-soft);">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
     </section>
 
     <!-- ================================================================= -->
-    <!-- TAB 3: AI ASSESSMENT & MCQ QUIZ STUDIO -->
+    <!-- TAB 5: LEADER BOARD -->
+    <!-- ================================================================= -->
+    <section id="tab-leaderboard" class="tab-pane">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Top Performers Leaderboard</h2>
+          <p style="font-size: 13.5px; color: var(--text-secondary);">Nationwide cadre ranking based on Karma Points and learning hours.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-glass); color: var(--text-muted); font-size: 11.5px; text-transform: uppercase;">
+                <th style="padding: 12px; width: 60px; text-align: center;">Rank</th>
+                <th style="padding: 12px;">Officer Name & ID</th>
+                <th style="padding: 12px;">Designation & Division</th>
+                <th style="padding: 12px;">Competency Index</th>
+                <th style="padding: 12px;">Learning Hours</th>
+                <th style="padding: 12px; text-align: right;">Karma Points <i class="fa-solid fa-star" style="color: var(--gov-saffron);"></i></th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardTableBody">
+              <tr>
+                <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                  <i class="fa-solid fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 12px;"></i><br>
+                  Loading leaderboard...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 3: ENROLLED COURSES (NEW) -->
+    <!-- ================================================================= -->
+    <section id="tab-enrolled" class="tab-pane">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">My Enrollments</h2>
+          <p style="font-size: 13.5px; color: var(--text-secondary);">Track your ongoing training and capacity building modules.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header" style="padding-bottom: 20px; border-bottom: 1px solid var(--border-soft); margin-bottom: 20px;">
+          <!-- Search & Filter Controls -->
+          <div style="display: flex; gap: 16px; align-items: center; width: 100%;">
+            <div style="position: relative; flex: 1; max-width: 400px;">
+              <i class="fa-solid fa-search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;"></i>
+              <input type="text" id="enrolledSearchInput" placeholder="Search my courses..." style="width: 100%; padding: 10px 16px 10px 38px; border: 1px solid var(--border-glass); border-radius: 8px; font-size: 13.5px; background: var(--bg-main); outline: none; transition: 0.2s;" onfocus="this.style.borderColor='var(--gov-primary-light)'" onblur="this.style.borderColor='var(--border-glass)'" oninput="handleEnrolledFilter()">
+            </div>
+            <select id="enrolledStatusFilter" style="padding: 10px 16px; border: 1px solid var(--border-glass); border-radius: 8px; font-size: 13.5px; background: var(--bg-main); color: var(--text-primary); cursor: pointer; outline: none;" onchange="handleEnrolledFilter()">
+              <option value="All">All Statuses</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
+        
+        <div id="enrolledCoursesGrid" class="grid-3">
+          <!-- Rendered by JS -->
+          <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 32px; margin-bottom: 16px;"></i>
+            <p>Loading your enrollments...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 4: AI ASSESSMENT & MCQ QUIZ STUDIO -->
     <!-- ================================================================= -->
     <section id="tab-assessment" class="tab-pane">
       <!-- Ingestion & Configuration Studio -->
@@ -466,6 +612,17 @@
         </div>
       </div>
 
+      <!-- Cadre Scatter Plot -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="fa-solid fa-chart-scatter" style="color: var(--gov-saffron);"></i> Officer Performance Scatter</div>
+            <div class="card-subtitle">Mapping Competency Index (%) against Skill Points Accrued</div>
+          </div>
+        </div>
+        <div id="scatterPlotChart" class="chart-container" style="height: 350px;"></div>
+      </div>
+
       <!-- Predictive 2026-2030 Capacity Demand Forecast -->
       <div class="card" style="margin-bottom: 24px;">
         <div class="card-header">
@@ -494,12 +651,12 @@
       <div class="card">
         <div class="card-header">
           <div>
-            <div class="card-title"><i class="fa-solid fa-users"></i> Nationwide Cadre Officer Directory (2,850 Profiles)</div>
-            <div class="card-subtitle">Search, filter, and inspect individual competency records</div>
+            <div class="card-title"><i class="fa-solid fa-users"></i> Nationwide Cadre Officer Directory (100 Profiles)</div>
+            <div class="card-subtitle">Search, filter, and inspect individual competency records linked to you</div>
           </div>
           <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <input type="text" id="officerSearchInput" class="input-field" style="width: 220px; padding: 6px 12px;" placeholder="Search name, ID, or division..." oninput="searchOfficerDirectory()">
-            <select id="divisionFilterSelect" class="select-field" style="width: auto; padding: 6px 12px;" onchange="searchOfficerDirectory()">
+            <input type="text" id="officerSearchInput" class="input-field" style="width: 220px; padding: 6px 12px;" placeholder="Search name, ID, or division...">
+            <select id="divisionFilterSelect" class="select-field" style="width: auto; padding: 6px 12px;">
               <option value="All">All Divisions</option>
               <option value="FOD">FOD</option>
               <option value="NAD">NAD</option>
@@ -509,12 +666,18 @@
               <option value="DIID">DIID</option>
               <option value="STATE_DES">State DES</option>
             </select>
-            <select id="cadreFilterSelect" class="select-field" style="width: auto; padding: 6px 12px;" onchange="searchOfficerDirectory()">
+            <select id="cadreFilterSelect" class="select-field" style="width: auto; padding: 6px 12px;" onchange="searchOfficerDirectory(1)">
               <option value="All">All Cadres</option>
               <option value="Indian Statistical Service (ISS)">ISS</option>
               <option value="Subordinate Statistical Service (SSS)">SSS</option>
               <option value="State Directorate of Economics and Statistics">State DES</option>
               <option value="Line Ministry Statistical Cell (Agri / Health / Finance / Commerce)">Ministry Stat Cell</option>
+            </select>
+            <select id="pageSizeSelect" class="select-field" style="width: auto; padding: 6px 12px;" onchange="searchOfficerDirectory(1)">
+              <option value="10">10 per page</option>
+              <option value="20" selected>20 per page</option>
+              <option value="50">50 per page</option>
+              <option value="100">100 per page</option>
             </select>
           </div>
         </div>

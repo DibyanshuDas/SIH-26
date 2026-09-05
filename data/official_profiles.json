@@ -2,7 +2,7 @@
   {
     "officer_id": "OFF-ISS-2026-HQ",
     "name": "Dr. Rajeshwar Sharma",
-    "email": "rajeshwar.sharma@gov.in",
+    "email": "dr.off_iss_2026_hq@mospi.gov.in",
     "designation": "Director (National Accounts & Price Statistics)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JAG_DIR",
@@ -387,7 +387,7 @@
   {
     "officer_id": "OFF-ISS-2026-002",
     "name": "Dr. Anita Mukherjee",
-    "email": "anita.mukherjee@gov.in",
+    "email": "dr.off_iss_2026_002@mospi.gov.in",
     "designation": "Deputy Director General (Survey Design)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_SAG_DDG",
@@ -772,7 +772,7 @@
   {
     "officer_id": "OFF-ISS-2026-003",
     "name": "Sh. Amit Verma",
-    "email": "amit.verma@gov.in",
+    "email": "sh.off_iss_2026_003@mospi.gov.in",
     "designation": "Deputy Director (Economic Statistics)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -1157,7 +1157,7 @@
   {
     "officer_id": "OFF-ISS-2026-004",
     "name": "Ms. Priya Nair",
-    "email": "priya.nair@gov.in",
+    "email": "ms.off_iss_2026_004@mospi.gov.in",
     "designation": "Assistant Director (Social Statistics)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -1542,7 +1542,7 @@
   {
     "officer_id": "OFF-SSS-2026-005",
     "name": "Sh. Gaurav Patel",
-    "email": "gaurav.patel@gov.in",
+    "email": "sh.off_sss_2026_005@mospi.gov.in",
     "designation": "Senior Statistical Officer (Field Operations)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -1927,7 +1927,7 @@
   {
     "officer_id": "OFF-SSS-2026-006",
     "name": "Ms. Ananya Das",
-    "email": "ananya.das@gov.in",
+    "email": "ms.off_sss_2026_006@mospi.gov.in",
     "designation": "Junior Statistical Officer (Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -2312,7 +2312,7 @@
   {
     "officer_id": "OFF-DES-2026-007",
     "name": "Dr. K. S. Reddy",
-    "email": "k..reddy@gov.in",
+    "email": "dr.off_des_2026_007@mospi.gov.in",
     "designation": "Joint Director (State DES)",
     "cadre": "State Directorate of Economics and Statistics",
     "role_key": "STATE_DES_OFFICER",
@@ -2697,7 +2697,7 @@
   {
     "officer_id": "OFF-MIN-2026-008",
     "name": "Sh. Vikram Malhotra",
-    "email": "vikram.malhotra@gov.in",
+    "email": "sh.off_min_2026_008@mospi.gov.in",
     "designation": "Statistical Advisor (Agriculture Ministry)",
     "cadre": "Line Ministry Statistical Cell (Agri / Health / Finance / Commerce)",
     "role_key": "MINISTRY_STAT_ANALYST",
@@ -3082,7 +3082,7 @@
   {
     "officer_id": "OFF-SSS-1009",
     "name": "Manish Mishra",
-    "email": "manish.mishra@gov.in",
+    "email": "manish.off_sss_1009@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -3465,7 +3465,7 @@
   {
     "officer_id": "OFF-DES-1010",
     "name": "Priya Reddy",
-    "email": "priya.reddy@gov.in",
+    "email": "priya.off_des_1010@mospi.gov.in",
     "designation": "Statistical Advisor / Senior Analyst (Line Ministry)",
     "cadre": "Line Ministry Statistical Cell (Agri / Health / Finance / Commerce)",
     "role_key": "MINISTRY_STAT_ANALYST",
@@ -3848,7 +3848,7 @@
   {
     "officer_id": "OFF-ISS-1011",
     "name": "Neha Pandey",
-    "email": "neha.pandey@gov.in",
+    "email": "neha.off_iss_1011@mospi.gov.in",
     "designation": "Senior Administrative Grade (DDG / ADG)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_SAG_DDG",
@@ -4231,7 +4231,7 @@
   {
     "officer_id": "OFF-ISS-1012",
     "name": "Vikas Mehta",
-    "email": "vikas.mehta@gov.in",
+    "email": "vikas.off_iss_1012@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -4614,7 +4614,7 @@
   {
     "officer_id": "OFF-ISS-1013",
     "name": "Suresh Chopra",
-    "email": "suresh.chopra@gov.in",
+    "email": "suresh.off_iss_1013@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -4997,7 +4997,7 @@
   {
     "officer_id": "OFF-ISS-1014",
     "name": "Devendra Shah",
-    "email": "devendra.shah@gov.in",
+    "email": "devendra.off_iss_1014@mospi.gov.in",
     "designation": "Senior Administrative Grade (DDG / ADG)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_SAG_DDG",
@@ -5380,7 +5380,7 @@
   {
     "officer_id": "OFF-ISS-1015",
     "name": "Ritu Mishra",
-    "email": "ritu.mishra@gov.in",
+    "email": "ritu.off_iss_1015@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -5763,7 +5763,7 @@
   {
     "officer_id": "OFF-SSS-1016",
     "name": "Deepika Chopra",
-    "email": "deepika.chopra@gov.in",
+    "email": "deepika.off_sss_1016@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -6146,7 +6146,7 @@
   {
     "officer_id": "OFF-DES-1017",
     "name": "Sachin Sharma",
-    "email": "sachin.sharma@gov.in",
+    "email": "sachin.off_des_1017@mospi.gov.in",
     "designation": "Statistical Advisor / Senior Analyst (Line Ministry)",
     "cadre": "Line Ministry Statistical Cell (Agri / Health / Finance / Commerce)",
     "role_key": "MINISTRY_STAT_ANALYST",
@@ -6529,7 +6529,7 @@
   {
     "officer_id": "OFF-ISS-1018",
     "name": "Santosh Chatterjee",
-    "email": "santosh.chatterjee@gov.in",
+    "email": "santosh.off_iss_1018@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -6912,7 +6912,7 @@
   {
     "officer_id": "OFF-DES-1019",
     "name": "Neha Mehta",
-    "email": "neha.mehta@gov.in",
+    "email": "neha.off_des_1019@mospi.gov.in",
     "designation": "Statistical Advisor / Senior Analyst (Line Ministry)",
     "cadre": "Line Ministry Statistical Cell (Agri / Health / Finance / Commerce)",
     "role_key": "MINISTRY_STAT_ANALYST",
@@ -7295,7 +7295,7 @@
   {
     "officer_id": "OFF-SSS-1020",
     "name": "Swati Patel",
-    "email": "swati.patel@gov.in",
+    "email": "swati.off_sss_1020@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -7678,7 +7678,7 @@
   {
     "officer_id": "OFF-ISS-1021",
     "name": "Vinay Bansal",
-    "email": "vinay.bansal@gov.in",
+    "email": "vinay.off_iss_1021@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -8061,7 +8061,7 @@
   {
     "officer_id": "OFF-SSS-1022",
     "name": "Vivek Chatterjee",
-    "email": "vivek.chatterjee@gov.in",
+    "email": "vivek.off_sss_1022@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -8444,7 +8444,7 @@
   {
     "officer_id": "OFF-ISS-1023",
     "name": "Kishore Menon",
-    "email": "kishore.menon@gov.in",
+    "email": "kishore.off_iss_1023@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -8827,7 +8827,7 @@
   {
     "officer_id": "OFF-ISS-1024",
     "name": "Arjun Malhotra",
-    "email": "arjun.malhotra@gov.in",
+    "email": "arjun.off_iss_1024@mospi.gov.in",
     "designation": "Junior Administrative Grade (Director / Joint Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JAG_DIR",
@@ -9210,7 +9210,7 @@
   {
     "officer_id": "OFF-ISS-1025",
     "name": "Vinay Mehta",
-    "email": "vinay.mehta@gov.in",
+    "email": "vinay.off_iss_1025@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -9593,7 +9593,7 @@
   {
     "officer_id": "OFF-SSS-1026",
     "name": "Sandhya Tripathi",
-    "email": "sandhya.tripathi@gov.in",
+    "email": "sandhya.off_sss_1026@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -9976,7 +9976,7 @@
   {
     "officer_id": "OFF-ISS-1027",
     "name": "Sachin Malhotra",
-    "email": "sachin.malhotra@gov.in",
+    "email": "sachin.off_iss_1027@mospi.gov.in",
     "designation": "Junior Administrative Grade (Director / Joint Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JAG_DIR",
@@ -10359,7 +10359,7 @@
   {
     "officer_id": "OFF-ISS-1028",
     "name": "Ishaan Chopra",
-    "email": "ishaan.chopra@gov.in",
+    "email": "ishaan.off_iss_1028@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -10742,7 +10742,7 @@
   {
     "officer_id": "OFF-ISS-1029",
     "name": "Rohan Das",
-    "email": "rohan.das@gov.in",
+    "email": "rohan.off_iss_1029@mospi.gov.in",
     "designation": "Junior Administrative Grade (Director / Joint Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JAG_DIR",
@@ -11125,7 +11125,7 @@
   {
     "officer_id": "OFF-SSS-1030",
     "name": "Rajesh Mehta",
-    "email": "rajesh.mehta@gov.in",
+    "email": "rajesh.off_sss_1030@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -11508,7 +11508,7 @@
   {
     "officer_id": "OFF-ISS-1031",
     "name": "Priya Rao",
-    "email": "priya.rao@gov.in",
+    "email": "priya.off_iss_1031@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -11891,7 +11891,7 @@
   {
     "officer_id": "OFF-ISS-1032",
     "name": "Ishaan Murthy",
-    "email": "ishaan.murthy@gov.in",
+    "email": "ishaan.off_iss_1032@mospi.gov.in",
     "designation": "Junior Administrative Grade (Director / Joint Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JAG_DIR",
@@ -12274,7 +12274,7 @@
   {
     "officer_id": "OFF-SSS-1033",
     "name": "Ananya Bansal",
-    "email": "ananya.bansal@gov.in",
+    "email": "ananya.off_sss_1033@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -12657,7 +12657,7 @@
   {
     "officer_id": "OFF-ISS-1034",
     "name": "Tarun Mishra",
-    "email": "tarun.mishra@gov.in",
+    "email": "tarun.off_iss_1034@mospi.gov.in",
     "designation": "Senior Administrative Grade (DDG / ADG)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_SAG_DDG",
@@ -13040,7 +13040,7 @@
   {
     "officer_id": "OFF-SSS-1035",
     "name": "Bhavna Tripathi",
-    "email": "bhavna.tripathi@gov.in",
+    "email": "bhavna.off_sss_1035@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -13423,7 +13423,7 @@
   {
     "officer_id": "OFF-DES-1036",
     "name": "Madhav Pandey",
-    "email": "madhav.pandey@gov.in",
+    "email": "madhav.off_des_1036@mospi.gov.in",
     "designation": "State Statistical Officer / DES Joint Director",
     "cadre": "State Directorate of Economics and Statistics",
     "role_key": "STATE_DES_OFFICER",
@@ -13806,7 +13806,7 @@
   {
     "officer_id": "OFF-SSS-1037",
     "name": "Sachin Singh",
-    "email": "sachin.singh@gov.in",
+    "email": "sachin.off_sss_1037@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -14189,7 +14189,7 @@
   {
     "officer_id": "OFF-ISS-1038",
     "name": "Kishore Iyer",
-    "email": "kishore.iyer@gov.in",
+    "email": "kishore.off_iss_1038@mospi.gov.in",
     "designation": "Senior Administrative Grade (DDG / ADG)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_SAG_DDG",
@@ -14572,7 +14572,7 @@
   {
     "officer_id": "OFF-SSS-1039",
     "name": "Vikas Kapoor",
-    "email": "vikas.kapoor@gov.in",
+    "email": "vikas.off_sss_1039@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -14955,7 +14955,7 @@
   {
     "officer_id": "OFF-ISS-1040",
     "name": "Deepika Singh",
-    "email": "deepika.singh@gov.in",
+    "email": "deepika.off_iss_1040@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -15338,7 +15338,7 @@
   {
     "officer_id": "OFF-SSS-1041",
     "name": "Nikhil Nair",
-    "email": "nikhil.nair@gov.in",
+    "email": "nikhil.off_sss_1041@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -15721,7 +15721,7 @@
   {
     "officer_id": "OFF-SSS-1042",
     "name": "Amit Sharma",
-    "email": "amit.sharma@gov.in",
+    "email": "amit.off_sss_1042@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -16104,7 +16104,7 @@
   {
     "officer_id": "OFF-SSS-1043",
     "name": "Yash Saxena",
-    "email": "yash.saxena@gov.in",
+    "email": "yash.off_sss_1043@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -16487,7 +16487,7 @@
   {
     "officer_id": "OFF-ISS-1044",
     "name": "Tanvi Das",
-    "email": "tanvi.das@gov.in",
+    "email": "tanvi.off_iss_1044@mospi.gov.in",
     "designation": "Senior Administrative Grade (DDG / ADG)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_SAG_DDG",
@@ -16870,7 +16870,7 @@
   {
     "officer_id": "OFF-ISS-1045",
     "name": "Jitendra Pillai",
-    "email": "jitendra.pillai@gov.in",
+    "email": "jitendra.off_iss_1045@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -17253,7 +17253,7 @@
   {
     "officer_id": "OFF-SSS-1046",
     "name": "Gaurav Bose",
-    "email": "gaurav.bose@gov.in",
+    "email": "gaurav.off_sss_1046@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -17636,7 +17636,7 @@
   {
     "officer_id": "OFF-DES-1047",
     "name": "Gaurav Singh",
-    "email": "gaurav.singh@gov.in",
+    "email": "gaurav.off_des_1047@mospi.gov.in",
     "designation": "Statistical Advisor / Senior Analyst (Line Ministry)",
     "cadre": "Line Ministry Statistical Cell (Agri / Health / Finance / Commerce)",
     "role_key": "MINISTRY_STAT_ANALYST",
@@ -18019,7 +18019,7 @@
   {
     "officer_id": "OFF-SSS-1048",
     "name": "Kavita Menon",
-    "email": "kavita.menon@gov.in",
+    "email": "kavita.off_sss_1048@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -18402,7 +18402,7 @@
   {
     "officer_id": "OFF-ISS-1049",
     "name": "Pooja Shah",
-    "email": "pooja.shah@gov.in",
+    "email": "pooja.off_iss_1049@mospi.gov.in",
     "designation": "Junior Administrative Grade (Director / Joint Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JAG_DIR",
@@ -18785,7 +18785,7 @@
   {
     "officer_id": "OFF-SSS-1050",
     "name": "Tanvi Rao",
-    "email": "tanvi.rao@gov.in",
+    "email": "tanvi.off_sss_1050@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -19168,7 +19168,7 @@
   {
     "officer_id": "OFF-ISS-1051",
     "name": "Tarun Shah",
-    "email": "tarun.shah@gov.in",
+    "email": "tarun.off_iss_1051@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -19551,7 +19551,7 @@
   {
     "officer_id": "OFF-ISS-1052",
     "name": "Shilpa Chopra",
-    "email": "shilpa.chopra@gov.in",
+    "email": "shilpa.off_iss_1052@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -19934,7 +19934,7 @@
   {
     "officer_id": "OFF-SSS-1053",
     "name": "Arjun Joshi",
-    "email": "arjun.joshi@gov.in",
+    "email": "arjun.off_sss_1053@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -20317,7 +20317,7 @@
   {
     "officer_id": "OFF-SSS-1054",
     "name": "Naveen Tripathi",
-    "email": "naveen.tripathi@gov.in",
+    "email": "naveen.off_sss_1054@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -20700,7 +20700,7 @@
   {
     "officer_id": "OFF-SSS-1055",
     "name": "Vinay Shukla",
-    "email": "vinay.shukla@gov.in",
+    "email": "vinay.off_sss_1055@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -21083,7 +21083,7 @@
   {
     "officer_id": "OFF-SSS-1056",
     "name": "Meenakshi Nair",
-    "email": "meenakshi.nair@gov.in",
+    "email": "meenakshi.off_sss_1056@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -21466,7 +21466,7 @@
   {
     "officer_id": "OFF-ISS-1057",
     "name": "Rohan Nair",
-    "email": "rohan.nair@gov.in",
+    "email": "rohan.off_iss_1057@mospi.gov.in",
     "designation": "Junior Administrative Grade (Director / Joint Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JAG_DIR",
@@ -21849,7 +21849,7 @@
   {
     "officer_id": "OFF-ISS-1058",
     "name": "Santosh Joshi",
-    "email": "santosh.joshi@gov.in",
+    "email": "santosh.off_iss_1058@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -22232,7 +22232,7 @@
   {
     "officer_id": "OFF-SSS-1059",
     "name": "Aditi Gupta",
-    "email": "aditi.gupta@gov.in",
+    "email": "aditi.off_sss_1059@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -22615,7 +22615,7 @@
   {
     "officer_id": "OFF-ISS-1060",
     "name": "Varun Chatterjee",
-    "email": "varun.chatterjee@gov.in",
+    "email": "varun.off_iss_1060@mospi.gov.in",
     "designation": "Junior Administrative Grade (Director / Joint Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JAG_DIR",
@@ -22998,7 +22998,7 @@
   {
     "officer_id": "OFF-SSS-1061",
     "name": "Ritu Menon",
-    "email": "ritu.menon@gov.in",
+    "email": "ritu.off_sss_1061@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -23381,7 +23381,7 @@
   {
     "officer_id": "OFF-ISS-1062",
     "name": "Sachin Chauhan",
-    "email": "sachin.chauhan@gov.in",
+    "email": "sachin.off_iss_1062@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -23764,7 +23764,7 @@
   {
     "officer_id": "OFF-ISS-1063",
     "name": "Santosh Saxena",
-    "email": "santosh.saxena@gov.in",
+    "email": "santosh.off_iss_1063@mospi.gov.in",
     "designation": "Junior Administrative Grade (Director / Joint Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JAG_DIR",
@@ -24147,7 +24147,7 @@
   {
     "officer_id": "OFF-DES-1064",
     "name": "Varun Reddy",
-    "email": "varun.reddy@gov.in",
+    "email": "varun.off_des_1064@mospi.gov.in",
     "designation": "Statistical Advisor / Senior Analyst (Line Ministry)",
     "cadre": "Line Ministry Statistical Cell (Agri / Health / Finance / Commerce)",
     "role_key": "MINISTRY_STAT_ANALYST",
@@ -24530,7 +24530,7 @@
   {
     "officer_id": "OFF-SSS-1065",
     "name": "Meenakshi Pillai",
-    "email": "meenakshi.pillai@gov.in",
+    "email": "meenakshi.off_sss_1065@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -24913,7 +24913,7 @@
   {
     "officer_id": "OFF-ISS-1066",
     "name": "Kavita Shukla",
-    "email": "kavita.shukla@gov.in",
+    "email": "kavita.off_iss_1066@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -25296,7 +25296,7 @@
   {
     "officer_id": "OFF-ISS-1067",
     "name": "Sneha Aggarwal",
-    "email": "sneha.aggarwal@gov.in",
+    "email": "sneha.off_iss_1067@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -25679,7 +25679,7 @@
   {
     "officer_id": "OFF-SSS-1068",
     "name": "Priya Bansal",
-    "email": "priya.bansal@gov.in",
+    "email": "priya.off_sss_1068@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -26062,7 +26062,7 @@
   {
     "officer_id": "OFF-ISS-1069",
     "name": "Kavita Reddy",
-    "email": "kavita.reddy@gov.in",
+    "email": "kavita.off_iss_1069@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -26445,7 +26445,7 @@
   {
     "officer_id": "OFF-ISS-1070",
     "name": "Gaurav Aggarwal",
-    "email": "gaurav.aggarwal@gov.in",
+    "email": "gaurav.off_iss_1070@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -26828,7 +26828,7 @@
   {
     "officer_id": "OFF-ISS-1071",
     "name": "Vikas Saxena",
-    "email": "vikas.saxena@gov.in",
+    "email": "vikas.off_iss_1071@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -27211,7 +27211,7 @@
   {
     "officer_id": "OFF-SSS-1072",
     "name": "Sachin Kulkarni",
-    "email": "sachin.kulkarni@gov.in",
+    "email": "sachin.off_sss_1072@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -27594,7 +27594,7 @@
   {
     "officer_id": "OFF-SSS-1073",
     "name": "Sandhya Verma",
-    "email": "sandhya.verma@gov.in",
+    "email": "sandhya.off_sss_1073@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -27977,7 +27977,7 @@
   {
     "officer_id": "OFF-SSS-1074",
     "name": "Kishore Chatterjee",
-    "email": "kishore.chatterjee@gov.in",
+    "email": "kishore.off_sss_1074@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -28360,7 +28360,7 @@
   {
     "officer_id": "OFF-ISS-1075",
     "name": "Jitendra Aggarwal",
-    "email": "jitendra.aggarwal@gov.in",
+    "email": "jitendra.off_iss_1075@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -28743,7 +28743,7 @@
   {
     "officer_id": "OFF-SSS-1076",
     "name": "Naveen Singh",
-    "email": "naveen.singh@gov.in",
+    "email": "naveen.off_sss_1076@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -29126,7 +29126,7 @@
   {
     "officer_id": "OFF-SSS-1077",
     "name": "Ishaan Mishra",
-    "email": "ishaan.mishra@gov.in",
+    "email": "ishaan.off_sss_1077@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -29509,7 +29509,7 @@
   {
     "officer_id": "OFF-SSS-1078",
     "name": "Tarun Yadav",
-    "email": "tarun.yadav@gov.in",
+    "email": "tarun.off_sss_1078@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -29892,7 +29892,7 @@
   {
     "officer_id": "OFF-SSS-1079",
     "name": "Santosh Joshi",
-    "email": "santosh.joshi@gov.in",
+    "email": "santosh.off_sss_1079@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -30275,7 +30275,7 @@
   {
     "officer_id": "OFF-ISS-1080",
     "name": "Divya Saxena",
-    "email": "divya.saxena@gov.in",
+    "email": "divya.off_iss_1080@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -30658,7 +30658,7 @@
   {
     "officer_id": "OFF-DES-1081",
     "name": "Ritu Reddy",
-    "email": "ritu.reddy@gov.in",
+    "email": "ritu.off_des_1081@mospi.gov.in",
     "designation": "State Statistical Officer / DES Joint Director",
     "cadre": "State Directorate of Economics and Statistics",
     "role_key": "STATE_DES_OFFICER",
@@ -31041,7 +31041,7 @@
   {
     "officer_id": "OFF-ISS-1082",
     "name": "Umesh Shukla",
-    "email": "umesh.shukla@gov.in",
+    "email": "umesh.off_iss_1082@mospi.gov.in",
     "designation": "Senior Administrative Grade (DDG / ADG)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_SAG_DDG",
@@ -31424,7 +31424,7 @@
   {
     "officer_id": "OFF-ISS-1083",
     "name": "Pooja Rao",
-    "email": "pooja.rao@gov.in",
+    "email": "pooja.off_iss_1083@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -31807,7 +31807,7 @@
   {
     "officer_id": "OFF-ISS-1084",
     "name": "Ishaan Patel",
-    "email": "ishaan.patel@gov.in",
+    "email": "ishaan.off_iss_1084@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -32190,7 +32190,7 @@
   {
     "officer_id": "OFF-ISS-1085",
     "name": "Yash Mehta",
-    "email": "yash.mehta@gov.in",
+    "email": "yash.off_iss_1085@mospi.gov.in",
     "designation": "Junior Time Scale (Assistant Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JTS_AD",
@@ -32573,7 +32573,7 @@
   {
     "officer_id": "OFF-ISS-1086",
     "name": "Kishore Deshmukh",
-    "email": "kishore.deshmukh@gov.in",
+    "email": "kishore.off_iss_1086@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -32956,7 +32956,7 @@
   {
     "officer_id": "OFF-SSS-1087",
     "name": "Suresh Joshi",
-    "email": "suresh.joshi@gov.in",
+    "email": "suresh.off_sss_1087@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -33339,7 +33339,7 @@
   {
     "officer_id": "OFF-ISS-1088",
     "name": "Ishaan Kulkarni",
-    "email": "ishaan.kulkarni@gov.in",
+    "email": "ishaan.off_iss_1088@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -33722,7 +33722,7 @@
   {
     "officer_id": "OFF-SSS-1089",
     "name": "Sandhya Reddy",
-    "email": "sandhya.reddy@gov.in",
+    "email": "sandhya.off_sss_1089@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -34105,7 +34105,7 @@
   {
     "officer_id": "OFF-SSS-1090",
     "name": "Kavita Iyer",
-    "email": "kavita.iyer@gov.in",
+    "email": "kavita.off_sss_1090@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -34488,7 +34488,7 @@
   {
     "officer_id": "OFF-SSS-1091",
     "name": "Ananya Das",
-    "email": "ananya.das@gov.in",
+    "email": "ananya.off_sss_1091@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -34871,7 +34871,7 @@
   {
     "officer_id": "OFF-SSS-1092",
     "name": "Swati Murthy",
-    "email": "swati.murthy@gov.in",
+    "email": "swati.off_sss_1092@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -35254,7 +35254,7 @@
   {
     "officer_id": "OFF-SSS-1093",
     "name": "Deepika Mishra",
-    "email": "deepika.mishra@gov.in",
+    "email": "deepika.off_sss_1093@mospi.gov.in",
     "designation": "Senior Statistical Officer (SSO)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_SSO",
@@ -35637,7 +35637,7 @@
   {
     "officer_id": "OFF-ISS-1094",
     "name": "Divya Deshmukh",
-    "email": "divya.deshmukh@gov.in",
+    "email": "divya.off_iss_1094@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -36020,7 +36020,7 @@
   {
     "officer_id": "OFF-ISS-1095",
     "name": "Priya Srivastava",
-    "email": "priya.srivastava@gov.in",
+    "email": "priya.off_iss_1095@mospi.gov.in",
     "designation": "Junior Administrative Grade (Director / Joint Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JAG_DIR",
@@ -36403,7 +36403,7 @@
   {
     "officer_id": "OFF-ISS-1096",
     "name": "Chetan Nair",
-    "email": "chetan.nair@gov.in",
+    "email": "chetan.off_iss_1096@mospi.gov.in",
     "designation": "Senior Time Scale (Deputy Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_STS_DD",
@@ -36786,7 +36786,7 @@
   {
     "officer_id": "OFF-SSS-1097",
     "name": "Arjun Banerjee",
-    "email": "arjun.banerjee@gov.in",
+    "email": "arjun.off_sss_1097@mospi.gov.in",
     "designation": "Junior Statistical Officer (JSO / Field Investigator)",
     "cadre": "Subordinate Statistical Service (SSS)",
     "role_key": "SSS_JSO",
@@ -37169,7 +37169,7 @@
   {
     "officer_id": "OFF-ISS-1098",
     "name": "Kavita Murthy",
-    "email": "kavita.murthy@gov.in",
+    "email": "kavita.off_iss_1098@mospi.gov.in",
     "designation": "Junior Administrative Grade (Director / Joint Director)",
     "cadre": "Indian Statistical Service (ISS)",
     "role_key": "ISS_JAG_DIR",
@@ -37552,7 +37552,7 @@
   {
     "officer_id": "OFF-DES-1099",
     "name": "Tanvi Chatterjee",
-    "email": "tanvi.chatterjee@gov.in",
+    "email": "tanvi.off_des_1099@mospi.gov.in",
     "designation": "State Statistical Officer / DES Joint Director",
     "cadre": "State Directorate of Economics and Statistics",
     "role_key": "STATE_DES_OFFICER",
@@ -37935,7 +37935,7 @@
   {
     "officer_id": "OFF-DES-1100",
     "name": "Arjun Malhotra",
-    "email": "arjun.malhotra@gov.in",
+    "email": "arjun.off_des_1100@mospi.gov.in",
     "designation": "State Statistical Officer / DES Joint Director",
     "cadre": "State Directorate of Economics and Statistics",
     "role_key": "STATE_DES_OFFICER",
