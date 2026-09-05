@@ -1,0 +1,202 @@
+[
+  {
+    "officer_id": "OFF-SSS-1061",
+    "name": "Ritu Menon",
+    "designation": "Junior Statistical Officer (JSO / Field Investigator)",
+    "division_code": "FOD",
+    "division_name": "Field Operations Division (NSS Survey Network)",
+    "overall_competency_index": 69.9,
+    "total_learning_hours": 278,
+    "karma_points": 5738
+  },
+  {
+    "officer_id": "OFF-ISS-1052",
+    "name": "Shilpa Chopra",
+    "designation": "Junior Time Scale (Assistant Director)",
+    "division_code": "NSSTA",
+    "division_name": "National Statistical Systems Training Academy",
+    "overall_competency_index": 66.0,
+    "total_learning_hours": 262,
+    "karma_points": 5451
+  },
+  {
+    "officer_id": "OFF-SSS-1016",
+    "name": "Deepika Chopra",
+    "designation": "Senior Statistical Officer (SSO)",
+    "division_code": "FOD",
+    "division_name": "Field Operations Division (NSS Survey Network)",
+    "overall_competency_index": 70.0,
+    "total_learning_hours": 261,
+    "karma_points": 5393
+  },
+  {
+    "officer_id": "OFF-SSS-1056",
+    "name": "Meenakshi Nair",
+    "designation": "Senior Statistical Officer (SSO)",
+    "division_code": "FOD",
+    "division_name": "Field Operations Division (NSS Survey Network)",
+    "overall_competency_index": 70.6,
+    "total_learning_hours": 251,
+    "karma_points": 5382
+  },
+  {
+    "officer_id": "OFF-SSS-1089",
+    "name": "Sandhya Reddy",
+    "designation": "Junior Statistical Officer (JSO / Field Investigator)",
+    "division_code": "ESD",
+    "division_name": "Economic Statistics Division (CPI, IIP, ASI)",
+    "overall_competency_index": 67.1,
+    "total_learning_hours": 237,
+    "karma_points": 5077
+  },
+  {
+    "officer_id": "OFF-SSS-1077",
+    "name": "Ishaan Mishra",
+    "designation": "Senior Statistical Officer (SSO)",
+    "division_code": "NSSTA",
+    "division_name": "National Statistical Systems Training Academy",
+    "overall_competency_index": 75.8,
+    "total_learning_hours": 241,
+    "karma_points": 4991
+  },
+  {
+    "officer_id": "OFF-ISS-1013",
+    "name": "Suresh Chopra",
+    "designation": "Junior Time Scale (Assistant Director)",
+    "division_code": "ESD",
+    "division_name": "Economic Statistics Division (CPI, IIP, ASI)",
+    "overall_competency_index": 69.1,
+    "total_learning_hours": 231,
+    "karma_points": 4964
+  },
+  {
+    "officer_id": "OFF-ISS-1088",
+    "name": "Ishaan Kulkarni",
+    "designation": "Senior Time Scale (Deputy Director)",
+    "division_code": "ESD",
+    "division_name": "Economic Statistics Division (CPI, IIP, ASI)",
+    "overall_competency_index": 74.5,
+    "total_learning_hours": 224,
+    "karma_points": 4886
+  },
+  {
+    "officer_id": "OFF-ISS-1080",
+    "name": "Divya Saxena",
+    "designation": "Senior Time Scale (Deputy Director)",
+    "division_code": "STATE_DES",
+    "division_name": "State Directorate of Economics and Statistics (State Govts)",
+    "overall_competency_index": 69.3,
+    "total_learning_hours": 222,
+    "karma_points": 4749
+  },
+  {
+    "officer_id": "OFF-DES-1036",
+    "name": "Madhav Pandey",
+    "designation": "State Statistical Officer / DES Joint Director",
+    "division_code": "DIID",
+    "division_name": "Data Informatics & Innovation Division (Data Lake & AI Lab)",
+    "overall_competency_index": 74.7,
+    "total_learning_hours": 224,
+    "karma_points": 4727
+  },
+  {
+    "officer_id": "OFF-SSS-1072",
+    "name": "Sachin Kulkarni",
+    "designation": "Senior Statistical Officer (SSO)",
+    "division_code": "DIID",
+    "division_name": "Data Informatics & Innovation Division (Data Lake & AI Lab)",
+    "overall_competency_index": 70.9,
+    "total_learning_hours": 204,
+    "karma_points": 4702
+  },
+  {
+    "officer_id": "OFF-SSS-1020",
+    "name": "Swati Patel",
+    "designation": "Junior Statistical Officer (JSO / Field Investigator)",
+    "division_code": "FOD",
+    "division_name": "Field Operations Division (NSS Survey Network)",
+    "overall_competency_index": 64.1,
+    "total_learning_hours": 212,
+    "karma_points": 4547
+  },
+  {
+    "officer_id": "OFF-ISS-1098",
+    "name": "Kavita Murthy",
+    "designation": "Junior Administrative Grade (Director / Joint Director)",
+    "division_code": "SSD",
+    "division_name": "Social Statistics Division (PLFS, Time-Use, Gender, SDGs)",
+    "overall_competency_index": 75.0,
+    "total_learning_hours": 200,
+    "karma_points": 4525
+  },
+  {
+    "officer_id": "OFF-SSS-1087",
+    "name": "Suresh Joshi",
+    "designation": "Senior Statistical Officer (SSO)",
+    "division_code": "NSSTA",
+    "division_name": "National Statistical Systems Training Academy",
+    "overall_competency_index": 79.2,
+    "total_learning_hours": 203,
+    "karma_points": 4473
+  },
+  {
+    "officer_id": "OFF-ISS-1062",
+    "name": "Sachin Chauhan",
+    "designation": "Junior Time Scale (Assistant Director)",
+    "division_code": "ESD",
+    "division_name": "Economic Statistics Division (CPI, IIP, ASI)",
+    "overall_competency_index": 76.7,
+    "total_learning_hours": 204,
+    "karma_points": 4462
+  },
+  {
+    "officer_id": "OFF-SSS-1039",
+    "name": "Vikas Kapoor",
+    "designation": "Junior Statistical Officer (JSO / Field Investigator)",
+    "division_code": "SSD",
+    "division_name": "Social Statistics Division (PLFS, Time-Use, Gender, SDGs)",
+    "overall_competency_index": 77.2,
+    "total_learning_hours": 200,
+    "karma_points": 4419
+  },
+  {
+    "officer_id": "OFF-ISS-1084",
+    "name": "Ishaan Patel",
+    "designation": "Senior Time Scale (Deputy Director)",
+    "division_code": "FOD",
+    "division_name": "Field Operations Division (NSS Survey Network)",
+    "overall_competency_index": 74.5,
+    "total_learning_hours": 193,
+    "karma_points": 4387
+  },
+  {
+    "officer_id": "OFF-DES-1100",
+    "name": "Arjun Malhotra",
+    "designation": "State Statistical Officer / DES Joint Director",
+    "division_code": "SSD",
+    "division_name": "Social Statistics Division (PLFS, Time-Use, Gender, SDGs)",
+    "overall_competency_index": 71.6,
+    "total_learning_hours": 181,
+    "karma_points": 4356
+  },
+  {
+    "officer_id": "OFF-ISS-1049",
+    "name": "Pooja Shah",
+    "designation": "Junior Administrative Grade (Director / Joint Director)",
+    "division_code": "SDRD",
+    "division_name": "Survey Design and Research Division",
+    "overall_competency_index": 73.1,
+    "total_learning_hours": 201,
+    "karma_points": 4272
+  },
+  {
+    "officer_id": "OFF-DES-1017",
+    "name": "Sachin Sharma",
+    "designation": "Statistical Advisor / Senior Analyst (Line Ministry)",
+    "division_code": "NSSTA",
+    "division_name": "National Statistical Systems Training Academy",
+    "overall_competency_index": 78.3,
+    "total_learning_hours": 206,
+    "karma_points": 4269
+  }
+]

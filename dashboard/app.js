@@ -633,8 +633,13 @@ let currentCatalogCategory = 'All';
 
 async function loadFullCatalog() {
   try {
-    const res = await fetch(API_BASE + "/api/igot/courses?q=");
-    fullCatalogData = await res.json();
+    let res = await fetch(API_BASE + "/api/igot/courses?q=").catch(() => null);
+    if (!res || !res.ok) {
+      res = await fetch("data/igot_course_catalog.json").catch(() => null);
+    }
+    if (res && res.ok) {
+      fullCatalogData = await res.json();
+    }
     handleInlineCatalogFilter();
   } catch (e) {
     console.error("Failed to load catalog", e);
@@ -1192,10 +1197,27 @@ async function searchOfficerDirectory(page = 1) {
   const pageSize = document.getElementById("pageSizeSelect")?.value || 20;
 
   try {
-    const res = await fetch(API_BASE + `/api/officers?q=${encodeURIComponent(search)}&division=${division}&cadre=${encodeURIComponent(cadre)}&page=${currentOfficerPage}&limit=${pageSize}`);
-    const data = await res.json();
-    const officers = Array.isArray(data) ? data : (data.officers || []);
-    const totalPages = data.total_pages || 1;
+    let res = await fetch(API_BASE + `/api/officers?q=${encodeURIComponent(search)}&division=${division}&cadre=${encodeURIComponent(cadre)}&page=${currentOfficerPage}&limit=${pageSize}`).catch(() => null);
+    let data = null;
+    if (res && res.ok) {
+      data = await res.json();
+    } else {
+      const fallback = await fetch("data/official_profiles.json").catch(() => null);
+      if (fallback && fallback.ok) {
+        let profiles = await fallback.json();
+        if (division && division !== "All") profiles = profiles.filter(p => p.division_code === division);
+        if (cadre && cadre !== "All") profiles = profiles.filter(p => p.cadre && p.cadre.includes(cadre));
+        const totalPages = Math.ceil(profiles.length / pageSize) || 1;
+        const start = (currentOfficerPage - 1) * pageSize;
+        data = {
+          officers: profiles.slice(start, start + pageSize),
+          total_pages: totalPages,
+          total_results: profiles.length
+        };
+      }
+    }
+    const officers = Array.isArray(data) ? data : ((data && data.officers) || []);
+    const totalPages = (data && data.total_pages) || 1;
 
     tbody.innerHTML = officers.map(o => {
       const isCurrent = currentLearner && o.officer_id === currentLearner.officer_id;
@@ -1399,8 +1421,23 @@ async function renderLeaderboard() {
   if (!tbody) return;
   
   try {
-    const res = await fetch(API_BASE + "/api/leaderboard");
-    const top20 = await res.json();
+    let res = await fetch(API_BASE + "/api/leaderboard").catch(() => null);
+    if (!res || !res.ok) {
+      res = await fetch("data/leaderboard.json").catch(() => null);
+    }
+    
+    let top20 = [];
+    if (res && res.ok) {
+      top20 = await res.json();
+    }
+    
+    if (!top20 || top20.length === 0) {
+      const fallbackRes = await fetch("data/official_profiles.json").catch(() => null);
+      if (fallbackRes && fallbackRes.ok) {
+        const allProfiles = await fallbackRes.json();
+        top20 = allProfiles.sort((a, b) => (b.karma_points || 0) - (a.karma_points || 0)).slice(0, 20);
+      }
+    }
     
     if (!top20 || top20.length === 0) {
       tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-muted);">Leaderboard data unavailable.</td></tr>`;
