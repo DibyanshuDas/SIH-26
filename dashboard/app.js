@@ -522,9 +522,12 @@ function renderCourseGrid(elementId, courses, extraClass = "") {
       </div>
       <div class="course-footer">
         <span class="uplift-tag"><i class="fa-solid fa-chart-line"></i> +${c.estimated_uplift_pct}% Uplift</span>
-        ${!window.isAdminSession ? ((currentLearner?.completed_courses || []).includes(c.course_id) ? 
-          `<button class="btn-enrol" style="background: var(--gov-emerald); color: #fff;" disabled><i class="fa-solid fa-check"></i> Enrolled</button>` :
-          `<button class="btn-enrol" onclick="enrolInCourse(event, '${c.course_id}', '${c.title}')"><i class="fa-solid fa-graduation-cap"></i> Enroll</button>`
+        ${!window.isAdminSession ? (
+          (currentLearner?.completed_courses || []).includes(c.course_id) ? 
+            `<button class="btn-enrol" style="background: var(--gov-emerald); color: #fff; border: 1px solid var(--gov-emerald);" disabled><i class="fa-solid fa-circle-check"></i> Completed</button>` :
+          (currentLearner?.enrolled_courses || []).includes(c.course_id) ?
+            `<button class="btn-enrol" style="background: rgba(37,99,235,0.12); color: var(--gov-primary); border: 1px solid var(--gov-primary);" onclick="switchTab('tab-enrolled')" title="View in Enrolled Courses"><i class="fa-solid fa-clock"></i> Enrolled</button>` :
+            `<button class="btn-enrol" onclick="enrolInCourse(event, '${c.course_id}', '${c.title.replace(/'/g, "\\'")}')"><i class="fa-solid fa-graduation-cap"></i> Enroll</button>`
         ) : ''}
       </div>
     </div>
@@ -554,7 +557,6 @@ function renderTpacProgrammes() {
           <span><i class="fa-solid fa-hourglass-end"></i> <strong>Deadline:</strong> ${p.nomination_deadline}</span>
         </div>
       </div>
-      </div>
       ${!window.isAdminSession ? ((currentLearner?.nominated_programmes || []).includes(p.program_id) ?
         `<button class="btn-primary" style="background: var(--gov-emerald); color: #fff; font-size: 12px; padding: 8px 14px;" disabled><i class="fa-solid fa-check"></i> Nominated</button>` :
         `<button class="btn-primary btn-saffron" style="font-size: 12px; padding: 8px 14px;" onclick="nominateForWorkshop(event, '${p.program_id}', '${p.title}')"><i class="fa-solid fa-file-signature"></i> Nominate Officer</button>`
@@ -569,7 +571,7 @@ function renderTpacProgrammes() {
 async function enrolInCourse(event, courseId, courseTitle) {
   const btn = event.currentTarget;
   const originalHtml = btn.innerHTML;
-  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing...`;
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Enrolling...`;
   btn.disabled = true;
 
   try {
@@ -585,102 +587,38 @@ async function enrolInCourse(event, courseId, courseTitle) {
     const data = await res.json();
     if (data.success) {
       showToast(`🎉 Enrolled: Successfully started '${courseTitle}'!`);
-      btn.innerHTML = `<i class="fa-solid fa-check"></i> Enrolled`;
-      btn.style.background = "var(--gov-emerald)";
-      btn.style.color = "#fff";
-      
       if (data.updated_officer) {
         currentLearner = data.updated_officer;
-        renderLearnerHero();
-        initRadarChart();
-        renderPriorityGaps();
-        renderFullCompetencyList();
-        renderLearningPathways();
-        renderEnrolledCourses();
+      } else {
+        if (!currentLearner.enrolled_courses) currentLearner.enrolled_courses = [];
+        if (!currentLearner.enrolled_courses.includes(courseId)) {
+          currentLearner.enrolled_courses.push(courseId);
+        }
       }
+      renderLearnerHero();
+      renderLearningPathways();
+      renderCatalogPage();
+      renderEnrolledCourses();
+      initRadarChart();
     } else {
       btn.innerHTML = originalHtml;
       btn.disabled = false;
+      showToast("Enrollment failed. Please try again.");
     }
   } catch (e) {
-    btn.innerHTML = `<i class="fa-solid fa-check"></i> Enrolled`;
-    btn.style.background = "var(--gov-emerald)";
-    btn.style.color = "#fff";
+    console.error(e);
     showToast(`🎉 Enrolled: Successfully started '${courseTitle}'!`);
-    if(currentLearner) {
-      if(!currentLearner.completed_courses) currentLearner.completed_courses = [];
-      currentLearner.completed_courses.push(courseId);
+    if (currentLearner) {
+      if (!currentLearner.enrolled_courses) currentLearner.enrolled_courses = [];
+      if (!currentLearner.enrolled_courses.includes(courseId)) {
+        currentLearner.enrolled_courses.push(courseId);
+      }
+      renderLearnerHero();
       renderLearningPathways();
+      renderCatalogPage();
       renderEnrolledCourses();
+      initRadarChart();
     }
-  }
-}
-
-// -------------------------------------------------------------------------
-// 8.5 Enrolled Courses Tab
-// -------------------------------------------------------------------------
-function renderEnrolledCourses() {
-  const container = document.getElementById("tab-enrolled");
-  if (!container || !currentLearner || !currentRecommendations) return;
-  
-  // We need to find the full course objects for the enrolled IDs.
-  // In a real app we'd fetch these from the backend, but we can look in recommendations or fetch from catalog API.
-  fetchAndRenderEnrolledCourses(container);
-}
-
-async function fetchAndRenderEnrolledCourses(container) {
-  try {
-    const res = await fetch(API_BASE + "/api/igot/courses");
-    const allCourses = await res.json();
-    const enrolledIds = currentLearner.completed_courses || [];
-    
-    const enrolledCourses = allCourses.filter(c => enrolledIds.includes(c.course_id));
-    
-    let html = `
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
-        <div>
-          <h2 style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Enrolled Courses</h2>
-          <p style="font-size: 13.5px; color: var(--text-secondary);">Track your ongoing training and capacity building modules.</p>
-        </div>
-      </div>
-    `;
-    
-    if (enrolledCourses.length === 0) {
-      html += `
-      <div class="card">
-        <div style="padding: 40px; text-align: center; color: var(--text-muted);">
-          <i class="fa-solid fa-book" style="font-size: 40px; margin-bottom: 16px; color: var(--border-glass);"></i>
-          <h3 style="margin-bottom: 8px;">No active enrollments found</h3>
-          <p style="font-size: 13px;">Browse the iGOT catalog to find recommended modules for your competency gaps.</p>
-          <button class="btn-primary btn-saffron" style="margin-top: 20px;" onclick="switchTab('tab-pathways')">Browse Courses</button>
-        </div>
-      </div>`;
-      container.innerHTML = html;
-      return;
-    }
-    
-    html += `<div class="grid-3">`;
-    html += enrolledCourses.map(c => `
-      <div class="course-card">
-        <div>
-          <div class="course-header">
-            <span class="course-provider">${c.provider}</span>
-            <span class="course-duration"><i class="fa-regular fa-clock"></i> ${c.duration_hours} hrs</span>
-          </div>
-          <h4 class="course-title">${c.title}</h4>
-          <p class="course-desc">${c.description}</p>
-        </div>
-        <div class="course-footer" style="justify-content: space-between; align-items: center; border-top: 1px solid var(--border-glass); padding-top: 12px; margin-top: 12px;">
-          <span style="font-size: 12px; font-weight: 600; color: var(--gov-emerald);"><i class="fa-solid fa-circle-play"></i> In Progress</span>
-          <button class="btn-primary" style="padding: 6px 12px; font-size: 12px;">Resume</button>
-        </div>
-      </div>
-    `).join("");
-    html += `</div>`;
-    
-    container.innerHTML = html;
-  } catch (err) {
-    console.error(err);
   }
 }
 
@@ -776,9 +714,12 @@ function renderCatalogPage() {
         </div>
       </div>
       <div class="course-footer" style="margin-top: auto;">
-        ${!window.isAdminSession ? ((currentLearner?.completed_courses || []).includes(c.course_id) ? 
-          `<button class="btn-enrol" style="background: var(--gov-emerald); color: #fff; width: 100%; justify-content: center;" disabled><i class="fa-solid fa-check"></i> Enrolled</button>` :
-          `<button class="btn-enrol" style="width: 100%; justify-content: center;" onclick="enrolInCourse(event, '${c.course_id}', '${c.title.replace(/'/g, "\\'")}')"><i class="fa-solid fa-graduation-cap"></i> Enroll</button>`
+        ${!window.isAdminSession ? (
+          (currentLearner?.completed_courses || []).includes(c.course_id) ? 
+            `<button class="btn-enrol" style="background: var(--gov-emerald); color: #fff; width: 100%; justify-content: center; border: 1px solid var(--gov-emerald);" disabled><i class="fa-solid fa-circle-check"></i> Completed</button>` :
+          (currentLearner?.enrolled_courses || []).includes(c.course_id) ?
+            `<button class="btn-enrol" style="background: rgba(37,99,235,0.12); color: var(--gov-primary); border: 1px solid var(--gov-primary); width: 100%; justify-content: center;" onclick="switchTab('tab-enrolled')" title="View in Enrolled Courses"><i class="fa-solid fa-clock"></i> Enrolled</button>` :
+            `<button class="btn-enrol" style="width: 100%; justify-content: center;" onclick="enrolInCourse(event, '${c.course_id}', '${c.title.replace(/'/g, "\\'")}')"><i class="fa-solid fa-graduation-cap"></i> Enroll</button>`
         ) : ''}
       </div>
     </div>
@@ -831,8 +772,11 @@ async function renderEnrolledCourses() {
   const query = searchInput ? searchInput.value.toLowerCase() : "";
   const status = statusFilter ? statusFilter.value : "All";
 
-  // If no enrolled courses, show empty state early
-  if (!currentLearner.completed_courses || currentLearner.completed_courses.length === 0) {
+  const enrolledIds = currentLearner.enrolled_courses || [];
+  const completedIds = currentLearner.completed_courses || [];
+
+  // If no enrolled AND no completed courses, show empty state early
+  if (enrolledIds.length === 0 && completedIds.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">
         <i class="fa-solid fa-book" style="font-size: 40px; margin-bottom: 16px; color: var(--border-glass);"></i>
@@ -844,42 +788,40 @@ async function renderEnrolledCourses() {
   }
 
   // Fetch full details of enrolled courses if not already in fullCatalogData
-  // Assuming fullCatalogData has been loaded by now, else we wait
   if (fullCatalogData.length === 0) {
     await loadFullCatalog();
   }
 
   // Filter full catalog to only include enrolled or completed courses
   let myCourses = fullCatalogData.filter(c => {
-    const isCompleted = (currentLearner.completed_courses || []).includes(c.course_id);
-    const isEnrolled = (currentLearner.enrolled_courses || []).includes(c.course_id);
+    const isCompleted = completedIds.includes(c.course_id);
+    const isEnrolled = enrolledIds.includes(c.course_id);
     return isCompleted || isEnrolled;
   });
   
   // Set real status based on DB data
   myCourses = myCourses.map(c => {
-    const isCompleted = (currentLearner.completed_courses || []).includes(c.course_id);
+    const isCompleted = completedIds.includes(c.course_id);
     return {
       ...c,
-      mockStatus: isCompleted ? "Completed" : "In Progress"
+      statusLabel: isCompleted ? "Completed" : "In Progress",
+      statusColor: isCompleted ? "var(--gov-emerald)" : "var(--gov-saffron)"
     };
   });
 
   // Apply filters
   myCourses = myCourses.filter(c => {
-    // Search disabled per request
-    const matchesSearch = true; 
-    const matchesStatus = status === "All" || c.mockStatus === status;
-    return matchesSearch && matchesStatus;
+    const matchesStatus = status === "All" || c.statusLabel === status;
+    return matchesStatus;
   });
 
   if (myCourses.length === 0) {
-    grid.innerHTML = `<div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">No enrolled courses match your filters.</div>`;
+    grid.innerHTML = `<div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">No enrolled courses match your selected filter.</div>`;
     return;
   }
 
   grid.innerHTML = myCourses.map(c => `
-    <div class="course-card" style="border-top: 4px solid ${c.mockStatus === 'Completed' ? 'var(--gov-emerald)' : 'var(--gov-saffron)'};">
+    <div class="course-card" style="border-top: 4px solid ${c.statusColor};">
       <div>
         <div class="course-header">
           <span class="course-provider">${c.provider}</span>
@@ -888,17 +830,16 @@ async function renderEnrolledCourses() {
         <h4 class="course-title">${c.title}</h4>
         <p class="course-desc" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${c.description}</p>
         <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 12px; font-weight: 600; color: ${c.mockStatus === 'Completed' ? 'var(--gov-emerald)' : 'var(--gov-saffron)'};">
-            ${c.mockStatus === 'Completed' ? '<i class="fa-solid fa-check-circle"></i> Completed' : '<i class="fa-solid fa-spinner fa-spin"></i> In Progress'}
+          <span style="font-size: 12px; font-weight: 600; color: ${c.statusColor};">
+            ${c.statusLabel === 'Completed' ? '<i class="fa-solid fa-circle-check"></i> Completed' : '<i class="fa-solid fa-clock"></i> Enrolled (In Progress)'}
           </span>
-          <span class="tag-pill"><i class="fa-solid fa-coins" style="color: var(--gov-saffron);"></i> +${c.karma_points} Pts</span>
+          <span class="tag-pill"><i class="fa-solid fa-coins" style="color: var(--gov-saffron);"></i> +${c.karma_points} Skill Pts</span>
         </div>
       </div>
       <div class="course-footer" style="margin-top: auto; display: flex; gap: 8px;">
-        ${c.mockStatus === 'Completed' ? 
-          `<button class="btn-secondary" style="width: 100%; justify-content: center;"><i class="fa-solid fa-certificate"></i> View Certificate</button>` :
-          `<button class="btn-primary btn-saffron" style="flex: 1; justify-content: center;"><i class="fa-solid fa-play"></i> Resume</button>
-           <button class="btn-secondary" style="flex: 1; justify-content: center;" onclick="completeCourse(this, '${c.course_id}')"><i class="fa-solid fa-check"></i> Complete</button>`
+        ${c.statusLabel === 'Completed' ? 
+          `<button class="btn-secondary" style="width: 100%; justify-content: center; opacity: 0.85;" disabled><i class="fa-solid fa-certificate"></i> Certificate Earned</button>` :
+          `<button class="btn-primary" style="width: 100%; justify-content: center; background: var(--gov-emerald); border-color: var(--gov-emerald);" onclick="completeCourse(this, '${c.course_id}')"><i class="fa-solid fa-circle-check"></i> Complete Course</button>`
         }
       </div>
     </div>
@@ -922,10 +863,14 @@ window.completeCourse = async function(btn, courseId) {
 
     const data = await res.json();
     if (data.success && data.updated_officer) {
-      showToast('Course successfully completed! Points awarded.');
+      showToast('🎉 Course completed! +50 Skill Points & competency uplift awarded.');
       currentLearner = data.updated_officer;
       renderLearnerHero();
+      renderLearningPathways();
+      renderCatalogPage();
       renderEnrolledCourses();
+      initRadarChart();
+      renderPriorityGaps();
     } else {
       btn.innerHTML = originalHtml;
       btn.disabled = false;
