@@ -145,11 +145,11 @@
     <form id="login-form">
       <div class="input-group">
         <label for="email">Official Email</label>
-        <input type="email" id="email" placeholder="dr.off_iss_2026_hq@mospi.gov.in" value="dr.off_iss_2026_hq@mospi.gov.in" required>
+        <input type="email" id="email" placeholder="" required autocomplete="email">
       </div>
       <div class="input-group">
         <label for="password">Password</label>
-        <input type="password" id="password" value="123456" placeholder="••••••••" required>
+        <input type="password" id="password" placeholder="" required autocomplete="current-password">
       </div>
       <button type="submit" class="login-btn" id="login-btn">Sign In</button>
       <div class="error-msg" id="error-msg"></div>
@@ -187,16 +187,6 @@
       document.getElementById('tab-user').classList.remove('active');
       document.getElementById('tab-admin').classList.remove('active');
       document.getElementById(`tab-${role}`).classList.add('active');
-      
-      const emailInput = document.getElementById('email');
-      const passInput = document.getElementById('password');
-      if (role === 'admin') {
-        emailInput.value = 'admin@mospi.gov.in';
-        passInput.value = '123456';
-      } else if (emailInput.value === 'admin@mospi.gov.in') {
-        emailInput.value = 'officer@mospi.gov.in';
-        passInput.value = '123456';
-      }
     }
 
     document.getElementById('login-form').addEventListener('submit', function(e) {
