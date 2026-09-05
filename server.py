@@ -97,8 +97,8 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json_response([])
                 return
             
-            # Sort by karma points descending
-            sorted_profiles = sorted(profiles, key=lambda x: x.get("karma_points", 0), reverse=True)
+            # Sort by competency rate descending
+            sorted_profiles = sorted(profiles, key=lambda x: (x.get("overall_competency_index", 0), x.get("karma_points", 0)), reverse=True)
             top_20 = []
             for p in sorted_profiles[:20]:
                 top_20.append({

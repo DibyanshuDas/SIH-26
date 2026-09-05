@@ -176,8 +176,15 @@ def get_leaderboard():
     except Exception as e:
         print(f"Firestore error in get_leaderboard: {e}")
         pass
-    
-    docs.sort(key=lambda x: x.get('karma_points', 0), reverse=True)
+    if not docs:
+        try:
+            with open(os.path.join(os.path.dirname(__file__), "dashboard", "data", "official_profiles.json"), "r", encoding="utf-8") as f:
+                docs = json.load(f)
+        except Exception as e:
+            print(f"File fallback error in get_leaderboard: {e}")
+            pass
+
+    docs.sort(key=lambda x: (x.get('overall_competency_index', 0), x.get('karma_points', 0)), reverse=True)
     return jsonify(docs[:20])
 
 @app.route('/api/recommendations', methods=['GET'])

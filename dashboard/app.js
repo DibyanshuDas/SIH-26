@@ -1435,8 +1435,12 @@ async function renderLeaderboard() {
       const fallbackRes = await fetch("data/official_profiles.json").catch(() => null);
       if (fallbackRes && fallbackRes.ok) {
         const allProfiles = await fallbackRes.json();
-        top20 = allProfiles.sort((a, b) => (b.karma_points || 0) - (a.karma_points || 0)).slice(0, 20);
+        top20 = allProfiles.sort((a, b) => ((b.overall_competency_index || 0) - (a.overall_competency_index || 0)) || ((b.karma_points || 0) - (a.karma_points || 0))).slice(0, 20);
       }
+    } else {
+      // Ensure strictly sorted by competency rate descending
+      top20.sort((a, b) => ((b.overall_competency_index || 0) - (a.overall_competency_index || 0)) || ((b.karma_points || 0) - (a.karma_points || 0)));
+      top20 = top20.slice(0, 20);
     }
     
     if (!top20 || top20.length === 0) {
@@ -1461,10 +1465,14 @@ async function renderLeaderboard() {
             ${o.designation}<br>
             <span style="font-weight: 700; color: var(--gov-saffron); font-size: 11px;">${o.division_code}</span>
           </td>
-          <td style="padding: 12px; font-weight: 700; color: ${o.overall_competency_index >= 80 ? 'var(--gov-emerald)' : 'var(--gov-rose)'};">${o.overall_competency_index}%</td>
+          <td style="padding: 12px;">
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-weight: 800; font-size: 13px; color: ${o.overall_competency_index >= 80 ? 'var(--gov-emerald)' : o.overall_competency_index >= 70 ? 'var(--gov-saffron)' : 'var(--gov-rose)'}; background: ${o.overall_competency_index >= 80 ? 'rgba(16,185,129,0.12)' : o.overall_competency_index >= 70 ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.12)'}; padding: 3px 10px; border-radius: 9999px; border: 1px solid currentColor;">
+              <i class="fa-solid fa-chart-line" style="font-size: 11px;"></i> ${o.overall_competency_index}%
+            </span>
+          </td>
           <td style="padding: 12px; color: var(--text-secondary);">${o.total_learning_hours} hrs</td>
-          <td style="padding: 12px; text-align: right; font-weight: 800; color: var(--gov-saffron); font-size: 14px;">
-            ${o.karma_points.toLocaleString()}
+          <td style="padding: 12px; text-align: right; font-weight: 700; color: var(--text-secondary); font-size: 13px;">
+            ${(o.karma_points || 0).toLocaleString()}
           </td>
         </tr>
       `;
