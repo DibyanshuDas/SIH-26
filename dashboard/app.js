@@ -29,9 +29,89 @@ const firebaseConfig = {
   measurementId: "G-W3KGPK8N5F"
 };
 
-// Initialize Firebase
+// Initialize Firebase & Firestore
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
+}
+
+let db = null;
+try {
+  if (typeof firebase !== 'undefined' && firebase.firestore) {
+    db = firebase.firestore();
+  }
+} catch (e) {
+  console.warn("Firestore initialization error:", e);
+}
+
+// Global cached profiles
+window.allOfficialProfilesCache = null;
+
+// Universal Fallback Data Fetcher (API -> Firestore -> Static JSON)
+async function fetchWithFallbacks(apiPath, firestoreConfig, jsonPath) {
+  // 1. Try Backend API if available
+  if (API_BASE && apiPath) {
+    try {
+      const res = await fetch(API_BASE + apiPath).catch(() => null);
+      if (res && res.ok) {
+        const data = await res.json().catch(() => null);
+        if (data) return data;
+      }
+    } catch(e) {
+      console.warn(`API fetch failed for ${apiPath}:`, e);
+    }
+  }
+
+  // 2. Try Direct Firestore
+  if (db && firestoreConfig) {
+    try {
+      const { collection, docId, queryFn } = firestoreConfig;
+      if (docId) {
+        const snap = await db.collection(collection).doc(docId).get();
+        if (snap.exists) return snap.data();
+      } else if (queryFn) {
+        const snap = await queryFn(db.collection(collection));
+        if (snap && !snap.empty) {
+          if (snap.docs.length === 1 && !firestoreConfig.forceArray) return snap.docs[0].data();
+          return snap.docs.map(d => d.data());
+        }
+      }
+    } catch(e) {
+      console.warn(`Firestore fetch failed for ${firestoreConfig.collection}:`, e);
+    }
+  }
+
+  // 3. Fallback to Local Static JSON
+  if (jsonPath) {
+    try {
+      const res = await fetch(jsonPath).catch(() => null);
+      if (res && res.ok) {
+        const data = await res.json().catch(() => null);
+        if (data) return data;
+      }
+    } catch(e) {
+      console.warn(`Static JSON fetch failed for ${jsonPath}:`, e);
+    }
+  }
+
+  return null;
+}
+
+// Universal All Official Profiles Fetcher
+async function getAllOfficialProfiles() {
+  if (window.allOfficialProfilesCache && window.allOfficialProfilesCache.length > 0) {
+    return window.allOfficialProfilesCache;
+  }
+  const profiles = await fetchWithFallbacks(
+    "/api/officers?q=&division=All&cadre=All&page=1&limit=10000",
+    { collection: 'official_profiles', queryFn: (col) => col.get(), forceArray: true },
+    "data/official_profiles.json"
+  );
+  const list = Array.isArray(profiles) ? profiles : ((profiles && profiles.officers) || []);
+  if (list && list.length > 0) {
+    window.allOfficialProfilesCache = list;
+    return list;
+  }
+  return [];
 }
 
 // Initialize on DOM Ready
@@ -199,41 +279,57 @@ async function loadInitialData(authUser) {
     }
 
     // 1. Learner Profile
-    let profileUrl = API_BASE + "/api/learner-profile";
+    let profileData = null;
     if (userEmail) {
-      profileUrl += "?email=" + encodeURIComponent(userEmail);
+      profileData = await fetchWithFallbacks(
+        `/api/learner-profile?email=${encodeURIComponent(userEmail)}`,
+        { collection: 'official_profiles', queryFn: (col) => col.where('email', '==', userEmail).limit(1).get() },
+        null
+      );
     }
-    
-    let learnerRes = await fetch(profileUrl).catch(() => null);
-    if (!learnerRes || !learnerRes.ok) learnerRes = await fetch("data/primary_learner.json");
-    currentLearner = await learnerRes.json();
+    if (!profileData) {
+      profileData = await fetchWithFallbacks(
+        `/api/learner-profile`,
+        { collection: 'official_profiles', docId: 'OFF-ISS-2026-HQ' },
+        'data/primary_learner.json'
+      );
+    }
+    currentLearner = profileData || {};
 
     // Restore any enrolled and completed courses from persistent localStorage
     restoreLearnerState(currentLearner);
 
     // 2. Recommendations (tailored to this specific officer)
-    let recUrl = API_BASE + "/api/recommendations";
-    if (currentLearner && currentLearner.officer_id) {
-      recUrl += "?id=" + encodeURIComponent(currentLearner.officer_id);
-    } else if (userEmail) {
-      recUrl += "?email=" + encodeURIComponent(userEmail);
+    const recDocId = (currentLearner && currentLearner.officer_id) || 'OFF-ISS-2026-HQ';
+    currentRecommendations = await fetchWithFallbacks(
+      `/api/recommendations?id=${encodeURIComponent(recDocId)}`,
+      { collection: 'recommendations', docId: recDocId },
+      null
+    );
+    if (!currentRecommendations) {
+      currentRecommendations = await fetchWithFallbacks(
+        null,
+        { collection: 'config', docId: 'primary_recommendations' },
+        'data/primary_recommendations.json'
+      );
     }
-    let recRes = await fetch(recUrl).catch(() => null);
-    if (!recRes || !recRes.ok) recRes = await fetch("data/primary_recommendations.json");
-    currentRecommendations = await recRes.json();
 
     // Preload course catalog early so it's ready for Browse Courses & Enrolled tab
     loadFullCatalog();
 
     // 3. Framework
-    let fwRes = await fetch(API_BASE + "/api/framework").catch(() => null);
-    if (!fwRes || !fwRes.ok) fwRes = await fetch("data/competency_framework.json");
-    competencyFramework = await fwRes.json();
+    competencyFramework = await fetchWithFallbacks(
+      '/api/framework',
+      { collection: 'config', docId: 'competency_framework' },
+      'data/competency_framework.json'
+    );
 
     // 4. Admin Analytics
-    let adminRes = await fetch(API_BASE + "/api/admin/analytics").catch(() => null);
-    if (!adminRes || !adminRes.ok) adminRes = await fetch("data/administrative_analytics.json");
-    administrativeAnalytics = await adminRes.json();
+    administrativeAnalytics = await fetchWithFallbacks(
+      '/api/admin/analytics',
+      { collection: 'config', docId: 'administrative_analytics' },
+      'data/administrative_analytics.json'
+    );
 
     // Hide Admin Tab for non-admins
     if (!window.isAdminSession) {
@@ -712,12 +808,13 @@ let currentCatalogCategory = 'All';
 
 async function loadFullCatalog() {
   try {
-    let res = await fetch(API_BASE + "/api/igot/courses?q=").catch(() => null);
-    if (!res || !res.ok) {
-      res = await fetch("data/igot_course_catalog.json").catch(() => null);
-    }
-    if (res && res.ok) {
-      fullCatalogData = await res.json();
+    let data = await fetchWithFallbacks(
+      "/api/igot/courses?q=",
+      { collection: 'igot_courses', queryFn: (col) => col.get(), forceArray: true },
+      "data/igot_course_catalog.json"
+    );
+    if (data) {
+      fullCatalogData = Array.isArray(data) ? data : ((data && data.courses) || []);
     }
     handleInlineCatalogFilter();
   } catch (e) {
@@ -1194,18 +1291,15 @@ async function initScatterPlotChart() {
   scatterPlotChartInstance.showLoading({ color: '#f59e0b' });
   
   try {
-    // Fetch all officers (limit=10000 to get everyone)
-    const res = await fetch(API_BASE + "/api/officers?q=&division=All&cadre=All&page=1&limit=10000");
-    const data = await res.json();
-    const officers = Array.isArray(data) ? data : (data.officers || []);
+    const officers = await getAllOfficialProfiles();
     
     // Map data for scatter: [Skill Points (X), Competency Index (Y), Officer ID, Name, Cadre]
     const scatterData = officers.map(o => [
-      o.karma_points,
-      o.overall_competency_index,
-      o.officer_id,
-      o.name,
-      o.cadre.split('(')[0].trim()
+      o.karma_points || 0,
+      o.overall_competency_index || 0,
+      o.officer_id || '',
+      o.name || '',
+      (o.cadre || '').split('(')[0].trim()
     ]);
 
     const option = {
@@ -1279,8 +1373,7 @@ let currentOfficerPage = 1;
 
 async function searchOfficerDirectory(page = 1) {
   currentOfficerPage = page;
-  // Search disabled per request, keeping input but not using value
-  const search = ""; // document.getElementById("officerSearchInput")?.value || "";
+  const search = (document.getElementById("officerSearchInput")?.value || "").trim().toLowerCase();
   const division = document.getElementById("divisionFilterSelect")?.value || "All";
   const cadre = document.getElementById("cadreFilterSelect")?.value || "All";
   
@@ -1290,30 +1383,30 @@ async function searchOfficerDirectory(page = 1) {
   const pageSpan = document.getElementById("currentPageSpan");
   if (pageSpan) pageSpan.innerText = currentOfficerPage;
 
-  const pageSize = document.getElementById("pageSizeSelect")?.value || 20;
+  const pageSize = parseInt(document.getElementById("pageSizeSelect")?.value || 20, 10);
 
   try {
-    let res = await fetch(API_BASE + `/api/officers?q=${encodeURIComponent(search)}&division=${division}&cadre=${encodeURIComponent(cadre)}&page=${currentOfficerPage}&limit=${pageSize}`).catch(() => null);
-    let data = null;
-    if (res && res.ok) {
-      data = await res.json();
-    } else {
-      const fallback = await fetch("data/official_profiles.json").catch(() => null);
-      if (fallback && fallback.ok) {
-        let profiles = await fallback.json();
-        if (division && division !== "All") profiles = profiles.filter(p => p.division_code === division);
-        if (cadre && cadre !== "All") profiles = profiles.filter(p => p.cadre && p.cadre.includes(cadre));
-        const totalPages = Math.ceil(profiles.length / pageSize) || 1;
-        const start = (currentOfficerPage - 1) * pageSize;
-        data = {
-          officers: profiles.slice(start, start + pageSize),
-          total_pages: totalPages,
-          total_results: profiles.length
-        };
-      }
+    let officers = [];
+    let totalPages = 1;
+
+    let allProfiles = await getAllOfficialProfiles();
+    let filtered = allProfiles || [];
+    if (division && division !== "All") {
+      filtered = filtered.filter(p => p.division_code === division || p.division_name === division);
     }
-    const officers = Array.isArray(data) ? data : ((data && data.officers) || []);
-    const totalPages = (data && data.total_pages) || 1;
+    if (cadre && cadre !== "All") {
+      filtered = filtered.filter(p => p.cadre && p.cadre.toLowerCase().includes(cadre.toLowerCase()));
+    }
+    if (search) {
+      filtered = filtered.filter(p => 
+        (p.name && p.name.toLowerCase().includes(search)) ||
+        (p.officer_id && p.officer_id.toLowerCase().includes(search)) ||
+        (p.email && p.email.toLowerCase().includes(search))
+      );
+    }
+    totalPages = Math.ceil(filtered.length / pageSize) || 1;
+    const start = (currentOfficerPage - 1) * pageSize;
+    officers = filtered.slice(start, start + pageSize);
 
     tbody.innerHTML = officers.map(o => {
       const isCurrent = currentLearner && o.officer_id === currentLearner.officer_id;
@@ -1323,8 +1416,8 @@ async function searchOfficerDirectory(page = 1) {
         <td style="padding: 10px; font-family: var(--font-mono); color: var(--gov-primary-light);">${o.officer_id}</td>
         <td style="padding: 10px; font-weight: 600;">${o.name}</td>
         <td style="padding: 10px; color: var(--text-secondary); font-size: 12px;">${o.designation}</td>
-        <td style="padding: 10px;"><span class="cadre-badge">${o.cadre.split('(')[0]}</span></td>
-        <td style="padding: 10px; font-weight: 700; color: var(--gov-saffron);">${o.division_code}</td>
+        <td style="padding: 10px;"><span class="cadre-badge">${(o.cadre || '').split('(')[0]}</span></td>
+        <td style="padding: 10px; font-weight: 700; color: var(--gov-saffron);">${o.division_code || ''}</td>
         <td style="padding: 10px; font-weight: 700; color: ${o.overall_competency_index >= 80 ? 'var(--gov-emerald)' : 'var(--gov-rose)'};">${o.overall_competency_index}%</td>
         <td style="padding: 10px; color: var(--text-secondary);">${o.total_learning_hours} hrs</td>
         <td style="padding: 10px;">
@@ -1387,11 +1480,34 @@ function renderPagination(current, total) {
 
 async function viewOfficerRecord(officerId) {
   try {
-    const res = await fetch(API_BASE + `/api/learner-profile?id=${officerId}`);
-    currentLearner = await res.json();
-    restoreLearnerState(currentLearner);
-    const recRes = await fetch(API_BASE + `/api/recommendations?id=${officerId}`);
-    currentRecommendations = await recRes.json();
+    let officer = null;
+    if (API_BASE) {
+      const res = await fetch(API_BASE + `/api/learner-profile?id=${officerId}`).catch(() => null);
+      if (res && res.ok) officer = await res.json().catch(() => null);
+    }
+    if (!officer) {
+      const allOfficers = await getAllOfficialProfiles();
+      officer = allOfficers.find(o => o.officer_id === officerId);
+    }
+    if (officer) {
+      currentLearner = officer;
+      restoreLearnerState(currentLearner);
+    }
+
+    let recData = null;
+    if (API_BASE) {
+      const recRes = await fetch(API_BASE + `/api/recommendations?id=${officerId}`).catch(() => null);
+      if (recRes && recRes.ok) recData = await recRes.json().catch(() => null);
+    }
+    if (!recData && db) {
+      const snap = await db.collection('recommendations').doc(officerId).get().catch(() => null);
+      if (snap && snap.exists) recData = snap.data();
+    }
+    if (!recData) {
+      const recFb = await fetch("data/primary_recommendations.json").catch(() => null);
+      if (recFb && recFb.ok) recData = await recFb.json().catch(() => null);
+    }
+    if (recData) currentRecommendations = recData;
 
     renderLearnerHero();
     initRadarChart();
@@ -1471,11 +1587,30 @@ function closeAdminProfileModal() {
 // -------------------------------------------------------------------------
 async function switchOfficerRole(roleKey) {
   try {
-    const res = await fetch(API_BASE + `/api/learner-profile?role=${roleKey}`);
-    currentLearner = await res.json();
-    restoreLearnerState(currentLearner);
-    const recRes = await fetch(API_BASE + `/api/recommendations?id=${currentLearner.officer_id}`);
-    currentRecommendations = await recRes.json();
+    let officer = null;
+    if (API_BASE) {
+      const res = await fetch(API_BASE + `/api/learner-profile?role=${roleKey}`).catch(() => null);
+      if (res && res.ok) officer = await res.json().catch(() => null);
+    }
+    if (!officer) {
+      const allOfficers = await getAllOfficialProfiles();
+      officer = allOfficers.find(o => o.officer_id === roleKey || (o.designation && o.designation.toLowerCase().includes(roleKey.toLowerCase())));
+    }
+    if (officer) {
+      currentLearner = officer;
+      restoreLearnerState(currentLearner);
+    }
+
+    let recData = null;
+    if (officer && API_BASE) {
+      const recRes = await fetch(API_BASE + `/api/recommendations?id=${officer.officer_id}`).catch(() => null);
+      if (recRes && recRes.ok) recData = await recRes.json().catch(() => null);
+    }
+    if (!recData) {
+      const recFb = await fetch("data/primary_recommendations.json").catch(() => null);
+      if (recFb && recFb.ok) recData = await recFb.json().catch(() => null);
+    }
+    if (recData) currentRecommendations = recData;
 
     renderLearnerHero();
     initRadarChart();
@@ -1484,7 +1619,9 @@ async function switchOfficerRole(roleKey) {
     renderLearningPathways();
     renderTpacProgrammes();
     
-    showToast(`Switched active view to ${currentLearner.name} (${currentLearner.designation})`);
+    if (currentLearner) {
+      showToast(`Switched active view to ${currentLearner.name} (${currentLearner.designation})`);
+    }
   } catch (e) {
     console.error(e);
   }
@@ -1522,27 +1659,20 @@ async function renderLeaderboard() {
   if (!tbody) return;
   
   try {
-    let res = await fetch(API_BASE + "/api/leaderboard").catch(() => null);
-    if (!res || !res.ok) {
-      res = await fetch("data/leaderboard.json").catch(() => null);
+    let top20 = await fetchWithFallbacks(
+      "/api/leaderboard",
+      { collection: 'config', docId: 'leaderboard' },
+      "data/leaderboard.json"
+    );
+    
+    if (!top20 || !top20.length) {
+      const allProfiles = await getAllOfficialProfiles();
+      top20 = allProfiles.slice();
     }
     
-    let top20 = [];
-    if (res && res.ok) {
-      top20 = await res.json();
-    }
-    
-    if (!top20 || top20.length === 0) {
-      const fallbackRes = await fetch("data/official_profiles.json").catch(() => null);
-      if (fallbackRes && fallbackRes.ok) {
-        const allProfiles = await fallbackRes.json();
-        top20 = allProfiles.sort((a, b) => ((b.overall_competency_index || 0) - (a.overall_competency_index || 0)) || ((b.karma_points || 0) - (a.karma_points || 0))).slice(0, 20);
-      }
-    } else {
-      // Ensure strictly sorted by competency rate descending
-      top20.sort((a, b) => ((b.overall_competency_index || 0) - (a.overall_competency_index || 0)) || ((b.karma_points || 0) - (a.karma_points || 0)));
-      top20 = top20.slice(0, 20);
-    }
+    // Ensure strictly sorted by competency rate descending
+    top20.sort((a, b) => ((b.overall_competency_index || 0) - (a.overall_competency_index || 0)) || ((b.karma_points || 0) - (a.karma_points || 0)));
+    top20 = top20.slice(0, 20);
     
     if (!top20 || top20.length === 0) {
       tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-muted);">Leaderboard data unavailable.</td></tr>`;
