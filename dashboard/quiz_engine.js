@@ -25,21 +25,41 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadMaterials() {
   try {
-    const res = await fetch(API_BASE + "/api/materials").catch(() => fetch("data/learning_materials.json"));
-    allMaterials = await res.json();
+    let res = await fetch(API_BASE + "/api/materials").catch(() => null);
+    if (res && res.ok) {
+      allMaterials = await res.json().catch(() => null) || {};
+    }
+    if (!allMaterials || Object.keys(allMaterials).length === 0) {
+      res = await fetch("data/learning_materials.json").catch(() => null);
+      if (res && res.ok) {
+        const raw = await res.json().catch(() => null);
+        if (Array.isArray(raw)) {
+          allMaterials = {};
+          raw.forEach(m => { allMaterials[m.id] = m; });
+        } else if (raw && typeof raw === 'object') {
+          allMaterials = raw;
+        }
+      }
+    }
+    // If textarea is still empty, populate with default material
+    if (Object.keys(allMaterials).length > 0) {
+      loadPreloadedMaterial("MAT-SNA-01");
+    }
   } catch (e) {
     console.error("Error loading learning materials:", e);
   }
 }
 
 function loadPreloadedMaterial(materialId) {
-  const mat = allMaterials[materialId];
+  const mat = allMaterials[materialId] || Object.values(allMaterials)[0];
   if (!mat) return;
 
   const textArea = document.getElementById("materialTextContent");
   const targetComp = document.getElementById("targetCompSelect");
 
-  if (textArea) textArea.value = mat.content.trim();
+  if (textArea && (!textArea.value || textArea.value.trim() === "")) {
+    textArea.value = mat.content ? mat.content.trim() : "";
+  }
   if (targetComp && mat.target_competency) targetComp.value = mat.target_competency;
 }
 
@@ -85,8 +105,8 @@ async function generateAIQuiz() {
 
     const data = await res.json();
     if (data.success && data.assessment) {
+      showToast("🎯 Diagnostic assessment ready! Loading quiz arena...");
       startQuizArena(data.assessment);
-      showToast("✨ AI Assessment synthesized with pedagogical explanations!");
     } else {
       throw new Error("Failed to generate assessment payload.");
     }
@@ -108,12 +128,31 @@ async function loadPresetAssessment() {
   const docId = document.getElementById("preloadedDocSelect")?.value || "MAT-SNA-01";
   
   try {
-    const res = await fetch("/api/assessments").catch(() => fetch("data/assessment_bank.json"));
-    const bank = await res.json();
-    const asm = bank.find(a => a.material_id === docId) || bank[0];
-    startQuizArena(asm);
+    let bank = null;
+    let res = await fetch(API_BASE + "/api/assessments").catch(() => null);
+    if (res && res.ok) {
+      bank = await res.json().catch(() => null);
+    }
+    
+    if (!bank || !Array.isArray(bank) || bank.length === 0) {
+      res = await fetch("data/assessment_bank.json").catch(() => null);
+      if (res && res.ok) {
+        bank = await res.json().catch(() => null);
+      }
+    }
+    
+    if (bank && Array.isArray(bank) && bank.length > 0) {
+      const asm = bank.find(a => a.material_id === docId) || bank[0];
+      if (asm) {
+        startQuizArena(asm);
+        showToast(`📝 Loaded pre-built exam: ${asm.title}`);
+        return;
+      }
+    }
+    showToast("⚠️ Could not load pre-built exam.");
   } catch (e) {
-    console.error(e);
+    console.error("Error loading pre-built assessment:", e);
+    showToast("⚠️ Error starting pre-built assessment.");
   }
 }
 
@@ -253,7 +292,38 @@ async function submitAssessment() {
     const evalResult = await res.json();
     renderQuizResults(evalResult);
   } catch (e) {
-    console.error("Error submitting assessment:", e);
+    console.warn("Backend submit error, evaluating locally:", e);
+    // Local evaluation fallback
+    let correctCount = 0;
+    const review = (activeAssessment.questions || []).map(q => {
+      const selected = userAnswers[q.question_id];
+      const isCorrect = selected === q.correct_option;
+      if (isCorrect) correctCount++;
+      return {
+        question_id: q.question_id,
+        question_text: q.question_text,
+        user_answer: selected !== undefined ? q.options[selected] : "Not Answered",
+        correct_answer: q.options[q.correct_option],
+        is_correct: isCorrect,
+        explanation: q.explanation || "Official MoSPI statistical practice standard."
+      };
+    });
+    const totalQ = (activeAssessment.questions || []).length || 1;
+    const scorePct = Math.round((correctCount / totalQ) * 100);
+    const passed = scorePct >= 70;
+    const evalResult = {
+      score_percentage: scorePct,
+      correct_count: correctCount,
+      total_questions: totalQ,
+      passed: passed,
+      competency_level_uplift: passed ? 1 : 0,
+      karma_points_awarded: passed ? 100 : 25,
+      feedback_summary: passed 
+        ? `Commendable performance! You scored ${scorePct}%, demonstrating benchmark mastery in ${activeAssessment.target_competency}.` 
+        : `You scored ${scorePct}%. A minimum of 70% is required to achieve benchmark uplift. Review pedagogical explanations below.`,
+      review: review
+    };
+    renderQuizResults(evalResult);
   }
 }
 

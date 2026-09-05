@@ -211,6 +211,14 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_json_response(res)
             return
 
+        # 1.5. API: Complete iGOT Course
+        elif path == "/api/igot/complete":
+            course_id = payload.get("course_id")
+            officer_id = payload.get("officer_id", "OFF-ISS-2026-HQ")
+            res = self.handle_course_completion(officer_id, course_id)
+            self.send_json_response(res)
+            return
+
         # 2. API: Generate Assessment from Uploaded Text/Document
         elif path == "/api/assessments/generate":
             title = payload.get("title", "Uploaded Statistical Guidelines")
@@ -493,42 +501,18 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
         if not course:
             return {"error": "Course not found"}
 
-        primary_comp = course["primary_competency"]
-        cur_level = officer.get("current_competencies", {}).get(primary_comp, 2)
-        tgt_level = officer.get("target_competencies", {}).get(primary_comp, 4)
+        # Add to enrolled_courses
+        enrolled = officer.get("enrolled_courses", [])
+        if course_id not in enrolled:
+            enrolled.append(course_id)
+        officer["enrolled_courses"] = enrolled
         
-        # Uplift level
-        new_level = min(tgt_level, cur_level + 1)
-        if "current_competencies" not in officer:
-            officer["current_competencies"] = {}
-        officer["current_competencies"][primary_comp] = new_level
-        
-        officer["total_learning_hours"] = officer.get("total_learning_hours", 0) + course["duration_hours"]
-        officer["karma_points"] = officer.get("karma_points", 0) + course["karma_points"]
-        officer["completed_courses_count"] = officer.get("completed_courses_count", 0) + 1
-        
-        # Ensure completed_courses array exists
-        completed = officer.get("completed_courses", [])
-        if course_id not in completed:
-            completed.append(course_id)
-        officer["completed_courses"] = completed
-        
-        # Recalculate gaps
-        if "skill_gaps" in officer and primary_comp in officer["skill_gaps"]:
-            officer["skill_gaps"][primary_comp]["current"] = new_level
-            officer["skill_gaps"][primary_comp]["gap"] = max(0, tgt_level - new_level)
-            officer["skill_gaps"][primary_comp]["severity"] = "High" if officer["skill_gaps"][primary_comp]["gap"] >= 2 else ("Medium" if officer["skill_gaps"][primary_comp]["gap"] == 1 else "None")
-
-        # Uplift overall index
-        officer["overall_competency_index"] = min(100.0, round(officer.get("overall_competency_index", 0) + 3.2, 1))
-
         # Save back to database
         if officer in CACHED_PROFILES:
             profiles_file = os.path.join(DATA_DIR, "official_profiles.json")
             with open(profiles_file, "w") as f:
                 json.dump(CACHED_PROFILES, f, indent=2)
                 
-            # Keep primary_learner.json in sync if it's the same officer
             primary_file = os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")
             if os.path.exists(primary_file):
                 try:
@@ -546,7 +530,89 @@ class KashyapRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         return {
             "success": True,
-            "message": f"Successfully enrolled & completed certification for '{course['title']}'!",
+            "message": f"Successfully enrolled in '{course['title']}'!",
+            "updated_officer": officer
+        }
+
+    def handle_course_completion(self, officer_id, course_id):
+        officer = None
+        for p in CACHED_PROFILES:
+            if p["officer_id"] == officer_id:
+                officer = p
+                break
+                
+        if not officer:
+            primary_file = os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")
+            if os.path.exists(primary_file):
+                with open(primary_file, "r") as f:
+                    officer = json.load(f)
+            else:
+                return {"error": "Learner profile not found"}
+
+        # Find course
+        course = next((c for c in recommendation_engine.igot_courses if c["course_id"] == course_id), None)
+        if not course:
+            return {"error": "Course not found"}
+
+        # Remove from enrolled
+        enrolled = officer.get("enrolled_courses", [])
+        if course_id in enrolled:
+            enrolled.remove(course_id)
+        officer["enrolled_courses"] = enrolled
+
+        # Add to completed
+        completed = officer.get("completed_courses", [])
+        if course_id not in completed:
+            completed.append(course_id)
+        officer["completed_courses"] = completed
+
+        primary_comp = course["primary_competency"]
+        cur_level = officer.get("current_competencies", {}).get(primary_comp, 2)
+        tgt_level = officer.get("target_competencies", {}).get(primary_comp, 4)
+        
+        # Uplift level
+        new_level = min(tgt_level, cur_level + 1)
+        if "current_competencies" not in officer:
+            officer["current_competencies"] = {}
+        officer["current_competencies"][primary_comp] = new_level
+        
+        officer["total_learning_hours"] = officer.get("total_learning_hours", 0) + course["duration_hours"]
+        officer["karma_points"] = officer.get("karma_points", 0) + course["karma_points"]
+        officer["completed_courses_count"] = len(completed)
+        
+        # Recalculate gaps
+        if "skill_gaps" in officer and primary_comp in officer["skill_gaps"]:
+            officer["skill_gaps"][primary_comp]["current"] = new_level
+            officer["skill_gaps"][primary_comp]["gap"] = max(0, tgt_level - new_level)
+            officer["skill_gaps"][primary_comp]["severity"] = "High" if officer["skill_gaps"][primary_comp]["gap"] >= 2 else ("Medium" if officer["skill_gaps"][primary_comp]["gap"] == 1 else "None")
+
+        # Uplift overall index
+        officer["overall_competency_index"] = min(100.0, round(officer.get("overall_competency_index", 0) + 1.2, 1))
+
+        # Save back to database
+        if officer in CACHED_PROFILES:
+            profiles_file = os.path.join(DATA_DIR, "official_profiles.json")
+            with open(profiles_file, "w") as f:
+                json.dump(CACHED_PROFILES, f, indent=2)
+                
+            primary_file = os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")
+            if os.path.exists(primary_file):
+                try:
+                    with open(primary_file, "r") as f:
+                        primary_officer = json.load(f)
+                    if primary_officer.get("officer_id") == officer_id:
+                        with open(primary_file, "w") as f:
+                            json.dump(officer, f, indent=2)
+                except Exception:
+                    pass
+        else:
+            primary_file = os.path.join(DASHBOARD_DATA_DIR, "primary_learner.json")
+            with open(primary_file, "w") as f:
+                json.dump(officer, f, indent=2)
+
+        return {
+            "success": True,
+            "message": f"Successfully completed course '{course['title']}'!",
             "new_competency_index": officer["overall_competency_index"],
             "karma_points_earned": course["karma_points"],
             "updated_officer": officer

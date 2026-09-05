@@ -19,6 +19,54 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
+def save_officer_to_cache(officer):
+    if not officer or not officer.get('officer_id'):
+        return
+    oid = officer.get('officer_id')
+    for path in [
+        os.path.join(os.path.dirname(__file__), "data", "official_profiles.json"),
+        os.path.join(os.path.dirname(__file__), "dashboard", "data", "official_profiles.json")
+    ]:
+        try:
+            if os.path.exists(path):
+                with open(path, "r", encoding="utf-8") as f:
+                    profiles = json.load(f)
+                updated = False
+                for i, p in enumerate(profiles):
+                    if p.get("officer_id") == oid:
+                        profiles[i].update(officer)
+                        updated = True
+                        break
+                if not updated:
+                    profiles.append(officer)
+                with open(path, "w", encoding="utf-8") as f:
+                    json.dump(profiles, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print(f"Error updating cache at {path}: {e}")
+            
+    primary_path = os.path.join(os.path.dirname(__file__), "dashboard", "data", "primary_learner.json")
+    try:
+        if os.path.exists(primary_path):
+            with open(primary_path, "r", encoding="utf-8") as f:
+                primary = json.load(f)
+            if primary.get("officer_id") == oid or oid == "OFF-ISS-2026-HQ":
+                primary.update(officer)
+                with open(primary_path, "w", encoding="utf-8") as f:
+                    json.dump(primary, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"Error updating primary learner: {e}")
+
+def _normalize_officer(officer):
+    if not officer:
+        return officer
+    if not officer.get('enrolled_courses'):
+        officer['enrolled_courses'] = []
+    if not officer.get('completed_courses'):
+        officer['completed_courses'] = []
+    if not officer.get('nominated_programmes'):
+        officer['nominated_programmes'] = []
+    return officer
+
 def find_officer(officer_id=None, email=None, role_key=None):
     if email:
         clean_email = email.strip().lower()
@@ -27,7 +75,7 @@ def find_officer(officer_id=None, email=None, role_key=None):
         try:
             docs = list(db.collection('official_profiles').where('email', '==', clean_email).limit(1).stream())
             if docs:
-                return docs[0].to_dict()
+                return _normalize_officer(docs[0].to_dict())
         except Exception as e:
             print(f"Firestore error searching email {clean_email}: {e}")
             
@@ -38,7 +86,7 @@ def find_officer(officer_id=None, email=None, role_key=None):
                     profiles = json.load(f)
                     for p in profiles:
                         if p.get("email", "").strip().lower() == clean_email:
-                            return p
+                            return _normalize_officer(p)
         except Exception as e:
             print(f"File search error by email: {e}")
 
@@ -46,7 +94,7 @@ def find_officer(officer_id=None, email=None, role_key=None):
         try:
             doc = db.collection('official_profiles').document(officer_id).get()
             if doc.exists:
-                return doc.to_dict()
+                return _normalize_officer(doc.to_dict())
         except Exception as e:
             print(f"Firestore error getting officer_id {officer_id}: {e}")
             
@@ -57,7 +105,7 @@ def find_officer(officer_id=None, email=None, role_key=None):
                     profiles = json.load(f)
                     for p in profiles:
                         if p.get("officer_id") == officer_id:
-                            return p
+                            return _normalize_officer(p)
         except Exception as e:
             print(f"File search error by id: {e}")
 
@@ -65,7 +113,7 @@ def find_officer(officer_id=None, email=None, role_key=None):
         try:
             docs = list(db.collection('official_profiles').where('role_key', '==', role_key).limit(1).stream())
             if docs:
-                return docs[0].to_dict()
+                return _normalize_officer(docs[0].to_dict())
         except Exception as e:
             print(f"Firestore error querying role_key {role_key}: {e}")
             
@@ -76,7 +124,7 @@ def find_officer(officer_id=None, email=None, role_key=None):
                     profiles = json.load(f)
                     for p in profiles:
                         if p.get("role_key") == role_key:
-                            return p
+                            return _normalize_officer(p)
         except Exception as e:
             print(f"File search error by role: {e}")
 
@@ -84,13 +132,13 @@ def find_officer(officer_id=None, email=None, role_key=None):
     try:
         doc = db.collection('official_profiles').document('OFF-ISS-2026-HQ').get()
         if doc.exists:
-            return doc.to_dict()
+            return _normalize_officer(doc.to_dict())
     except Exception as e:
         print(f"Firestore fallback error: {e}")
 
     try:
         with open(os.path.join(os.path.dirname(__file__), "dashboard", "data", "primary_learner.json"), "r", encoding="utf-8") as f:
-            return json.load(f)
+            return _normalize_officer(json.load(f))
     except:
         return None
 
@@ -292,6 +340,7 @@ def enrol_course():
         officer_ref.set(officer, merge=True)
     except Exception as e:
         print(f"Firestore error in enrol_course: {e}")
+    save_officer_to_cache(officer)
     
     return jsonify({
         "success": True,
@@ -330,6 +379,7 @@ def complete_course():
         officer_ref.set(officer, merge=True)
     except Exception as e:
         print(f"Firestore error in complete_course: {e}")
+    save_officer_to_cache(officer)
     
     return jsonify({
         "success": True,

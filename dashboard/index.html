@@ -75,14 +75,6 @@
         </div>
 
         <div class="header-controls">
-          <!-- Contact Search Functionality -->
-          <div class="header-search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="contactSearchInput" placeholder="Find an expert or contact..." oninput="handleContactSearch()">
-            <div id="contactSearchResults" class="search-results-dropdown" style="display: none; position: absolute; top: 60px; right: 80px; width: 320px; background: var(--bg-card); border: var(--border-soft); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); z-index: 1000; max-height: 400px; overflow-y: auto;">
-              <!-- Rendered by JS -->
-            </div>
-          </div>
           <button id="headerLogoutBtn" class="btn-icon" onclick="logout()" title="Logout" style="margin-left: 8px; color: var(--gov-rose);">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
           </button>
@@ -338,7 +330,7 @@
                 <th style="padding: 12px;">Designation & Division</th>
                 <th style="padding: 12px; color: var(--gov-primary-light);">Competency Rate <i class="fa-solid fa-star" style="color: var(--gov-saffron);"></i></th>
                 <th style="padding: 12px;">Learning Hours</th>
-                <th style="padding: 12px; text-align: right;">Karma Points</th>
+                <th style="padding: 12px; text-align: right;">Skill Points</th>
               </tr>
             </thead>
             <tbody id="leaderboardTableBody">
