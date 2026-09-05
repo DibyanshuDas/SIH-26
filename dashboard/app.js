@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Remove the early email injection so it doesn't flash before profile loads
     // We will update it properly with the actual name in renderLearnerHero
     
-    await loadInitialData();
+    await loadInitialData(user);
     initVisualizations();
     setupEventListeners();
   });
@@ -115,11 +115,13 @@ function logout() {
 // -------------------------------------------------------------------------
 // 1. Data Ingestion & API Layer
 // -------------------------------------------------------------------------
-async function loadInitialData() {
+async function loadInitialData(authUser) {
   try {
     // Determine email of currently logged in user
     let userEmail = "";
-    if (firebase.apps.length > 0 && firebase.auth().currentUser) {
+    if (authUser && authUser.email) {
+      userEmail = authUser.email;
+    } else if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0 && firebase.auth().currentUser) {
       userEmail = firebase.auth().currentUser.email;
     }
 
@@ -133,8 +135,14 @@ async function loadInitialData() {
     if (!learnerRes || !learnerRes.ok) learnerRes = await fetch("data/primary_learner.json");
     currentLearner = await learnerRes.json();
 
-    // 2. Recommendations
-    let recRes = await fetch(API_BASE + "/api/recommendations").catch(() => null);
+    // 2. Recommendations (tailored to this specific officer)
+    let recUrl = API_BASE + "/api/recommendations";
+    if (currentLearner && currentLearner.officer_id) {
+      recUrl += "?id=" + encodeURIComponent(currentLearner.officer_id);
+    } else if (userEmail) {
+      recUrl += "?email=" + encodeURIComponent(userEmail);
+    }
+    let recRes = await fetch(recUrl).catch(() => null);
     if (!recRes || !recRes.ok) recRes = await fetch("data/primary_recommendations.json");
     currentRecommendations = await recRes.json();
 

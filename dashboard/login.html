@@ -145,15 +145,45 @@
     <form id="login-form">
       <div class="input-group">
         <label for="email">Official Email</label>
-        <input type="email" id="email" placeholder="officer@mospi.gov.in" required>
+        <input type="email" id="email" placeholder="dr.off_iss_2026_hq@mospi.gov.in" value="dr.off_iss_2026_hq@mospi.gov.in" required>
       </div>
       <div class="input-group">
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="••••••••" required>
+        <input type="password" id="password" value="123456" placeholder="••••••••" required>
       </div>
       <button type="submit" class="login-btn" id="login-btn">Sign In</button>
       <div class="error-msg" id="error-msg"></div>
     </form>
+
+    <!-- Demo Personas Quick Select -->
+    <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border-color, #e2e8f0);">
+      <div style="font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <span><i class="fa-solid fa-users"></i> Quick Demo Personas</span>
+        <span style="font-weight: 500; text-transform: none; color: #10b981; font-size: 11px;">Password: 123456</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;" id="demoPersonas">
+        <button type="button" onclick="quickFill('dr.off_iss_2026_hq@mospi.gov.in', 'user')" style="display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; font-size: 12px; background: var(--bg-main); border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; cursor: pointer; text-align: left; transition: all 0.15s ease;">
+          <span><strong>Dr. Rajeshwar Sharma</strong> <span style="color: var(--text-secondary);">(Dir, NAD)</span></span>
+          <span style="color: #10b981; font-weight: 700;">78.4%</span>
+        </button>
+        <button type="button" onclick="quickFill('dr.off_iss_2026_002@mospi.gov.in', 'user')" style="display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; font-size: 12px; background: var(--bg-main); border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; cursor: pointer; text-align: left; transition: all 0.15s ease;">
+          <span><strong>Dr. Anita Mukherjee</strong> <span style="color: var(--text-secondary);">(DDG, Survey)</span></span>
+          <span style="color: #10b981; font-weight: 700;">88.2%</span>
+        </button>
+        <button type="button" onclick="quickFill('sh.off_iss_2026_003@mospi.gov.in', 'user')" style="display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; font-size: 12px; background: var(--bg-main); border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; cursor: pointer; text-align: left; transition: all 0.15s ease;">
+          <span><strong>Sh. Amit Verma</strong> <span style="color: var(--text-secondary);">(Joint Dir, ESD)</span></span>
+          <span style="color: #10b981; font-weight: 700;">82.1%</span>
+        </button>
+        <button type="button" onclick="quickFill('ms.off_iss_2026_004@mospi.gov.in', 'user')" style="display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; font-size: 12px; background: var(--bg-main); border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; cursor: pointer; text-align: left; transition: all 0.15s ease;">
+          <span><strong>Ms. Priya Nair</strong> <span style="color: var(--text-secondary);">(Asst Dir, SSD)</span></span>
+          <span style="color: #10b981; font-weight: 700;">75.6%</span>
+        </button>
+        <button type="button" onclick="quickFill('admin@mospi.gov.in', 'admin')" style="display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; font-size: 12px; background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.2); border-radius: 6px; cursor: pointer; text-align: left; transition: all 0.15s ease;">
+          <span><strong style="color: #2563eb;">Cadre Admin</strong> <span style="color: var(--text-secondary);">(admin@mospi.gov.in)</span></span>
+          <span style="color: #2563eb; font-weight: 600; font-size: 11px;">Full Access</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -187,6 +217,22 @@
       document.getElementById('tab-user').classList.remove('active');
       document.getElementById('tab-admin').classList.remove('active');
       document.getElementById(`tab-${role}`).classList.add('active');
+      
+      const emailInput = document.getElementById('email');
+      const passInput = document.getElementById('password');
+      if (role === 'admin') {
+        emailInput.value = 'admin@mospi.gov.in';
+        passInput.value = '123456';
+      } else if (emailInput.value === 'admin@mospi.gov.in') {
+        emailInput.value = 'dr.off_iss_2026_hq@mospi.gov.in';
+        passInput.value = '123456';
+      }
+    }
+
+    function quickFill(email, role) {
+      setRole(role);
+      document.getElementById('email').value = email;
+      document.getElementById('password').value = '123456';
     }
 
     document.getElementById('login-form').addEventListener('submit', function(e) {
